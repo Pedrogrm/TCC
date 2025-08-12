@@ -34,3 +34,11 @@ Hoje, na cozinha, conseguimos resolver o primeiro item e o segundo, utilizando u
  - Só recebe 6 clientes
 
 No simulador, conseguimos melhorar a colisão do jogador com a fruta, acrescentamos música e sistema mais complexo de upgrades
+
+### Dia 4
+
+Tentei arrumar o problema dos 6 clientes, utilizando o copilot do vs code. Por um momento, mais clientes eram chamados constantemente, mesmo tendo 6 clientes na tela (o máximo). O processo de spawn deles era comentado no console, mas não apareciam graficamente. Após atender um dos clientes, por terem muitos outros spawnados, o programa travava. Foi identificado que era necessário definir um "else", para caso tenha atingido o máximo de clientes, pare de gerar outros novos, até surgir espaço. Coloquei um else com um console.log nele ara depurar o código, mas, após atinir o máximo e atender mais um cliente, o programa trava e o texto do console.log não aparece.
+
+### Dia 5
+
+Pedi ajuda ao professor para verificar o protótipo e nos ajudar a lidar com os erros dele.
