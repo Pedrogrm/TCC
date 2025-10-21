@@ -55,7 +55,7 @@
     const gameArea = document.getElementById('game-area');
     const player = document.getElementById('player');
 
-    let count = 0;
+    let endpositionR
     let move = false 
     let posX = 300; // posição inicial (meio)
     let posY = 200;
@@ -84,8 +84,14 @@
         player.style.top = posY + "px";
       } else if (distance <= 3 && move == true) {
         move = false
-        player.src = "img/Jeca-paradoL.gif"
+        
+        if (endpositionR = true) {
+          player.src = "img/Jeca-paradoL.gif"
+        } else {
+          player.src = "img/Jeca-paradoR.gif"
+        }
         console.log("fim do movimento")
+        
       }
       requestAnimationFrame(update);
     }
@@ -108,13 +114,13 @@
       const dy = targetY - posY;
       const distance = Math.sqrt(dx * dx + dy * dy);
 
-      if (move == true) {
-        console.log("animation")
-        if (targetX < posX) {
-          player.src = "img/Jeca-correndoL.gif"
-        } else {
-          player.src = "img/Jeca-correndoR.gif"
-        }
+      console.log("animation")
+      if (targetX < posX) {
+        player.src = "img/Jeca-correndoL.gif"
+        endpositionR = false
+      } else {
+        player.src = "img/Jeca-correndoR.gif"
+        endpositionR = true
       }
     }
       
