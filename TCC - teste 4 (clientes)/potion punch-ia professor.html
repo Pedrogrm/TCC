@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Potion Punch Clone</title>
+    <style>
+        /* Estilos CSS do jogo */
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100vh;
+        }
+
+        h1 {
+            margin-top: 10px;
+        }
+
+        /* Área onde os clientes aparecerão */
+        #gameArea {
+            position: relative;
+            width: 1000px;
+            height: 300px;
+            margin: 0 auto;
+            overflow: hidden;
+            border: 2px solid #333;
+            background-color: #e0e0e0;
+        }
+
+        /* Seção da cozinha com os dispensadores e a tigela */
+        .cozinha {
+            background-color: #fff;
+            border: 2px solid #333;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Estilo dos dispensadores de poções */
+        .dispenser {
+            width: 80px;
+            height: 80px;
+            margin: 10px;
+            cursor: pointer;
+            border: 2px solid #000;
+            transition: transform 0.2s;
+        }
+        .dispenser:hover {
+            transform: scale(1.1);
+        }
+        #redDispenser { background-color: red; }
+        #blueDispenser { background-color: blue; }
+        #yellowDispenser { background-color: yellow; }
+
+        /* Estilo da área da tigela */
+        #bowlArea {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0 40px;
+        }
+
+        /* Estilo da tigela de mistura */
+        #bowl {
+            width: 100px;
+            height: 100px;
+            background-color: brown;
+            border-radius: 50%;
+            position: relative;
+            cursor: pointer;
+            border: 2px solid #000;
+        }
+        /* Cor da poção dentro da tigela */
+        #innerBowl {
+            width: 80%;
+            height: 80%;
+            background-color: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 10%;
+            left: 10%;
+            transition: background-color 0.3s;
+        }
+        /* Borda quando a tigela está selecionada */
+        #bowl.selected {
+            border: 4px dashed green;
+        }
+
+        #bowlStatus {
+            margin-top: 5px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        /* Estilo dos clientes */
+        .client {
+            width: 80px;
+            height: 80px;
+            background-color: pink;
+            border: 2px solid #000;
+            position: absolute;
+            top: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: left 0.5s ease-out;
+            cursor: pointer;
+            font-size: 12px;
+            text-align: center;
+            padding: 5px;
+            box-sizing: border-box;
+        }
+
+        .client-info {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        /* Estilo do pedido (círculos coloridos) */
+        .order {
+            display: flex;
+            gap: 2px;
+        }
+
+        .order-item {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            border: 1px solid black;
+        }
+
+        /* Destaque para poções já servidas */
+        .order-item.completed {
+            border: 2px solid gold;
+            transform: scale(1.1);
+        }
+        
+        /* Barra de tempo do cliente */
+        .timer-bar {
+            width: 100%;
+            height: 10px;
+            background-color: #ccc;
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        /* Preenchimento da barra de tempo */
+        .timer-progress {
+            height: 100%;
+            background-color: #4CAF50;
+            width: 100%;
+            transition: width linear;
+        }
+
+        /* Botão de lixo */
+        #trash {
+            width: 60px;
+            height: 60px;
+            background-color: gray;
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: 2px solid black;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 24px;
+        }
+
+        /* Mensagens de feedback para o jogador */
+        #message {
+            margin-top: 10px;
+            color: red;
+            font-weight: bold;
+            min-height: 20px;
+        }
+        
+        /* HUD (cabeça do jogo) */
+        #hud {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            font-size: 20px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="hud">
+        <span>Dinheiro: <span id="money">0</span></span>
+        <span>Nível: <span id="level">1</span></span>
+    </div>
+
+    <div id="gameArea"></div>
+
+    <div class="cozinha">
+        <div id="trash">🗑️</div>
+        
+        <div id="dispensers">
+            <div id="redDispenser" class="dispenser"></div>
+            <div id="blueDispenser" class="dispenser"></div>
+            <div id="yellowDispenser" class="dispenser"></div>
+        </div>
+
+        <div id="bowlArea">
+            <div id="bowl">
+                <div id="innerBowl"></div>
+            </div>
+            <div id="bowlStatus">Desselecionada</div>
+        </div>
+    </div>
+    
+    <div id="message"></div>
+
+    <script>
+        // --- Variáveis e Seleção de Elementos HTML ---
+        
+        // Elementos da interface
+        const bowl = document.getElementById('bowl');
+        const redDispenser = document.getElementById('redDispenser');
+        const blueDispenser = document.getElementById('blueDispenser');
+        const yellowDispenser = document.getElementById('yellowDispenser');
+        const innerBowl = document.getElementById('innerBowl');
+        const gameArea = document.getElementById('gameArea');
+        const messageBox = document.getElementById('message');
+        const trash = document.getElementById('trash');
+        const bowlStatus = document.getElementById('bowlStatus');
+        const moneyDisplay = document.getElementById('money');
+        const levelDisplay = document.getElementById('level');
+
+        // Variáveis de estado do jogo
+        let bowlSelected = false;
+        let color = { red: 0, blue: 0, yellow: 0 };
+        
+        // Variáveis de controle de clientes
+        let clients = [];
+        const clientPositions = [100, 300, 500, 700]; // Posições fixas para os clientes
+        const maxClients = clientPositions.length;
+        let occupiedPositions = new Set();
+        
+        // Variáveis de pontuação e nível
+        let money = 0;
+        let level = 1;
+        
+        // Variáveis de dificuldade, que mudam com o nível
+        let clientWaitTime = 12000; // Tempo inicial de espera (12 segundos)
+        let maxOrderSize = 2; // Tamanho máximo inicial do pedido
+        const moneyPerLevel = 50; // Pontos necessários para subir de nível
+
+        // --- Event Listeners: Responde às interações do usuário ---
+        
+        // Seleciona a tigela ao clicar
+        bowl.addEventListener('click', () => {
+            bowlSelected = !bowlSelected;
+            updateBowlStatus();
+        });
+
+        // Adiciona cor à tigela ao clicar nos dispensadores
+        redDispenser.addEventListener('click', () => { addColorToBowl('red'); });
+        blueDispenser.addEventListener('click', () => { addColorToBowl('blue'); });
+        yellowDispenser.addEventListener('click', () => { addColorToBowl('yellow'); });
+        
+        // Limpa a tigela ao clicar no lixo
+        trash.addEventListener('click', () => { resetBowl(); });
+        
+        // --- Funções da Lógica do Jogo ---
+
+        // Adiciona cor à tigela (se for possível)
+        function addColorToBowl(c) {
+            if (!bowlSelected) {
+                showMessage("Nenhuma tigela selecionada!");
+                return;
+            }
+            if (color[c] === 1) {
+                showMessage("Cor já utilizada!");
+                return;
+            }
+            color[c] += 1;
+            verifyColor();
+        }
+
+        // Atualiza a interface da tigela (texto e borda)
+        function updateBowlStatus() {
+            if (bowlSelected) {
+                bowlStatus.textContent = 'Selecionada';
+                bowlStatus.style.color = 'green';
+                bowl.classList.add('selected');
+            } else {
+                bowlStatus.textContent = 'Desselecionada';
+                bowlStatus.style.color = 'red';
+                bowl.classList.remove('selected');
+            }
+        }
+
+        // Exibe uma mensagem temporária na tela
+        function showMessage(msg) {
+            messageBox.textContent = msg;
+            setTimeout(() => {
+                messageBox.textContent = '';
+            }, 2000);
+        }
+
+        // Atualiza a cor da poção na tigela
+        function verifyColor() {
+            innerBowl.style.backgroundColor = getCurrentBowlColor();
+        }
+
+        // Calcula a cor da poção com base nos ingredientes
+        function getCurrentBowlColor() {
+            const red = color.red > 0;
+            const blue = color.blue > 0;
+            const yellow = color.yellow > 0;
+
+            if (red && blue && yellow) return 'brown';
+            if (red && blue) return 'purple';
+            if (red && yellow) return 'orange';
+            if (blue && yellow) return 'green';
+            if (red) return 'red';
+            if (blue) return 'blue';
+            if (yellow) return 'yellow';
+
+            return 'white'; // Poção vazia
+        }
+
+        // Reseta a tigela para o estado inicial
+        function resetBowl() {
+            color = { red: 0, blue: 0, yellow: 0 };
+            verifyColor();
+        }
+
+        // Cria e adiciona um novo cliente na área de jogo
+        function createClient() {
+            // Se já tiver clientes o suficiente, não cria um novo
+            if (clients.length >= maxClients) return;
+
+            // Encontra uma posição livre
+            const freePositions = clientPositions.filter(p => !occupiedPositions.has(p));
+            if (freePositions.length === 0) return;
+
+            const position = freePositions[Math.floor(Math.random() * freePositions.length)];
+            occupiedPositions.add(position);
+            
+            const clientDiv = document.createElement('div');
+            clientDiv.classList.add('client');
+            clientDiv.style.left = `${position}px`;
+            
+            // Define o pedido do cliente
+            const possibleColors = ['red', 'blue', 'yellow', 'orange', 'green', 'purple', 'brown'];
+            const orderSize = Math.floor(Math.random() * maxOrderSize) + 1; // Pedido de tamanho variável
+            let order = [];
+            for (let i = 0; i < orderSize; i++) {
+                const randomColor = possibleColors[Math.floor(Math.random() * possibleColors.length)];
+                order.push(randomColor);
+            }
+
+            // Cria e adiciona os elementos visuais do cliente
+            const clientInfoDiv = document.createElement('div');
+            clientInfoDiv.classList.add('client-info');
+            clientInfoDiv.textContent = `Cliente #${clients.length + 1}`;
+
+            const orderDiv = document.createElement('div');
+            orderDiv.classList.add('order');
+            order.forEach(c => {
+                const item = document.createElement('div');
+                item.classList.add('order-item');
+                item.style.backgroundColor = c;
+                orderDiv.appendChild(item);
+            });
+            
+            // Adiciona a barra de tempo
+            const timerBar = document.createElement('div');
+            timerBar.classList.add('timer-bar');
+            const timerProgress = document.createElement('div');
+            timerProgress.classList.add('timer-progress');
+            timerBar.appendChild(timerProgress);
+            
+            clientDiv.appendChild(clientInfoDiv);
+            clientDiv.appendChild(orderDiv);
+            clientDiv.appendChild(timerBar);
+
+            // Armazena os dados do cliente no próprio elemento HTML
+            clientDiv.dataset.order = JSON.stringify(order);
+            clientDiv.dataset.progress = "0";
+            clientDiv.dataset.position = position;
+
+            // Adiciona o evento de clique para atender o cliente
+            clientDiv.addEventListener('click', () => {
+                handleClientClick(clientDiv);
+            });
+
+            // Lógica do cronômetro do cliente
+            const clientTimer = setInterval(() => {
+                const currentTime = Date.now();
+                const elapsed = currentTime - clientDiv.startTime;
+                const remaining = clientWaitTime - elapsed; // Usa o tempo de espera atual
+
+                if (remaining <= 0) {
+                    removeClient(clientDiv, false); // Cliente vai embora insatisfeito
+                    clearInterval(clientTimer);
+                } else {
+                    // Atualiza o progresso da barra de tempo
+                    timerProgress.style.width = `${(remaining / clientWaitTime) * 100}%`;
+                    if (remaining < clientWaitTime * 0.3) {
+                        timerProgress.style.backgroundColor = '#FF5733'; // Mude para vermelho quando estiver acabando
+                    }
+                }
+            }, 100);
+
+            clientDiv.startTime = Date.now();
+            clientDiv.timer = clientTimer;
+            
+            gameArea.appendChild(clientDiv);
+            clients.push(clientDiv);
+        }
+        
+        // Trata o clique no cliente para servir a poção
+        function handleClientClick(clientDiv) {
+            const order = JSON.parse(clientDiv.dataset.order);
+            let progress = parseInt(clientDiv.dataset.progress);
+            const bowlColor = getCurrentBowlColor();
+            
+            if (bowlColor === 'white') {
+                showMessage("A tigela está vazia!");
+                return;
+            }
+            
+            if (bowlColor === order[progress]) {
+                // Poção correta, avança no pedido
+                const orderItems = clientDiv.querySelectorAll('.order-item');
+                orderItems[progress].classList.add('completed');
+                
+                progress++;
+                clientDiv.dataset.progress = progress.toString();
+                resetBowl();
+                bowlSelected = false;
+                updateBowlStatus();
+
+                if (progress >= order.length) {
+                    addMoney(10); // Recompensa por completar o pedido
+                    removeClient(clientDiv, true); // Cliente satisfeito
+                }
+            } else {
+                showMessage("Poção errada!"); // Poção incorreta
+            }
+        }
+        
+        // Remove o cliente da tela e da lista de clientes
+        function removeClient(clientDiv, satisfied) {
+            clearInterval(clientDiv.timer); // Para o cronômetro do cliente
+            const position = parseInt(clientDiv.dataset.position);
+            
+            if (satisfied) {
+                clientDiv.style.left = '1100px'; // Move o cliente para fora da tela
+            } else {
+                clientDiv.style.left = '-100px'; // Move o cliente para fora da tela
+            }
+            
+            setTimeout(() => {
+                gameArea.removeChild(clientDiv);
+                clients = clients.filter(c => c !== clientDiv);
+                occupiedPositions.delete(position); // Libera a posição para um novo cliente
+                console.log(`Cliente ${satisfied ? 'satisfeito' : 'insatisfeito'} removido.`);
+            }, 500);
+        }
+
+        // Adiciona dinheiro e verifica se o nível deve ser aumentado
+        function addMoney(amount) {
+            money += amount;
+            moneyDisplay.textContent = money;
+            
+            if (money >= level * moneyPerLevel) {
+                levelUp();
+            }
+        }
+        
+        // Aumenta o nível e a dificuldade do jogo
+        function levelUp() {
+            level++;
+            levelDisplay.textContent = level;
+            showMessage(`Nível ${level} alcançado! A dificuldade vai aumentar!`);
+            
+            // Aumenta a dificuldade ajustando as variáveis
+            clientWaitTime = Math.max(5000, clientWaitTime - 1000); // Reduz o tempo de espera (mínimo de 5s)
+            maxOrderSize = Math.min(3, maxOrderSize + 1); // Aumenta o tamanho do pedido (máximo de 3 itens)
+            
+            // Cria um novo cliente para o novo nível
+            createClient();
+        }
+
+        // O loop principal do jogo, que tenta criar clientes periodicamente
+        function gameLoop() {
+            setTimeout(() => {
+                if (clients.length < maxClients) {
+                    createClient();
+                }
+                gameLoop();
+            }, 3000); // Tenta criar um novo cliente a cada 3 segundos
+        }
+        
+        // --- Iniciar o Jogo ---
+        gameLoop();
+        
+    </script>
+</body>
+</html>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Document</title>
+    <title>Jeca Maracatu</title>
 </head>
 <body>
     <div id="game">
@@ -54,6 +54,8 @@
 
             let mesa2Y = 1000
             let mesa3Y = 350
+
+            
             
             // const myElement = document.getElementById('myElement'); // Or use querySelector, etc.
             // const rect = myElement.getBoundingClientRect();
@@ -104,6 +106,53 @@
                 num = console.log(e.offsetX, e.offsetY);
             }
 
+
+            function createTargets() {
+                for (let i = 1; i <= 10; i++) {
+                    const element = document.createElement("div");
+                    element.id = "target" + i;
+                    element.style.zIndex = 1000;
+                    element.dataset.beij = 0;
+                    element.dataset.amor = 0;
+                    element.style.width = "50px";
+                    element.style.height = "50px";
+                    element.style.position = "absolute";
+                    element.style.left = (i + 10) * cellSize + "px";
+                    element.style.top  = 8 * cellSize + "px";
+                    element.style.backgroundColor = "red";
+
+
+                    element.addEventListener('dragover', e => {
+                    e.preventDefault();
+
+                    const data = e.dataTransfer.getData('doce');
+                        
+                    if (element.dataset.beij === "0") {
+                        element.dataset.beij = "1";
+                        beijQ = beijQ + 1;
+                        element.style.backgroundColor = "cyan";
+
+                        if (beijQ === 10) {
+                        morango.classList.remove("morango");
+                        morango.classList.add("morangobeijinho");
+                        }
+                    }
+                    
+                    if (beijQ === 10 && element.dataset.amor === "0") {
+                        element.dataset.amor = "1";
+                        amorQ = amorQ + 1;
+                        element.style.backgroundColor = "lightgreen";
+
+                        if (amorQ === 10) {
+                        morango.classList.remove("morangobeijinho");
+                        morango.classList.add("morangoamor");
+                        }
+                    }
+                    });
+
+                    kitchen.appendChild(element);
+                }
+            }
 
             // Detecta clique e define novo destino
             gameArea.addEventListener('click', (event) => {

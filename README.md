@@ -59,3 +59,9 @@ Figma com o protótipo do layout do jogo.
 Desenho dos personagens.
 Desenho da tela inicial.
 
+### Dia 6
+Modificações no cenário.
+Desenho e animação dos personagens e elementos.
+Produção do figma com a lógica do jogo.
+Programação dos clientes.
+
