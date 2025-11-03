@@ -38,14 +38,16 @@
       transition: transform 0.1s linear;
     }
 
-    /* .cliente {
+    .cliente {
       width: 50px;
       height: 50px;
 
       background-color: yellow;
 
       position: absolute;
-      top: 100px; */
+      top: 100px;
+    }  
+    
       /* só colocar de pouco em pouco pq é com relação ao espaço da game area */
       /* left: 10px;
     } */
@@ -68,9 +70,9 @@
 
   <div id="game-area">
     <!-- cliente dentro da game area para ser clicável -->
-    <div class="cliente"></div>
+    <!-- <div class="cliente"></div>
     <div class="cliente" id="cliente2"></div>
-    <div class="cliente" id="cliente3"></div>
+    <div class="cliente" id="cliente3"></div> -->
 
 
 
@@ -83,14 +85,37 @@
     const gameArea = document.getElementById('game-area');
     const player = document.getElementById('player');
 
+
+
+
     // variável dos clientes
-    let client = []
+    let client = [];
+    // dps de selecionados, os clientes saem do array client e entram no client clicado para serem depositados nas mesas, só sairão desse array dps de cozinhar para eles
+    let clientClicado = [];
+    const maxClients = 3;
+    let occupiedPositions = new Set();
+    // variável para passar os arrays de definições
+    let num = 0
     // posição dos clientes esperando na entrada
     // se a dimensão de um for 50px, a distância um do outro deverá ser maior que essa dimensão
     // 3 clientes esperando por vez
     // relação de camada entre eles. O mais da frente deverá ter um z-index maior
-    const clientPositions = [10, 70, 130]
-    const personagens = [isa, ]
+    const clientPositions = {
+      1: 130,
+      2: 70,
+      3: 10
+    }
+
+    const zclient = {
+      10: 1,
+      70: 2,
+      130: 3
+    }
+
+
+
+
+    // const personagens = [isa, ]
 
     let posX = 300; // posição inicial (meio)
     let posY = 200;
@@ -98,9 +123,30 @@
     let targetY = posY;
     const speed = 6; // velocidade do movimento
 
+
+
+    // ===========================================================================================================================================================================================================================
     // função para a criação do cliente, que já terá na sua biblioteca a comida esclhida pelo computador, mas terá propositalmente um tempo de espera
     // guardar em uma variável clienteMesa
     function criarCliente() {
+
+      // definições para cada cliente
+      num++
+
+      let pos = clientPositions[num];
+      let z = zclient[pos];
+
+      occupiedPositions.add(pos);
+
+      const clientDiv = document.createElement('div');
+      clientDiv.classList.add('cliente');
+      clientDiv.style.left = `${pos}px`;
+      clientDiv.style.zIndex = `${z}`;   
+
+
+
+
+
 
       // Define o pedido do cliente
       const possibleColors = ['red', 'blue', 'yellow', 'orange', 'green', 'purple', 'brown'];
@@ -112,13 +158,54 @@
       
 
 
+      // guarda os dados do cliente no próprio elemento html
+      // <div data-order='{"item":"pizza","quantity":2}'></div> (exemplo)
+      clientDiv.dataset.order = JSON.stringify(order);
+      clientDiv.dataset.position = pos;
+      clientDiv.dataset.zindex = z;
+      // clientDiv.dataset.persona = 
+      console.log(clientDiv.dataset.order);
+
+      gameArea.appendChild(clientDiv);
+      client.push(clientDiv)
+
+      // clienteDiv.addEventListener('click', () => {
+      //   clienteDiv.style.hidden;
+        
+      // })
+
+
     }
 
+
+    // função que garante apenas 3 clientes e só cria outros 3 novos dps de eliminar os antigos 3
+    function clientes3() {
+
+      // reinicia a contagem
+      num = 0
+
+      let create = 0;
+      const interval = setInterval(() => {
+        if (create < maxClients) {
+          criarCliente();
+          create++;
+          console.log("criando mais um cliente")
+        } else {
+          clearInterval(interval)
+        }
+      }, 500);
+    }
+
+    // ===============================================================================================================================================================================================================================
     // função para colocar o cliente na mesa com sua respectiva animação (um array que associa o sprite de animação cm cardápio e sentado com ele em pé esperando)
     function mesaCliente() {
 
     }
 
+
+
+
+    // ===========================================================================================================================================================================================================================
     // Atualiza posição do personagem a cada frame
     function update() {
       const dx = targetX - posX;
@@ -155,7 +242,10 @@
       trocarSprite()
     });
 
+    // =========================================================================================================================================================================================================================================
+
     update(); // inicia loop de animação
+    clientes3(); //cria os clientes e a lógica dos 3 clientes
   </script>
 </body>
 </html>

@@ -34,6 +34,8 @@
         <div id="parede"></div>
         <div id="parede2"></div>
         <div id="chao"></div>
+        <img id="espatula" src="img/espatula.png" draggable="true">
+
 
         <!-- game area -->
         <div id="game-area">
@@ -44,9 +46,11 @@
               
     </main>
 
-        <script>           
+        <script>
+            const main = document.querySelector('main');
             const gameArea = document.getElementById('game-area');
             const player = document.getElementById('player');
+            const espatula = document.getElementById('espatula');
 
 
             let endpositionR
@@ -56,6 +60,10 @@
 
             let mesa2Y = 1000
             let mesa3Y = 350
+
+            let loop = 0;
+            let count = 0;
+
 
             
             
@@ -109,6 +117,48 @@
             }
 
 
+            espatula.addEventListener('dragstart', e => {
+                e.dataTransfer.setData('espat', 'espatula'); // marca o item
+            });
+
+            function createTargets() {
+                for (let i = 1; i <= 10; i++) {
+                    const element = document.createElement("div");
+                    element.id = "target" + i;
+                    element.style.zIndex = 99999999999;
+                    element.dataset.target = 0;
+                    element.style.width = "50px";
+                    element.style.height = "50px";
+                    element.style.position = "absolute";
+                    element.style.left = i*50  + 100 + "px";
+                    element.style.top  = "80px";
+                    element.style.backgroundColor = "red";
+
+
+                    element.addEventListener('dragover', e => {
+                    e.preventDefault();
+
+                    const data = e.dataTransfer.getData('espat');
+                        
+                    if (element.dataset.target === 0) {
+                        element.dataset.target = 1;
+                        count = count + 1;
+                        element.style.backgroundColor = "cyan";
+
+                        if (count === 10) {
+                        loop = loop + 1;
+                        element.dataset.target = 0;
+                        count = 0;
+                        }
+                    }
+                    
+
+                    });
+
+                    main.appendChild(element);
+                }
+            }
+
             // Detecta clique e define novo destino
             gameArea.addEventListener('click', (event) => {
                 move = true
@@ -124,11 +174,6 @@
 
                 console.log("animation")
 
-
-
-                // if (targetY > mesa2Y) { player.style.zIndex = 2}
-                // if (targetY > mesa3Y) { player.style.zIndex = 3}
-
                 if (targetX < posX) {
                     player.src = "img/Jeca-correndoL.gif"
                     endposition = "left"
@@ -140,6 +185,7 @@
 
             
             update(); // inicia loop de animação
+            createTargets();
     
         </script>
 </body>

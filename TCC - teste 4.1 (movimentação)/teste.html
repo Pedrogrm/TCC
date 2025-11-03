@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Criação e remoção de objetos</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: #111;
+    }
+
+    .circle {
+      position: absolute;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: transform 0.2s, opacity 0.2s;
+    }
+
+    .circle:hover {
+      transform: scale(1.2);
+    }
+  </style>
+</head>
+<body>
+  <script>
+    const maxObjects = 3;
+    const circles = [];
+
+    // Aqui está nosso contador global
+    let num = 0;
+
+    // Função para criar um círculo com base no "num"
+    function createCircle() {
+      const circle = document.createElement('div');
+      circle.classList.add('circle');
+
+      // Aqui usamos num para variar as propriedades
+      const size = 40 + num * 10; // cada um um pouco maior
+      const color = `hsl(${num * 100}, 80%, 60%)`;
+      const x = 100 + num * 150;
+      const y = 200;
+
+      circle.style.width = `${size}px`;
+      circle.style.height = `${size}px`;
+      circle.style.background = color;
+      circle.style.left = `${x}px`;
+      circle.style.top = `${y}px`;
+
+      // Quando clica, remove
+      circle.addEventListener('click', () => {
+        circle.style.opacity = 0;
+        setTimeout(() => {
+          circle.remove();
+          circles.splice(circles.indexOf(circle), 1);
+
+          if (circles.length === 0) {
+            createThreeCircles(); // cria mais 3 quando todos somem
+          }
+        }, 200);
+      });
+
+      document.body.appendChild(circle);
+      circles.push(circle);
+      num++; // incrementa no fim de cada círculo criado
+    }
+
+    // Cria 3 círculos um por vez
+    function createThreeCircles() {
+      num = 0; // ✅ reinicia antes de começar o novo trio
+
+      let created = 0;
+      const interval = setInterval(() => {
+        if (created < maxObjects) {
+          createCircle();
+          created++;
+        } else {
+          clearInterval(interval);
+        }
+      }, 500);
+    }
+
+    // Começa o ciclo
+    createThreeCircles();
+  </script>
+</body>
+</html>

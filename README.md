@@ -65,3 +65,9 @@ Desenho e animação dos personagens e elementos.
 Produção do figma com a lógica do jogo.
 Programação dos clientes.
 
+### Dia 7
+Desenho e animação dos personagens e elementos.
+Produção do figma com a lógica do jogo.
+Programação dos clientes.
+programação da mecânica.
+Design da tela inicial.

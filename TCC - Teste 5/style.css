@@ -1,9 +1,5 @@
 * {
-  -webkit-user-drag: none; /* Chrome */
-  -moz-user-drag: none; /* Firefox */
-  -ms-user-drag: none; /* Antigos (Explorer, Edge) */
-
-  user-select: none;         /* Standard property */
+  cursor: url(img/jacare.png), default;
 }
 
 body {
@@ -128,6 +124,10 @@ nav button:active {
   left: 430px;
   top: 230px;
   z-index: 1
+}
+
+#parede:hover {
+  cursor: url(img/Jeca-correndoL\ copy.gif), default;
 }
 
 #mesa2 {
