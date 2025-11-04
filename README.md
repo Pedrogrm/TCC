@@ -71,3 +71,13 @@ Produção do figma com a lógica do jogo.
 Programação dos clientes.
 programação da mecânica.
 Design da tela inicial.
+
+### Dia 8
+Programação dos clientes.
+Programação do sistema de mistura.
+Junção e organização dos arquivos.
+Produção de elementos do cenário.
+Desenho da logo.
+Produção das animações dos personagens.
+Programação do PHP.
+Produção do Figma.

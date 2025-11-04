@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style copy.css">
+    <title>Jeca Maracatu</title>
+
+    <link rel="icon" href="img/jeca-logo.png">
+</head>
+<body>
+    <div id="game">
+        <header>
+            <div class="log">
+            <h2>🐊</h2>
+            <h1>JecaMaracatu</h1>
+            </div>
+        <nav>
+           <button>⚙️</button>
+           <button>🛒</button>
+           <button>📒</button>
+           <button>👤</button>
+        </nav>
+        </header>
+    </div>
+
+    <main>
+
+        <!-- colisão -->
+        <img id="mesa1" src="img-cenario/Mesa.png"></div>
+        <img id="mesa2" src="img-cenario/Mesa.png"></div>
+        <img id="mesa3" src="img-cenario/Mesa.png"></div>
+        <img id="QUADRADO" draggable="true"></div>
+        <div id="parede"></div>
+        <div id="parede2"></div>
+        <div id="chao"></div>
+
+        <img id="janela" src="img-cenario/Janela.gif">
+
+        <!-- game area -->
+        <div id="game-area">
+            <img src="img/Jeca-paradoR.gif" id="player" class="player" alt="Player">
+
+            <img src="img-cenario/fundo.png" alt="fundo" class="fundo">
+        </div>
+              
+    </main>
+
+        <script>           
+            const gameArea = document.getElementById('game-area');
+            const player = document.getElementById('player');
+            const mesa = document.getElementbyId('mesa1');
+
+            let endpositionR
+            let move = false 
+            let posX = 300; // posição inicial (meio)
+            let posY = 200;
+
+
+            let mesa2Y = 1000
+            let mesa3Y = 350
+
+            
+            
+            // const myElement = document.getElementById('myElement'); // Or use querySelector, etc.
+            // const rect = myElement.getBoundingClientRect();
+            // console.log('Top:', rect.top); 
+            // console.log('Left:', rect.left); 
+
+            let targetX = posX;
+            let targetY = posY;
+            const speed = 6; // velocidade do movimento
+
+            // Atualiza posição do personagem a cada frame
+            function update() {
+
+                const dx = targetX - posX;
+                const dy = targetY - posY;
+                //calcula a diferença de distância a ser percorrida horizontalmente e verticamente utilizando o teorema de pitágoras
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                // alterar velocidade junto com este
+                if (distance > 3) {
+                    move = true
+                    console.log("movimentando")
+                    console.log(distance)
+
+                    posX += (dx / distance) * speed;
+                    posY += (dy / distance) * speed;
+
+                    player.style.left = posX + "px";
+                    player.style.top = posY + "px";
+
+                } else if (distance <= 3 && move == true) {
+                    move = false
+                    
+                    if (endposition == "left") {
+                    player.src = "img/Jeca-paradoL.gif"
+                    }
+                    if (endposition == "right") {
+                    player.src = "img/Jeca-paradoR.gif"
+                    }
+
+                    console.log("fim do movimento")
+                    
+                }
+                requestAnimationFrame(update);
+            }
+
+            function posMouse(e) {
+                num = console.log(e.offsetX, e.offsetY);
+            }
+
+
+            // Detecta clique e define novo destino
+            gameArea.addEventListener('click', (event) => {
+                move = true
+                const rect = gameArea.getBoundingClientRect();
+                targetX = event.clientX - rect.left ; // centraliza no meio do quadrado. Metade dos px do quadrado 
+                targetY = event.clientY - rect.top - 70;
+            });
+
+            gameArea.addEventListener('click', (event) => {
+                const dx = targetX - posX;
+                const dy = targetY - posY;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                console.log("animation")
+
+
+
+                // if (targetY > mesa2Y) { player.style.zIndex = 2}
+                // if (targetY > mesa3Y) { player.style.zIndex = 3}
+
+                if (targetX < posX) {
+                    player.src = "img/Jeca-correndoL.gif"
+                    endposition = "left"
+                } else {
+                    player.src = "img/Jeca-correndoR.gif"
+                    endposition = "right"
+                }
+            });
+
+            mesa.addEventListener
+            
+            update(); // inicia loop de animação
+    
+        </script>
+</body>
+</html>

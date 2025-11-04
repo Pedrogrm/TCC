@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JecaMaracatu</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #e0e0e0;
+
+      /* cursor: url('img/jacare.png'), default; */
+
+    }
+
+    #game-area {
+      width: 1150px;
+      height: 50%;
+      background-color: #ccc;
+      position: relative;
+      overflow: hidden;
+      border-radius: 10px;
+      justify-content: end;
+    }
+
+    #player {
+      width: 10%;
+      background-color: transparent;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      border-radius: 5px;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s linear;
+    }
+
+    .cliente {
+      width: 50px;
+      height: 150px;
+
+      position: absolute;
+      top: 10px;
+    }  
+    
+
+  </style>
+</head>
+<body>
+
+  <div id="game-area">
+    <!-- cliente dentro da game area para ser clicável -->
+    <!-- <div class="cliente"></div>
+    <div class="cliente" id="cliente2"></div>
+    <div class="cliente" id="cliente3"></div> -->
+
+
+
+    
+    <img src = "img/Jeca-correndoR.gif" loop = infinite id = "player">
+    
+  </div>
+
+  <script>
+    const gameArea = document.getElementById('game-area');
+    const player = document.getElementById('player');
+
+
+
+
+    // variável dos clientes
+    let client = [];
+    // dps de selecionados, os clientes saem do array client e entram no client clicado para serem depositados nas mesas, só sairão desse array dps de cozinhar para eles
+    let clientClicado = [];
+    const maxClients = 3;
+    let occupiedPositions = new Set();
+    // variável para passar os arrays de definições
+    let num = 0
+    // posição dos clientes esperando na entrada
+    // se a dimensão de um for 50px, a distância um do outro deverá ser maior que essa dimensão
+    // 3 clientes esperando por vez
+    // relação de camada entre eles. O mais da frente deverá ter um z-index maior
+    // 130, 70, 10
+    const clientPositions = {
+      1: 90,
+      2: 50,
+      3: 10
+    }
+
+    // estão se sobrepondo
+    const zclient = {
+      10: 1,
+      50: 2,
+      90: 3
+    }
+
+
+
+
+    // const personagens = [isa, ]
+
+    let posX = 300; // posição inicial (meio)
+    let posY = 200;
+    let targetX = posX;
+    let targetY = posY;
+    const speed = 6; // velocidade do movimento
+
+
+
+    // ===========================================================================================================================================================================================================================
+    // função para a criação do cliente, que já terá na sua biblioteca a comida esclhida pelo computador, mas terá propositalmente um tempo de espera
+    // guardar em uma variável clienteMesa
+    function criarCliente() {
+
+      // definições para cada cliente
+      num++
+
+      let pos = clientPositions[num];
+      let z = zclient[pos];
+
+      occupiedPositions.add(pos);
+      console.log(occupiedPositions)
+
+      const clientDiv = document.createElement('div');
+      clientDiv.classList.add('cliente');
+      clientDiv.style.left = `${pos}px`;
+      clientDiv.style.zIndex = `${z}`;   
+
+
+
+
+
+
+      // Define o pedido do cliente
+      const possibleColors = ['red', 'blue', 'yellow', 'orange', 'green', 'purple', 'brown'];
+      let order = [];
+      // random recebe possible[numero]
+      const randomColor = possibleColors[Math.floor(Math.random() * possibleColors.length)];
+      // order recebe o que está dentro de random
+      order.push(randomColor);
+      clientDiv.style.backgroundColor = `${randomColor}`; 
+      // clientDiv.style.color = "red";
+
+
+      // guarda os dados do cliente no próprio elemento html
+      // <div data-order='{"item":"pizza","quantity":2}'></div> (exemplo)
+      clientDiv.dataset.order = JSON.stringify(order);
+      clientDiv.dataset.position = pos;
+      clientDiv.dataset.zindex = z;
+      // clientDiv.dataset.persona = 
+      console.log(clientDiv.dataset.order);
+
+      gameArea.appendChild(clientDiv);
+      client.push(clientDiv)
+
+
+      // sumir quando clicar e fazer as devidas mudanças para depois colocá-lo na mesa
+      clientDiv.addEventListener('click', () => {
+        if (clientClicado.length > 0) {
+          console.log("Já tem cliente clicado");
+          return;
+        }
+
+        if (!clientClicado.includes(clientDiv)) {
+          // esconde o cliente
+          clientDiv.hidden = true;
+          // libera a posição dele
+          occupiedPositions.delete(pos);
+          // adiciona no cliente clicado, e só poderá adicionar uma vez, para não poder clicar em mais de um cliente antes de colocar o outro em uma mesa
+          clientClicado.push(clientDiv);
+          console.log(`Acrescentado no array: ${clientClicado}`);
+        }
+      }, { once: true });
+    }
+
+    // função que garante apenas 3 clientes e só cria outros 3 novos dps de eliminar os antigos 3
+    function clientes3() {
+
+      // reinicia a contagem
+      num = 0
+
+      let create = 0;
+      const interval = setInterval(() => {
+        if (create < maxClients) {
+          criarCliente();
+          create++;
+          console.log("criando mais um cliente")
+        } else {
+          clearInterval(interval)
+        }
+      }, 500);
+    }
+
+    // ===============================================================================================================================================================================================================================
+    // função para colocar o cliente na mesa com sua respectiva animação (um array que associa o sprite de animação cm cardápio e sentado com ele em pé esperando)
+    function mesaCliente() {
+      
+    }
+
+
+
+
+    // ===========================================================================================================================================================================================================================
+    // Atualiza posição do personagem a cada frame
+    function update() {
+      const dx = targetX - posX;
+      const dy = targetY - posY;
+      // Calcula a diferença de distância a ser percorrida horizontalmente e verticamente utilizando o teorema de pitágoras
+      const distance = Math.sqrt(dx * dx + dy * dy);
+
+      // Alterar velocidade junto com este
+      if (distance > 3) {
+        posX += (dx / distance) * speed;
+        posY += (dy / distance) * speed;
+        player.style.left = posX + "px";
+        player.style.top = posY + "px";
+      }
+
+      requestAnimationFrame(update);
+    }
+
+    function posMouse(e) {
+      num = console.log(e.offsetX, e.offsetY);
+    }
+
+    function trocarSprite() {
+      player.src = "img/Jeca-correndoR.gif";
+    }
+
+    // Detecta clique e define novo destino
+    gameArea.addEventListener('click', (event) => {
+      const rect = gameArea.getBoundingClientRect();
+      targetX = event.clientX - rect.left - 5; // centraliza no meio do quadrado. Metade dos px do quadrado 
+      targetY = event.clientY - rect.top - 5;
+
+      // trocar de sprite
+      trocarSprite()
+    });
+
+    // =========================================================================================================================================================================================================================================
+
+    update(); // inicia loop de animação
+    clientes3(); //cria os clientes e a lógica dos 3 clientes
+  </script>
+</body>
+</html>
