@@ -1,4 +1,6 @@
 * {
+  -webkit-user-drag: none;
+  user-select: none;
   cursor: url(img/dedao.png), default;
 }
 
@@ -112,18 +114,33 @@ nav button:active {
 }
 
 
-/* ===================================================================================================================================================================================================================================================================================================================================================COLISÃO */
+/* ===================================================================================================================================================================================================================================================================================================================================================CENÁRIO E COLISÃO */
+#janela {
+  position: absolute;
+  z-index: 1;
+
+  height: 23%;
+  
+  left: 250px;
+  top: 120px;
+}
+
 
 #mesa1, #mesa2, #mesa3, #parede, #parede2, #chao {
   background-size: cover;
   position: absolute;
 }
 
+#espatula {
+  width: 50px;
+  height: 50px;
+  -webkit-user-drag: auto ;
+}
 #mesa1 {
   height: 20%;
   left: 430px;
   top: 230px;
-  z-index: 1
+  z-index: 2
 }
 
 #parede:hover {
@@ -134,7 +151,7 @@ nav button:active {
   height: 27%;
   left: 370px;
   top: 400px;
-  z-index: 2
+  z-index: 3
 }
 
 #mesa3 {
@@ -178,6 +195,6 @@ nav button:active {
   border-radius: 5px;
   transform: translate(-50%, -50%);
   transition: transform 0.1s linear;
-  z-index: 1;
+  z-index: 2;
 }
 

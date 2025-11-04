@@ -40,29 +40,12 @@
 
     .cliente {
       width: 50px;
-      height: 50px;
-
-      background-color: yellow;
+      height: 150px;
 
       position: absolute;
-      top: 100px;
+      top: 10px;
     }  
     
-      /* só colocar de pouco em pouco pq é com relação ao espaço da game area */
-      /* left: 10px;
-    } */
-
-    /* #cliente2 {
-      
-      left: 70px;
-
-    }
-
-    #cliente3 {
-      
-      left: 130px;
-
-    } */
 
   </style>
 </head>
@@ -100,16 +83,18 @@
     // se a dimensão de um for 50px, a distância um do outro deverá ser maior que essa dimensão
     // 3 clientes esperando por vez
     // relação de camada entre eles. O mais da frente deverá ter um z-index maior
+    // 130, 70, 10
     const clientPositions = {
-      1: 130,
-      2: 70,
+      1: 90,
+      2: 50,
       3: 10
     }
 
+    // estão se sobrepondo
     const zclient = {
       10: 1,
-      70: 2,
-      130: 3
+      50: 2,
+      90: 3
     }
 
 
@@ -137,6 +122,7 @@
       let z = zclient[pos];
 
       occupiedPositions.add(pos);
+      console.log(occupiedPositions)
 
       const clientDiv = document.createElement('div');
       clientDiv.classList.add('cliente');
@@ -155,7 +141,8 @@
       const randomColor = possibleColors[Math.floor(Math.random() * possibleColors.length)];
       // order recebe o que está dentro de random
       order.push(randomColor);
-      
+      clientDiv.style.backgroundColor = `${randomColor}`; 
+      // clientDiv.style.color = "red";
 
 
       // guarda os dados do cliente no próprio elemento html
@@ -169,15 +156,25 @@
       gameArea.appendChild(clientDiv);
       client.push(clientDiv)
 
-      // clienteDiv.addEventListener('click', () => {
-      //   clienteDiv.style.hidden = true;
-      //   
-        
-      // })
 
+      // sumir quando clicar e fazer as devidas mudanças para depois colocá-lo na mesa
+      clientDiv.addEventListener('click', () => {
+        if (clientClicado.length > 0) {
+          console.log("Já tem cliente clicado");
+          return;
+        }
 
+        if (!clientClicado.includes(clientDiv)) {
+          // esconde o cliente
+          clientDiv.hidden = true;
+          // libera a posição dele
+          occupiedPositions.delete(pos);
+          // adiciona no cliente clicado, e só poderá adicionar uma vez, para não poder clicar em mais de um cliente antes de colocar o outro em uma mesa
+          clientClicado.push(clientDiv);
+          console.log(`Acrescentado no array: ${clientClicado}`);
+        }
+      }, { once: true });
     }
-
 
     // função que garante apenas 3 clientes e só cria outros 3 novos dps de eliminar os antigos 3
     function clientes3() {
@@ -200,7 +197,7 @@
     // ===============================================================================================================================================================================================================================
     // função para colocar o cliente na mesa com sua respectiva animação (um array que associa o sprite de animação cm cardápio e sentado com ele em pé esperando)
     function mesaCliente() {
-
+      
     }
 
 

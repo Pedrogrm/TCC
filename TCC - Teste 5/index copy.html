@@ -27,14 +27,14 @@
     <main>
 
         <!-- colisão -->
-        <img id="mesa1" src="img-cenario/Mesa.png"></div>
-        <img id="mesa2" src="img-cenario/Mesa.png"></div>
-        <img id="mesa3" src="img-cenario/Mesa.png"></div>
-        <img id="QUADRADO" draggable="true"></div>
+        <img id="mesa1" src="img-cenario/Mesa.pn5tg">
+        <img id="mesa2" src="img-cenario/Mesa.png">
+        <img id="mesa3" src="img-cenario/Mesa.png">
+        <img id="espatula" src="img/espatula.png" draggable="true">
+        <img id="QUADRADO" draggable="true">
         <div id="parede"></div>
         <div id="parede2"></div>
         <div id="chao"></div>
-        <img id="espatula" src="img/espatula.png" draggable="true">
 
 
         <!-- game area -->
@@ -53,7 +53,7 @@
             const espatula = document.getElementById('espatula');
 
 
-            let endpositionR
+            let endposition
             let move = false 
             let posX = 300; // posição inicial (meio)
             let posY = 200;
@@ -122,17 +122,52 @@
             });
 
             function createTargets() {
-                for (let i = 1; i <= 10; i++) {
+                for (let i = 1; i <= 8; i++) {
                     const element = document.createElement("div");
                     element.id = "target" + i;
                     element.style.zIndex = 99999999999;
                     element.dataset.target = 0;
-                    element.style.width = "50px";
-                    element.style.height = "50px";
+                    element.style.width = "200px";
+                    element.style.height = "200px";
                     element.style.position = "absolute";
                     element.style.left = i*50  + 100 + "px";
                     element.style.top  = "80px";
                     element.style.backgroundColor = "red";
+
+
+                    if (i === 1) {
+                        element.style.left = "600px"
+                        element.style.top = "500px"
+                    }
+                    
+                    if (i === 2) {
+                        element.style.left = "700px"
+                        element.style.top = "200px"
+                    }
+                    if (i === 3) {
+                        element.style.left = "600px"
+                        element.style.top = "100px"
+                    }
+                    if (i === 4) {
+                        element.style.left = "700px"
+                        element.style.top = "400px"
+                    }
+                    if (i === 5) {
+                        element.style.left = "800px"
+                        element.style.top = "300px"
+                    }
+                    if (i === 6) {
+                        element.style.left = "500px"
+                        element.style.top = "200px"
+                    }
+                    if (i === 7) {
+                        element.style.left = "500px"
+                        element.style.top = "400px"
+                    }
+                    if (i === 8) {
+                        element.style.left = "400px"
+                        element.style.top = "300px"
+                    }
 
 
                     element.addEventListener('dragover', e => {
@@ -140,16 +175,35 @@
 
                     const data = e.dataTransfer.getData('espat');
                         
-                    if (element.dataset.target === 0) {
-                        element.dataset.target = 1;
+                    if (element.dataset.target === "0") {
+                        element.dataset.target = "1";
                         count = count + 1;
                         element.style.backgroundColor = "cyan";
 
-                        if (count === 10) {
+                    if (count === 8) {
                         loop = loop + 1;
-                        element.dataset.target = 0;
+
+                        // seleciona todos os alvos
+                        const targets = document.querySelectorAll('[id^="target"]');
+                        targets.forEach(t => {
+                            t.dataset.target = "0";
+                            t.style.backgroundColor = "red";
+                        });
+
                         count = 0;
-                        }
+                    }
+
+                    if (loop === 15) {
+                        count = 0
+                        element.dataset.target = 1
+                        const targets = document.querySelectorAll('[id^="target"]');
+                        targets.forEach(t => {
+                            t.dataset.target = "0";
+                            t.style.backgroundColor = "yellow";
+                        });
+
+                    }
+
                     }
                     
 
