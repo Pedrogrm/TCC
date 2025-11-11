@@ -13,13 +13,15 @@
       align-items: center;
       background-color: #e0e0e0;
 
+      box-sizing: border-box;
+
       /* cursor: url('img/jacare.png'), default; */
 
     }
 
     #game-area {
       width: 1150px;
-      height: 50%;
+      height: 90%;
       background-color: #ccc;
       position: relative;
       overflow: hidden;
@@ -39,17 +41,76 @@
     }
 
     .cliente {
-      width: 50px;
-      height: 150px;
+      width: 10%;
+      /* height: 150px; */
 
       position: absolute;
       top: 10px;
     }  
+
+
+    .mesa {
+      background-size: cover;
+      position: absolute;    
+      border: 3px solid;
+      border-color: transparent;  
+    }
+
+    /* #mesa1 {
+      height: 20%;;
+      left: 430px;
+      top: 230px;
+      z-index: 2
+    }
+
+    #mesa2 {
+      height: 27%;
+      left: 370px;
+      top: 400px;
+      z-index: 3
+    }
+
+    #mesa3 {
+      height: 27%;
+      left: 750px;
+      top: 400px;
+      z-index: 3;
+    } */
+
+    #mesa1 {
+      height: 23%;
+      left: 430px;
+      top: 130px;
+      z-index: 2
+    }
+
+    #mesa2 {
+      height: 25%;
+      left: 320px;
+      top: 350px;
+      z-index: 3
+    }
+
+    #mesa3 {
+      height: 25%;
+      left: 750px;
+      top: 350px;
+      z-index: 3;
+    }
+
     
 
   </style>
 </head>
 <body>
+
+  <!-- <img id="mesa1" src="img-cenario/Mesa.png"></div>
+  <img id="mesa2" src="img-cenario/Mesa.png"></div>
+  <img id="mesa3" src="img-cenario/Mesa.png"></div> -->
+  <img class="mesa" id="mesa1" src="img-cenario/Mesas2.png">
+  <img class="mesa" id="mesa2" src="img-cenario/Mesas1.png">
+  <img class="mesa" id="mesa3" src="img-cenario/Mesas1.png">
+  
 
   <div id="game-area">
     <!-- cliente dentro da game area para ser clicável -->
@@ -57,16 +118,22 @@
     <div class="cliente" id="cliente2"></div>
     <div class="cliente" id="cliente3"></div> -->
 
+    <div class="cad">
 
+    </div>
+
+    
 
     
     <img src = "img/Jeca-correndoR.gif" loop = infinite id = "player">
+
     
   </div>
 
   <script>
     const gameArea = document.getElementById('game-area');
     const player = document.getElementById('player');
+    const mesa = document.getElementsByClassName('mesa');
 
 
 
@@ -97,10 +164,39 @@
       90: 3
     }
 
+    // personagens
+    const clientImg = [
+      "aly.gif", //0
+      "berimbal.gif", //1
+      "graal.gif", //2
+      "leandro.gif", //3
+      "marrye.gif", //4
+      "nox.gif", //5
+      "pariz.gif", //6
+      "pinguin.gif", //7
+      "tiao-filho.gif" //8
+    ]
+
+    // associar os sprites com seus respectivos sentados na mesa
+    // array multidiomensional
+    // [0] - esperando, [1] - sentado, [2] - pedindo
+    const clientMesa = [
+      ["aly-esperando.png", "aly-sentada.png", "aly-pedindo.png"] //0
+      ["aly-esperando.png", "aly-sentada.png", "aly-pedindo.png"] //1
+      ["aly-esperando.png", "aly-sentada.png", "aly-pedindo.png"] //2
+      ["aly-esperando.png", "aly-sentada.png", "aly-pedindo.png"] //3
+      ["marminhoca-esperando.png", "minhoca-sentada.png", "marrie-pedindo.png"] //4
+      ["aly-esperando.png", "aly-sentada.png", "aly-pedindo.png"] //5
+      ["pariz-esperando.png", "pariz-sentada.png", "pariz-pedindo.png"] //6
+      ["chea-esperando.png", "chea-sentada.png", "chea-pedindo.png"] //7
+      ["aly-esperando.png", "aly-sentada.png", "aly-pedindo.png"] //8
+
+    ]
+
+    
 
 
 
-    // const personagens = [isa, ]
 
     let posX = 300; // posição inicial (meio)
     let posY = 200;
@@ -124,7 +220,7 @@
       occupiedPositions.add(pos);
       console.log(occupiedPositions)
 
-      const clientDiv = document.createElement('div');
+      const clientDiv = document.createElement('img');
       clientDiv.classList.add('cliente');
       clientDiv.style.left = `${pos}px`;
       clientDiv.style.zIndex = `${z}`;   
@@ -141,8 +237,16 @@
       const randomColor = possibleColors[Math.floor(Math.random() * possibleColors.length)];
       // order recebe o que está dentro de random
       order.push(randomColor);
-      clientDiv.style.backgroundColor = `${randomColor}`; 
-      // clientDiv.style.color = "red";
+      // clientDiv.style.backgroundColor = `${randomColor}`; 
+
+
+      // Define o sprite do personagem
+      // random recebe possible[numero]
+      console.log("escolhendo sprite...")
+      const randomSprite = clientImg[Math.floor(Math.random() * clientImg.length)];
+      console.log(`sprite escolhido ${randomSprite}`)
+      clientDiv.src = `img/${randomSprite}`; 
+  
 
 
       // guarda os dados do cliente no próprio elemento html
@@ -155,6 +259,7 @@
 
       gameArea.appendChild(clientDiv);
       client.push(clientDiv)
+
 
 
       // sumir quando clicar e fazer as devidas mudanças para depois colocá-lo na mesa
@@ -173,7 +278,22 @@
           clientClicado.push(clientDiv);
           console.log(`Acrescentado no array: ${clientClicado}`);
         }
-      }, { once: true });
+
+        for (let i = 0; i < mesa.length; i++) {
+          mesa[i].addEventListener('mouseenter', () => {
+          mesa[i].style.borderColor = "red";
+            console.log("selecionando mesa...")
+          });
+
+          mesa[i].addEventListener('mouseleave', () => {
+          mesa[i].style.borderColor = "transparent";
+          });
+        }
+        
+
+      });
+
+      
     }
 
     // função que garante apenas 3 clientes e só cria outros 3 novos dps de eliminar os antigos 3
@@ -197,7 +317,9 @@
     // ===============================================================================================================================================================================================================================
     // função para colocar o cliente na mesa com sua respectiva animação (um array que associa o sprite de animação cm cardápio e sentado com ele em pé esperando)
     function mesaCliente() {
-      
+      mesa.addEventListener('click', () => {
+        
+      })
     }
 
 

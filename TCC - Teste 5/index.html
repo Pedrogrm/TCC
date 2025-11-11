@@ -27,20 +27,15 @@
     <main>
 
         <!-- colisão -->
-        <img id="mesa1" src="img-cenario/Mesa.pn5tg">
-        <img id="mesa2" src="img-cenario/Mesa.png">
-        <img id="mesa3" src="img-cenario/Mesa.png">
-        <img id="espatula" src="img/espatula.png" draggable="true">
-        <img id="QUADRADO" draggable="true">
+        <img id="mesa1" src="img-cenario/Mesa.png"></div>
+        <img id="mesa2" src="img-cenario/Mesa.png"></div>
+        <img id="mesa3" src="img-cenario/Mesa.png"></div>
+        <img id="QUADRADO" draggable="true"></div>
         <div id="parede"></div>
         <div id="parede2"></div>
         <div id="chao"></div>
 
-        <div id="cozinha">
-            <img id="espatula" src="img/espatula.png" draggable="true">
-
-        </div>
-
+        <img id="janela" src="img-cenario/Janela.gif">
 
         <!-- game area -->
         <div id="game-area">
@@ -51,130 +46,30 @@
               
     </main>
 
-        <script>
-            const main = document.querySelector('main');
+        <script>           
             const gameArea = document.getElementById('game-area');
             const player = document.getElementById('player');
-            const espatula = document.getElementById('espatula');
+            const mesa = document.getElementbyId('mesa1');
 
-            // variável dos clientes
-            let client = [];
-            // dps de selecionados, os clientes saem do array client e entram no client clicado para serem depositados nas mesas, só sairão desse array dps de cozinhar para eles
-            let clientClicado = [];
-            const maxClients = 3;
-            let occupiedPositions = new Set();
-            // variável para passar os arrays de definições
-            let num = 0
-            // posição dos clientes esperando na entrada
-            // se a dimensão de um for 50px, a distância um do outro deverá ser maior que essa dimensão
-            // 3 clientes esperando por vez
-            // relação de camada entre eles. O mais da frente deverá ter um z-index maior
-            // 130, 70, 10
-            const clientPositions = {
-                1: 90,
-                2: 50,
-                3: 10
-            }
-            // estão se sobrepondo
-            const zclient = {
-                10: 1,
-                50: 2,
-                90: 3
-            }
-
-            // movimentação
-            let endposition
+            let endpositionR
             let move = false 
             let posX = 300; // posição inicial (meio)
             let posY = 200;
 
+
             let mesa2Y = 1000
             let mesa3Y = 350
 
-            let loop = 0;
-            let count = 0;
+            
+            
+            // const myElement = document.getElementById('myElement'); // Or use querySelector, etc.
+            // const rect = myElement.getBoundingClientRect();
+            // console.log('Top:', rect.top); 
+            // console.log('Left:', rect.left); 
 
             let targetX = posX;
             let targetY = posY;
             const speed = 6; // velocidade do movimento
-
-            function criarCliente() {
-
-                // definições para cada cliente
-                num++
-
-                let pos = clientPositions[num];
-                let z = zclient[pos];
-
-                occupiedPositions.add(pos);
-                console.log(occupiedPositions)
-
-                const clientDiv = document.createElement('div');
-                clientDiv.classList.add('cliente');
-                clientDiv.style.left = `${pos}px`;
-                clientDiv.style.zIndex = `${z}`;   
-
-
-                // Define o pedido do cliente
-                const possibleColors = ['red', 'blue', 'yellow', 'orange', 'green', 'purple', 'brown'];
-                let order = [];
-                // random recebe possible[numero]
-                const randomColor = possibleColors[Math.floor(Math.random() * possibleColors.length)];
-                // order recebe o que está dentro de random
-                order.push(randomColor);
-                clientDiv.style.backgroundColor = `${randomColor}`; 
-                // clientDiv.style.color = "red";
-
-
-                // guarda os dados do cliente no próprio elemento html
-                // <div data-order='{"item":"pizza","quantity":2}'></div> (exemplo)
-                clientDiv.dataset.order = JSON.stringify(order);
-                clientDiv.dataset.position = pos;
-                clientDiv.dataset.zindex = z;
-                // clientDiv.dataset.persona = 
-                console.log(clientDiv.dataset.order);
-
-                gameArea.appendChild(clientDiv);
-                client.push(clientDiv)
-
-
-                // sumir quando clicar e fazer as devidas mudanças para depois colocá-lo na mesa
-                clientDiv.addEventListener('click', () => {
-                    if (clientClicado.length > 0) {
-                        console.log("Já tem cliente clicado");
-                        return;
-                    }
-
-                    if (!clientClicado.includes(clientDiv)) {
-                        // esconde o cliente
-                        clientDiv.hidden = true;
-                        // libera a posição dele
-                        occupiedPositions.delete(pos);
-                        // adiciona no cliente clicado, e só poderá adicionar uma vez, para não poder clicar em mais de um cliente antes de colocar o outro em uma mesa
-                        clientClicado.push(clientDiv);
-                        console.log(`Acrescentado no array: ${clientClicado}`);
-                    }
-                    }, { once: true });
-            }
-
-                // função que garante apenas 3 clientes e só cria outros 3 novos dps de eliminar os antigos 3
-            function clientes3() {
-
-                // reinicia a contagem
-                num = 0
-
-                let create = 0;
-                const interval = setInterval(() => {
-                if (create < maxClients) {
-                    criarCliente();
-                    create++;
-                    console.log("criando mais um cliente")
-                } else {
-                    clearInterval(interval)
-                }
-                }, 500);
-            }
-
 
             // Atualiza posição do personagem a cada frame
             function update() {
@@ -217,102 +112,6 @@
             }
 
 
-            espatula.addEventListener('dragstart', e => {
-                e.dataTransfer.setData('espat', 'espatula'); // marca o item
-            });
-
-            function createTargets() {
-                for (let i = 1; i <= 8; i++) {
-                    const element = document.createElement("div");
-                    element.id = "target" + i;
-                    element.style.zIndex = 99999999999;
-                    element.dataset.target = 0;
-                    element.style.width = "200px";
-                    element.style.height = "200px";
-                    element.style.position = "absolute";
-                    element.style.left = i*50  + 100 + "px";
-                    element.style.top  = "80px";
-                    element.style.backgroundColor = "red";
-
-
-                    if (i === 1) {
-                        element.style.left = "600px"
-                        element.style.top = "500px"
-                    }
-                    
-                    if (i === 2) {
-                        element.style.left = "700px"
-                        element.style.top = "200px"
-                    }
-                    if (i === 3) {
-                        element.style.left = "600px"
-                        element.style.top = "100px"
-                    }
-                    if (i === 4) {
-                        element.style.left = "700px"
-                        element.style.top = "400px"
-                    }
-                    if (i === 5) {
-                        element.style.left = "800px"
-                        element.style.top = "300px"
-                    }
-                    if (i === 6) {
-                        element.style.left = "500px"
-                        element.style.top = "200px"
-                    }
-                    if (i === 7) {
-                        element.style.left = "500px"
-                        element.style.top = "400px"
-                    }
-                    if (i === 8) {
-                        element.style.left = "400px"
-                        element.style.top = "300px"
-                    }
-
-
-                    element.addEventListener('dragover', e => {
-                    e.preventDefault();
-
-                    const data = e.dataTransfer.getData('espat');
-                        
-                    if (element.dataset.target === "0") {
-                        element.dataset.target = "1";
-                        count = count + 1;
-                        element.style.backgroundColor = "cyan";
-
-                    if (count === 8) {
-                        loop = loop + 1;
-
-                        // seleciona todos os alvos
-                        const targets = document.querySelectorAll('[id^="target"]');
-                        targets.forEach(t => {
-                            t.dataset.target = "0";
-                            t.style.backgroundColor = "red";
-                        });
-
-                        count = 0;
-                    }
-
-                    if (loop === 15) {
-                        count = 0
-                        element.dataset.target = 1
-                        const targets = document.querySelectorAll('[id^="target"]');
-                        targets.forEach(t => {
-                            t.dataset.target = "0";
-                            t.style.backgroundColor = "yellow";
-                        });
-
-                    }
-
-                    }
-                    
-
-                    });
-
-                    cozinha.appendChild(element);
-                }
-            }
-
             // Detecta clique e define novo destino
             gameArea.addEventListener('click', (event) => {
                 move = true
@@ -328,6 +127,11 @@
 
                 console.log("animation")
 
+
+
+                // if (targetY > mesa2Y) { player.style.zIndex = 2}
+                // if (targetY > mesa3Y) { player.style.zIndex = 3}
+
                 if (targetX < posX) {
                     player.src = "img/Jeca-correndoL.gif"
                     endposition = "left"
@@ -337,11 +141,9 @@
                 }
             });
 
+            // mesa.addEventListener
             
             update(); // inicia loop de animação
-            createTargets();
-            clientes3(); //cria os clientes e a lógica dos 3 clientes
-
     
         </script>
 </body>

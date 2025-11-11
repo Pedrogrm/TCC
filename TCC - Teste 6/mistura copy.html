@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Jeca Maracatu</title>
+
+    <link rel="icon" href="img/jeca-logo.png">
+</head>
+<body>
+    <div id="game">
+        <header>
+            <div class="log">
+            <h2>🐊</h2>
+            <h1>JecaMaracatu</h1>
+            </div>
+        <nav>
+           <button>⚙️</button>
+           <button>🛒</button>
+           <button>📒</button>
+           <button>👤</button>
+        </nav>
+        </header>
+    </div>
+
+    <main>
+
+        <!-- colisão -->
+        <img id="mesa1" src="img-cenario/Mesa.png">
+        <img id="mesa2" src="img-cenario/Mesa.png">
+        <img id="mesa3" src="img-cenario/Mesa.png">
+        <img id="espatula" src="img/espatula.png" draggable="true">
+        <img id="QUADRADO" draggable="true">
+        <div id="parede"></div>
+        <div id="parede2"></div>
+        <div id="chao"></div>
+        <div id="barra">
+        <img id="barraimg" src="img/barra2.png">
+        </div>
+
+        <img id="good" src="img/good.png">
+        <img id="great" src="img/great.png">
+        <img id="awesome" src="img/awesome.png">
+        <div id="score-display">Misture</div>
+
+        <!-- game area -->
+        <div id="game-area">
+            <img src="img/Jeca-paradoR.gif" id="player" class="player" alt="Player">
+            <img src="img-cenario/cozinha.png" alt="cozinha" class="fundo">
+        </div>
+              
+    </main>
+
+        <script>
+            const main = document.querySelector('main');
+            const gameArea = document.getElementById('game-area');
+            const player = document.getElementById('player');
+            const espatula = document.getElementById('espatula');
+            const barra = document.getElementById('barraimg');
+
+
+            const background = new Audio('audio/popstar.m4a')
+
+            const start = new Audio('audio/started.m4a');
+            const finish = new Audio('audio/completed.m4a')
+            const finish2 = new Audio('audio/completed2.mp3');
+            const finish3 = new Audio('audio/focus.m4a');
+            const finish4 = new Audio('audio/flower.m4a');
+
+            const task1 = new Audio('audio/step1.m4a');
+            const task2 = new Audio('audio/step2.m4a');
+            const task3 = new Audio('audio/step3.m4a');
+            const task4 = new Audio('audio/step4.m4a');
+
+            const cash = new Audio('audio/money.m4a');
+
+            const scoreDisplay = document.getElementById('score-display');
+            const good = document.getElementById('good');
+            const great = document.getElementById('great');
+            const awesome = document.getElementById('awesome');
+
+            const rect = espatula.getBoundingClientRect();
+
+
+            let endposition
+            let move = false 
+            let posX = 300; // posição inicial (meio)
+            let posY = 200;
+
+            let mesa2Y = 1000
+            let mesa3Y = 350
+
+            let click = false
+
+            let loop = 0;
+            let count = 0;
+            let points = 0;
+            let variavel = -800;
+            
+            
+            
+            // const myElement = document.getElementById('myElement'); // Or use querySelector, etc.
+            // const rect = myElement.getBoundingClientRect();
+            // console.log('Top:', rect.top); 
+            // console.log('Left:', rect.left); 
+
+            let targetX = posX;
+            let targetY = posY;
+            const speed = 6; // velocidade do movimento
+
+            background.volume = 0.2
+            background.play()
+
+
+                espatula.addEventListener('click', (event) => {
+                    click = 1
+                    console.log("CLICADO")
+                    
+                });
+        
+            // Atualiza posição do personagem a cada frame
+            function update() {
+
+                const dx = targetX - posX;
+                const dy = targetY - posY;
+                //calcula a diferença de distância a ser percorrida horizontalmente e verticamente utilizando o teorema de pitágoras
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                // alterar velocidade junto com este
+                if (distance > 3) {
+                    move = true
+                    console.log("movimentando")
+                    console.log(distance)
+
+                    posX += (dx / distance) * speed;
+                    posY += (dy / distance) * speed;
+
+                    player.style.left = posX + "px";
+                    player.style.top = posY + "px";
+
+                } else if (distance <= 3 && move == true) {
+                    move = false
+                    
+                    if (endposition == "left") {
+                    player.src = "img/Jeca-paradoL.gif"
+                    }
+                    if (endposition == "right") {
+                    player.src = "img/Jeca-paradoR.gif"
+                    }
+
+                    console.log("fim do movimento")
+                    
+                }
+
+
+                if (click === "1") {
+
+                    console.log(`Posição X: ${rect.left}`);
+                    console.log(`Posição Y: ${rect.top}`);
+
+                    rect.left = posX
+                    rect.top = posY
+                }
+
+                requestAnimationFrame(update);
+            }
+
+            function posMouse(e) {
+                num = console.log(e.offsetX, e.offsetY);
+            }
+
+
+            espatula.addEventListener('dragstart', e => {
+                e.dataTransfer.setData('espat', 'espatula'); // marca o item
+            });
+
+            function misturar() {
+
+                topeleft = [
+                    {top: "500px", left: "600px"},
+                    {top: "200px", left: "700px"},
+                    {top: "100px", left: "600px"},
+                    {top: "400px", left: "700px"},
+                    {top: "300px", left: "800px"},
+                    {top: "200px", left: "500px"},
+                    {top: "400px", left: "500px"},
+                    {top: "300px", left: "400px"},
+                ]
+
+                for (let i = 0; i <= 7; i++) {
+                    const element = document.createElement("div");
+                    element.id = "target" + i;
+                    element.style.zIndex = 999;
+                    element.dataset.target = 0;
+                    element.style.width = "200px";
+                    element.style.height = "200px";
+                    element.style.position = "absolute";
+                    element.style.left = `${topeleft[i].left}`;
+                    element.style.top = `${topeleft[i].top}`;
+
+                    element.addEventListener('dragover', e => {
+                    e.preventDefault();
+
+                    const data = e.dataTransfer.getData('espat');
+
+
+                    
+                    if (element.dataset.target === "0") {
+                        finish3.pause();
+                        finish3.currentTime = 0;
+                        finish3.play();
+                        element.dataset.target = "1";
+                        count = count + 1;
+                        element.style.backgroundColor = "cyan";
+
+                        variavel = variavel + 6 + 2/3
+                        barra.style.marginLeft = variavel + "px"
+
+                        points = points+0.5
+                        timer = setTimeout(() => {
+                        points = points - 0.5*0.8;
+                        }, 300);
+
+                        points = points+1
+                        timer = setTimeout(() => {
+                        points = points - 1*0.8;
+                        }, 500);
+
+                        points = points+1.5
+                        timer = setTimeout(() => {
+                        points = points - 1.5*0.8;
+                        }, 700);
+
+                        points = points+2
+                        timer = setTimeout(() => {
+                        points = points - 2*0.8;
+                        }, 1000);
+
+                        points = points+5
+                        timer = setTimeout(() => {
+                        points = points - 5*0.8;
+                        }, 2000);
+
+                        points = points+7.5
+                        timer = setTimeout(() => {
+                        points = points - 7.5*0.8;
+                        }, 3000);
+
+                        points = points+10
+                        timer = setTimeout(() => {
+                        points = points - 10*0.8;
+                        }, 5000);
+                        
+                    
+
+                    if (count === 8) {
+                        loop = loop + 1;
+
+                        // seleciona todos os alvos
+                        const targets = document.querySelectorAll('[id^="target"]');
+                        targets.forEach(t => {
+                            t.dataset.target = "0";
+                            t.style.backgroundColor = "transparent";
+                        });
+
+                        count = 0
+
+                    }
+
+                    if (loop === 15) {
+                        count = 0
+                        const targets = document.querySelectorAll('[id^="target"]');
+                        targets.forEach(t => {
+                            t.dataset.target = "1";
+                            t.style.backgroundColor = "yellow";
+                            // cancela o timeout
+                            clearTimeout(timer);
+                        });
+
+                        if (points < 1000) {
+                            good.style.display = "inline"
+                            setTimeout(() => {
+                            good.style.display = "none"
+                            }, 3000);
+
+                        } else if (points < 1400) {
+                            great.style.display = "inline"
+                            setTimeout(() => {
+                            great.style.display = "none"
+                            }, 3000);
+
+                        } else {
+                            awesome.style.display = "inline"
+                            setTimeout(() => {
+                            awesome.style.display = "none"
+                            }, 3000);
+                        }
+
+                        finish.play();
+                        cash.play();
+
+                        scoreDisplay.textContent = "Você conseguiu " + Math.floor(points) + " pontos!";
+
+
+                    }
+
+                    }
+                    
+
+                    });
+
+                    main.appendChild(element);
+                }
+            }
+
+            // Detecta clique e define novo destino
+            gameArea.addEventListener('click', (event) => {
+                move = true
+                const rect = gameArea.getBoundingClientRect();
+                targetX = event.clientX - rect.left ; // centraliza no meio do quadrado. Metade dos px do quadrado 
+                targetY = event.clientY - rect.top - 70;
+            });
+
+            gameArea.addEventListener('click', (event) => {
+                const dx = targetX - posX;
+                const dy = targetY - posY;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                console.log("animation")
+
+                if (targetX < posX) {
+                    player.src = "img/Jeca-correndoL.gif"
+                    endposition = "left"
+                } else {
+                    player.src = "img/Jeca-correndoR.gif"
+                    endposition = "right"
+                }
+            });
+
+
+
+
+
+
+            
+            update(); // inicia loop de animação
+            misturar()
+        </script>
+</body>
+</html>

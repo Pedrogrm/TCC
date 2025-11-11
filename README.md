@@ -81,3 +81,16 @@ Desenho da logo.
 Produção das animações dos personagens.
 Programação do PHP.
 Produção do Figma.
+
+### Dia 9 
+Atualização da documentação
+Desenho do cenário da cozinha
+Desenho dos utensílios da cozinha
+Programação do layout do jogo
+
+### Dia 10
+Produção do figma
+Desenho dos personagens
+desenhos dos elementos da cozinha e ingredientes
+Junção do jogo com o PHP
+Programação dos clientes e das mecânicas da cozinha

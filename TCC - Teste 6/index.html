@@ -27,18 +27,23 @@
     <main>
 
         <!-- colisão -->
-        <img id="mesa1" src="img-cenario/Mesa.pn5tg">
+        <img id="mesa1" src="img-cenario/Mesa.png">
         <img id="mesa2" src="img-cenario/Mesa.png">
         <img id="mesa3" src="img-cenario/Mesa.png">
-        <img id="espatula" src="img/espatula.png" draggable="true">
         <img id="QUADRADO" draggable="true">
         <div id="parede"></div>
         <div id="parede2"></div>
         <div id="chao"></div>
 
+        <div id="cozinha">
+            <img id="espatula" src="img/espatula.png" draggable="true">
+        </div>
+
+        <img id="janela" src="img-cenario/Janela.gif">
 
         <!-- game area -->
         <div id="game-area">
+
             <img src="img/Jeca-paradoR.gif" id="player" class="player" alt="Player">
 
             <img src="img-cenario/fundo.png" alt="fundo" class="fundo">
@@ -47,12 +52,51 @@
     </main>
 
         <script>
+            const mesa = document.getElementById('mesa1')
             const main = document.querySelector('main');
             const gameArea = document.getElementById('game-area');
             const player = document.getElementById('player');
             const espatula = document.getElementById('espatula');
+            const kitchen = document.getElementById('cozinha')
+            // variável dos clientes
+            let client = [];
+            // dps de selecionados, os clientes saem do array client e entram no client clicado para serem depositados nas mesas, só sairão desse array dps de cozinhar para eles
+            let clientClicado = [];
+            const maxClients = 3;
+            let occupiedPositions = new Set();
+            // variável para passar os arrays de definições
+            let num = 0
+            // posição dos clientes esperando na entrada
+            // se a dimensão de um for 50px, a distância um do outro deverá ser maior que essa dimensão
+            // 3 clientes esperando por vez
+            // relação de camada entre eles. O mais da frente deverá ter um z-index maior
+            // 130, 70, 10
+            const clientPositions = {
+                1: 100,
+                2: 50,
+                3: 0
+            }
+            // estão se sobrepondo
+            const zclient = {
+                0: 1,
+                50: 2,
+                100: 3
+            }
 
+            // personagens
+            const clientImg = [
+                "aly.gif",
+                "berimbal.gif",
+                "graal.gif",
+                "leandro.gif",
+                "marrye.gif",
+                "nox.gif",
+                "pariz.gif",
+                "pinguin.gif",
+                "tiao-filho.gif"
+            ]
 
+            // movimentação
             let endposition
             let move = false 
             let posX = 300; // posição inicial (meio)
@@ -64,17 +108,94 @@
             let loop = 0;
             let count = 0;
 
-
-            
-            
-            // const myElement = document.getElementById('myElement'); // Or use querySelector, etc.
-            // const rect = myElement.getBoundingClientRect();
-            // console.log('Top:', rect.top); 
-            // console.log('Left:', rect.left); 
-
             let targetX = posX;
             let targetY = posY;
             const speed = 6; // velocidade do movimento
+
+            function criarCliente() {
+
+                // definições para cada cliente
+                num++
+
+                let pos = clientPositions[num];
+                let z = zclient[pos];
+
+                occupiedPositions.add(pos);
+                console.log(occupiedPositions)
+
+                const clientDiv = document.createElement('img');
+                clientDiv.classList.add('cliente');
+                clientDiv.style.left = `${pos}px`;
+                clientDiv.style.zIndex = `${z}`;   
+
+
+                // Define o pedido do cliente
+                const possibleColors = ['red', 'blue', 'yellow', 'orange', 'green', 'purple', 'brown'];
+                let order = [];
+                // random recebe possible[numero]
+                const randomColor = possibleColors[Math.floor(Math.random() * possibleColors.length)];
+                // order recebe o que está dentro de random
+                order.push(randomColor);
+                // clientDiv.style.backgroundColor = `${randomColor}`; 
+                // clientDiv.style.color = "red";
+
+                // Define o sprite do personagem
+                // random recebe possible[numero]
+                console.log("escolhendo sprite...")
+                const randomSprite = clientImg[Math.floor(Math.random() * clientImg.length)];
+                console.log(`sprite escolhido ${randomSprite}`)
+                clientDiv.src = `img/${randomSprite}`; 
+
+
+                // guarda os dados do cliente no próprio elemento html
+                // <div data-order='{"item":"pizza","quantity":2}'></div> (exemplo)
+                clientDiv.dataset.order = JSON.stringify(order);
+                clientDiv.dataset.position = pos;
+                clientDiv.dataset.zindex = z;
+                // clientDiv.dataset.persona = 
+                console.log(clientDiv.dataset.order);
+
+                gameArea.appendChild(clientDiv);
+                client.push(clientDiv)
+
+
+                // sumir quando clicar e fazer as devidas mudanças para depois colocá-lo na mesa
+                clientDiv.addEventListener('click', () => {
+                    if (clientClicado.length > 0) {
+                        console.log("Já tem cliente clicado");
+                        return;
+                    }
+
+                    if (!clientClicado.includes(clientDiv)) {
+                        // esconde o cliente
+                        clientDiv.hidden = true;
+                        // libera a posição dele
+                        occupiedPositions.delete(pos);
+                        // adiciona no cliente clicado, e só poderá adicionar uma vez, para não poder clicar em mais de um cliente antes de colocar o outro em uma mesa
+                        clientClicado.push(clientDiv);
+                        console.log(`Acrescentado no array: ${clientClicado}`);
+                    }
+                    }, { once: true });
+            }
+
+                // função que garante apenas 3 clientes e só cria outros 3 novos dps de eliminar os antigos 3
+            function clientes3() {
+
+                // reinicia a contagem
+                num = 0
+
+                let create = 0;
+                const interval = setInterval(() => {
+                if (create < maxClients) {
+                    criarCliente();
+                    create++;
+                    console.log("criando mais um cliente")
+                } else {
+                    clearInterval(interval)
+                }
+                }, 500);
+            }
+
 
             // Atualiza posição do personagem a cada frame
             function update() {
@@ -112,9 +233,9 @@
                 requestAnimationFrame(update);
             }
 
-            function posMouse(e) {
-                num = console.log(e.offsetX, e.offsetY);
-            }
+            // function posMouse(e) {
+            //     num = console.log(e.offsetX, e.offsetY);
+            // }
 
 
             espatula.addEventListener('dragstart', e => {
@@ -209,7 +330,7 @@
 
                     });
 
-                    main.appendChild(element);
+                    cozinha.appendChild(element);
                 }
             }
 
@@ -237,9 +358,17 @@
                 }
             });
 
-            
+
+            function visible() {
+                kitchen.style.display = "inline";
+            }
+
+            mesa.addEventListener('click', visible);
+
             update(); // inicia loop de animação
             createTargets();
+            clientes3(); //cria os clientes e a lógica dos 3 clientes
+
     
         </script>
 </body>
