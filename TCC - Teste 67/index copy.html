@@ -490,16 +490,17 @@
             // Função da mistura
             function misturar() {
 
-                topeleft = [
-                    {top: "0px", left: "120px"},
-                    {top: "240px", left: "120px"},
-                    {top: "120px", left: "240px"},
-                    {top: "120px", left: "0px"},
-                    {top: "200px", left: "200px"},
-                    {top: "50px", left: "200px"},
-                    {top: "50px", left: "50px"},
-                    {top: "200px", left: "50px"},
-                ]
+topeleft = [
+    {top: "0px", left: "120px"},
+    {top: "240px", left: "120px"},
+    {top: "120px", left: "240px"},
+    {top: "120px", left: "0px"},
+    {top: "200px", left: "200px"},
+    {top: "50px", left: "200px"},
+    {top: "50px", left: "50px"},
+    {top: "200px", left: "50px"},
+]
+
 
                 for (let i = 0; i <= 7; i++) {
                     const element = document.createElement("div");
@@ -511,6 +512,7 @@
                     element.style.position = "absolute";
                     element.style.left = `${topeleft[i].left}`;
                     element.style.top = `${topeleft[i].top}`;
+                    element.style.backgroundColor = "red";
 
 
                     element.addEventListener('dragover', e => {
@@ -579,6 +581,7 @@
                             pontosmistura = pontosmistura - 35
                         }, 35000)
 
+                        element.style.backgroundColor = "purple"
 
                     
 
@@ -589,6 +592,7 @@
                         const targets = document.querySelectorAll('[id^="target"]');
                         targets.forEach(t => {
                             t.dataset.target = "0";
+                            t.style.backgroundColor = "cyan";
                         });
 
                         count = 0
@@ -676,23 +680,9 @@
                 requestAnimationFrame(() => {
                     kitchen.classList.add("animar"); // anima
                 });
+            }}
 
-                kitchenopen = true
-                } 
-                else if (kitchenopen === true) {
-                container.style.display = "flex";
-                gameArea.style.display = "flex";
-                kitchen.classList.remove("animar"); // some suavemente
-                setTimeout(() => {
-                    kitchen.style.display = "none"; // depois de sumir
-                }, 2000); // igual ao tempo da animação
-
-                kitchenopen = false
-                }
-            }
-
-            botaocozinha.addEventListener('click', visivel);
-
+            visivel();
 
             update(); // inicia loop de animação
             misturar(); // inicia o negocio de mistura

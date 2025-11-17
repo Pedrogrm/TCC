@@ -85,7 +85,6 @@ nav button:active {
 
 .cliente {
   width: 10%;
-
   position: absolute;
   top: 100px;
 }
@@ -169,7 +168,9 @@ nav button:active {
 }
 
 #espatula {
+  z-index: 6;
   position: absolute;
+  left: 0px;
   width: 200px;
   height: 200px;
   -webkit-user-drag: auto ;
@@ -253,8 +254,18 @@ nav button:active {
 }
 
 
+
 #panela {
   position: absolute;
+}
+
+#panela-fundo {
+  position: absolute;
+  z-index: 4;
+  overflow: hidden;
+  width: 400px;
+  height: 400px;
+  border-radius: 1000px;
 }
 
 #barravazia {
