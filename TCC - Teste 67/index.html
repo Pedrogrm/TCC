@@ -26,34 +26,47 @@
 
     <main>
 
+
+
         <container id="container">
         <!-- colisão -->
-        <img id="mesa1" src="img-cenario/Mesa.png">
-        <img id="mesa2" src="img-cenario/Mesa.png">
-        <img id="mesa3" src="img-cenario/Mesa.png">
-        <img id="QUADRADO" draggable="true">
-        <img id="janela" src="img-cenario/Janela.gif">
+        <div class="mesa-guardar" id="mesa1-guardar">
+            <img id="mesa1" src="img-cenario/Mesa.png">
+            <!-- <div id="mesa1-cliente"></div> -->
+        </div>
+
+        <div class="mesa-guardar" id="mesa2-guardar">
+            <img id="mesa2" src="img-cenario/Mesa.png">
+            <!-- <div id="mesa2-cliente"></div> -->
+        </div>
+
+        <div class="mesa-guardar" id="mesa3-guardar">
+            <img id="mesa3" src="img-cenario/Mesa.png">
+            <!-- <div id="mesa3-cliente"></div> -->
+        </div>
+
+        <!-- <img id="QUADRADO" draggable="true"> -->
         <div id="parede"></div>
         <div id="parede2"></div>
         <div id="chao"></div>
 
 
-
-        <img id="good" src="img/good.png">
-        <img id="great" src="img/great.png">
-        <img id="awesome" src="img/awesome.png">
+        <img id="janela" src="img-cenario/Janela.gif">
 
         </container>
-        
+
         <div id="cozinha">
             <div id="score-display" style="position: absolute; z-index: 9999999999999999;">Misture</div>
             <div id="barravazia"><div id="barracheia"></div></div>
 
-            <img id="panela" src="img-cozinha/PANELLALAAAA.png"> 
 
             
             <img id="espatula" src="img/espatula.png" draggable="true">
+            <img id="panela" src="img-cozinha/PANELLALAAAA.png">
 
+            <img id="good" src="img/good.png">
+            <img id="great" src="img/great./png">
+            <img id="awesome" src="img/awesome.png">
             <img src="img-cenario/cozinha.png" alt="fundo" class="fundo">
         </div>
 
@@ -69,6 +82,7 @@
     </main>
 
         <script>
+
             // PEGANDO OS ELEMENTOS PARA SEREM USADOS NO JS
             // ---------------------------------------------
 
@@ -101,19 +115,41 @@
             // Efeito para obtenção de dinheiro
             const cash = new Audio('audio/money.m4a');
 
-
             // Jogador (Jeca)
             const player = document.getElementById('player');
 
         
             // Cozinha
-            const espatula = document.getElementById('espatula');
+            kitchenopen = false;
             const kitchen = document.getElementById('cozinha');
+            const espatula = document.getElementById('espatula');
             const barra = document.getElementById('barracheia');
 
+            // Desempenho
+            const scoreDisplay = document.getElementById('score-display');
+            const good = document.getElementById('good');
+            const great = document.getElementById('great');
+            const awesome = document.getElementById('awesome');
 
-            // Clientes
-            // ---------------------------------------------
+
+            // CLIENTES E MESAS
+            
+            const mesa1 = document.getElementById('mesa1')
+            const mesa2 = document.getElementById('mesa2')
+            const mesa3 = document.getElementById('mesa3')
+            const mesa1e = document.getElementById('mesa1-guardar')
+            const mesa2e = document.getElementById('mesa2-guardar')
+            const mesa3e = document.getElementById('mesa3-guardar')
+
+
+            // variável dos clientes
+            let client = [];
+            // dps de selecionados, os clientes saem do array client e entram no client clicado para serem depositados nas mesas, só sairão desse array dps de cozinhar para eles
+            let clientClicado = [];
+            const maxClients = 3;
+            let occupiedPositions = new Set();
+            // variável para passar os arrays de definições
+            let num = 0
             // posição dos clientes esperando na entrada
             // se a dimensão de um for 50px, a distância um do outro deverá ser maior que essa dimensão
             // 3 clientes esperando por vez
@@ -126,71 +162,73 @@
             }
             // estão se sobrepondo
             const zclient = {
-                0: 1,
-                50: 2,
-                100: 3
+                0: 3,
+                50: 4,
+                100: 5
             }
 
             // personagens
             const clientImg = [
-                "aly.gif",
-                "berimbal.gif",
-                "graal.gif",
-                "leandro.gif",
-                "marrye.gif",
-                "nox.gif",
-                "pariz.gif",
-                "pinguin.gif",
-                "tiao-filho.gif"
+                "aly.gif", //0
+                // "berimbal.gif", ///1
+                // "graal.gif", //2
+                // "leandro.gif", //3
+                "marrye.gif", //4
+                // "nox.gif", //5
+                "pariz.gif", //6
+                "pinguin.gif", //7
+                // "tiao-filho.gif" //8
             ]
 
 
-            // VARIÁVEIS
-            // --------------------------------------------
+            // array multidimensional com os sprites de cada um
+            // clientMesa[0][0] - sentado, [1] - pedindo, [2] - esperando
+            const clientMesa = [
+                ["aly-sentada.png", "aly-pedindo.png", "aly-esperando.png"], //0
+                // ["aly-sentada.png", "aly-pedindo.png", "aly-esperando.png"], //1
+                // ["aly-sentada.png", "aly-pedindo.png", "aly-esperando.png"], //2
+                // ["aly-sentada.png", "aly-pedindo.png", "aly-esperando.png"], //3
+                ["minhoca-sentada.png", "marrie-pedindo-GIF (1).gif", "marrie-esperando-GIF.gif"], //4
+                // ["aly-sentada.png", "aly-pedindo.png", "aly-esperando.png"], //5
+                ["pariz-sentada.png", "pariz-pedindo.png", "pariz-esperando.png"], //6
+                ["chea-sentada.png", "chea-pedindo-GIF.gif", "chea-esperando.png"], //7
+                // ["aly-sentada.png", "aly-pedindo.png", "aly-esperando.png"] //8
+            ]
 
-            // Clientes
-            let client = [];
-            // depois de selecionados, os clientes saem do array client e entram no client clicado para serem depositados nas mesas, só sairão desse array depois de cozinhar para eles
-            let clientClicado = [];
-            const maxClients = 3;
-            let occupiedPositions = new Set();
-            // variável para passar os arrays de definições
-            let num = 0
 
 
-            let kitchenopen = false
 
+            // Variáveis
+            // ---------------------------------------------
 
             // Movimentação
-            let endPosition
+            let endposition
             let move = false 
             let posX = 300; // posição inicial (meio)
             let posY = 200;
-
-            let mesa2Y = 1000
-            let mesa3Y = 350
-
-            // Desempenho
-            const scoreDisplay = document.getElementById('score-display');
-            const good = document.getElementById('good');
-            const great = document.getElementById('great');
-            const awesome = document.getElementById('awesome');
-
-
-            // Misturar
-            let loop = 0;
-            let count = 0;
-            let misturaPoints = 0;
-            let variavel = -800;
-            let targetCriados = false
 
             // Jeca
             let targetX = posX;
             let targetY = posY;
             const speed = 6; // velocidade do movimento
 
-            // FUNÇÕES E OUTROS FUNCIONAMENTOS
-            // ---------------------------------------------
+            // Mesas
+            let mesa2Y = 1000;
+            let mesa3Y = 350;
+
+            // Misturar
+            let loop = 0;
+            let count = 0;
+            let pontosmistura = 0;
+            let variavelmistura = -800;
+
+
+
+            // número do sprite
+            function selecionarNum() {
+                const numSprite = Math.floor(Math.random() * clientImg.length);
+                return numSprite;
+            }
 
             function criarCliente() {
 
@@ -210,21 +248,22 @@
 
 
                 // Define o pedido do cliente
-                const possibleColors = ['red', 'blue', 'yellow', 'orange', 'green', 'purple', 'brown'];
+                const possibleColors = ['red'];
                 let order = [];
                 // random recebe possible[numero]
                 const randomColor = possibleColors[Math.floor(Math.random() * possibleColors.length)];
                 // order recebe o que está dentro de random
                 order.push(randomColor);
-                // clientDiv.style.backgroundColor = `${randomColor}`; 
-                // clientDiv.style.color = "red";
 
                 // Define o sprite do personagem
                 // random recebe possible[numero]
                 console.log("escolhendo sprite...")
-                const randomSprite = clientImg[Math.floor(Math.random() * clientImg.length)];
+                numSprite = selecionarNum()
+                console.log(`${numSprite}`)
+                const randomSprite = clientImg[numSprite];
                 console.log(`sprite escolhido ${randomSprite}`)
                 clientDiv.src = `img/${randomSprite}`; 
+                clientDiv.dataset.sprite = JSON.stringify(numSprite)
 
 
                 // guarda os dados do cliente no próprio elemento html
@@ -254,11 +293,13 @@
                         // adiciona no cliente clicado, e só poderá adicionar uma vez, para não poder clicar em mais de um cliente antes de colocar o outro em uma mesa
                         clientClicado.push(clientDiv);
                         console.log(`Acrescentado no array: ${clientClicado}`);
+
+                        mesaCliente()
                     }
-                    }, { once: true });
+                    });
             }
 
-                // função que garante apenas 3 clientes e só cria outros 3 novos dps de eliminar os antigos 3
+            // função que garante apenas 3 clientes e só cria outros 3 novos dps de eliminar os antigos 3
             function clientes3() {
 
                 // reinicia a contagem
@@ -266,7 +307,7 @@
 
                 let create = 0;
                 const interval = setInterval(() => {
-                if (create < maxClients) {
+                if (create < maxClients || occupiedPositions == 0) {
                     criarCliente();
                     create++;
                     console.log("criando mais um cliente")
@@ -274,6 +315,126 @@
                     clearInterval(interval)
                 }
                 }, 500);
+            }
+
+            // ================================MESA + CLIENTE
+
+            function mesaCliente() {
+
+                mesa1.addEventListener("click", () => {
+                    if (clientClicado[0]) {
+                        if (mesa1e.querySelectorAll(".cliente").length >= 2) {
+                            console.log("Mesa cheia!")
+
+                        } else if (mesa1e.querySelector(".cliente")) {
+                            console.log("mais um cliente pra mesa 1")
+                            clientClicado[0].style.transform = "scaleX(-1)"
+                            clientClicado[0].style.width = "90px"
+                            clientClicado[0].style.height = "auto"
+                            clientClicado[0].style.zIndex = "2"
+                            moverCliente(clientClicado[0], mesa1e, "120px", "0px")
+                            mudarSprite(clientClicado[0])
+
+                            clientClicado = []
+
+                            return
+                        } else {
+                            clientClicado[0].style.width = "90px"
+                            clientClicado[0].style.height = "auto"
+                            clientClicado[0].style.zIndex = "2"
+                            moverCliente(clientClicado[0], mesa1e, "-80px", "0px")
+                            mudarSprite(clientClicado[0])
+
+                            clientClicado = []
+                        }
+
+                    }
+                })
+
+                mesa2.addEventListener("click", () => {
+                    if (clientClicado[0]) {
+                        if (mesa2e.querySelector(".cliente")) {
+                            console.log("mais um cliente pra mesa 2")
+                            clientClicado[0].style.transform = "scaleX(-1)"
+                            clientClicado[0].style.zIndex = "3"
+                            moverCliente(clientClicado[0], mesa2e, "140px", "0px")
+                            mudarSprite(clientClicado[0])
+
+                            clientClicado = []
+
+                            return
+                        } else {
+                            clientClicado[0].style.zIndex = "3"
+                            moverCliente(clientClicado[0], mesa2e, "-90px", "0px")
+                            mudarSprite(clientClicado[0])
+
+                            clientClicado = []
+                        }
+                    }
+                })
+
+                mesa3.addEventListener("click", () => {
+                    if (clientClicado[0]) {
+                        if (mesa3e.querySelector(".cliente")) {
+                            console.log("mais um cliente pra mesa 3")
+                            clientClicado[0].style.transform = "scaleX(-1)"
+                            clientClicado[0].style.zIndex = "2"
+                            moverCliente(clientClicado[0], mesa3e, "140px", "0px")
+                            mudarSprite(clientClicado[0])
+
+                            clientClicado = []
+
+                            return
+                        } else {
+                            clientClicado[0].style.zIndex = "2"
+                            moverCliente(clientClicado[0], mesa3e, "-90px", "0px")
+                            mudarSprite(clientClicado[0])
+
+                            clientClicado = []
+                        }
+                    }
+                })
+            }
+
+            function moverCliente(cliente, mesa, left, top) {
+                console.log(`movendo cliente ${mesa}`)
+
+                cliente.hidden = false;
+
+                mesa.appendChild(cliente)
+
+                cliente.style.position = "absolute";
+                cliente.style.left = left;
+                cliente.style.top = top;
+
+                 // pega o spriteID guardado no elemento (dataset retorna string)
+                const spriteID = parseInt(cliente.dataset.sprite, 10);
+                if (Number.isNaN(spriteID)) {
+                    console.warn("spriteID inválido para o cliente:", cliente, cliente.dataset);
+                } else {
+                    cliente.src = `img/${clientMesa[spriteID][0]}`; // estado "sentado" por exemplo
+                }
+
+            }  
+            
+            function mudarSprite(cliente) {
+                if (!cliente) {
+                    console.log("mudarSprite recebeu cliente inválido!")
+                    return;
+                }
+
+                console.log(`Mudando sprite do cliente: ${cliente}`)
+
+                const spriteID = parseInt(cliente.dataset.sprite, 10)
+
+                // evita múltipos intervalos
+                if (cliente._spriteIntervalId) {
+                    clearInterval(cliente._spriteIntervalId);
+                }
+
+                cliente._spriteIntervalId = setInterval(() => {
+                    cliente.src = `img/${clientMesa[spriteID][1]}`;
+                }, 3000); 
             }
 
 
@@ -288,8 +449,8 @@
                 // alterar velocidade junto com este
                 if (distance > 3) {
                     move = true
-                    console.log("movimentando")
-                    console.log(distance)
+                    // console.log("movimentando")
+                    // console.log(distance)
 
                     posX += (dx / distance) * speed;
                     posY += (dy / distance) * speed;
@@ -300,10 +461,10 @@
                 } else if (distance <= 3 && move == true) {
                     move = false
                     
-                    if (endPosition == "left") {
+                    if (endposition == "left") {
                     player.src = "img/Jeca-paradoL.gif"
                     }
-                    if (endPosition == "right") {
+                    if (endposition == "right") {
                     player.src = "img/Jeca-paradoR.gif"
                     }
 
@@ -313,24 +474,13 @@
                 requestAnimationFrame(update);
             }
 
-            // function posMouse(e) {
-            //     num = console.log(e.offsetX, e.offsetY);
-            // }
-
-
-
-
-            // SEÇÃO DA MECÂNICA DE MISTURA DE COMIDAS
-            // -------------------------------------- 
-
 
             // Espátula para a mistura
             espatula.addEventListener('dragstart', e => {
                 e.dataTransfer.setData('espat', 'espatula'); // marca o item
             });
 
-            // Função de misturar
-
+            // Função da mistura
             function misturar() {
 
                 topeleft = [
@@ -344,17 +494,18 @@
                     {top: "300px", left: "400px"},
                 ]
 
+
                 for (let i = 0; i <= 7; i++) {
-                    
                     const element = document.createElement("div");
                     element.id = "target" + i;
-                    element.style.zIndex = 99999;
+                    element.style.zIndex = 99999999999999999999;
                     element.dataset.target = 0;
                     element.style.width = "200px";
                     element.style.height = "200px";
                     element.style.position = "absolute";
                     element.style.left = `${topeleft[i].left}`;
                     element.style.top = `${topeleft[i].top}`;
+                    element.style.backgroundColor = "red"
 
                     element.addEventListener('dragover', e => {
                     e.preventDefault();
@@ -372,58 +523,58 @@
                         element.dataset.target = "1";
                         count = count + 1;
 
-                        variavel = variavel + 6 + 2/3
-                        barra.style.marginLeft = variavel + "px"
+                        variavelmistura = variavelmistura + 6 + 2/3
+                        barra.style.marginLeft = variavelmistura + "px"
 
-                        misturaPoints = misturaPoints+0.5
+                        pontosmistura = pontosmistura+0.5
                         timer = setTimeout(() => {
-                        misturaPoints = misturaPoints - 0.5*0.8;
+                        pontosmistura = pontosmistura - 0.5*0.8;
                         }, 300);
 
-                        misturaPoints = misturaPoints+1
+                        pontosmistura = pontosmistura+1
                         timer = setTimeout(() => {
-                        misturaPoints = misturaPoints - 1*0.8;
+                        pontosmistura = pontosmistura - 1*0.8;
                         }, 500);
 
-                        misturaPoints = misturaPoints+1.5
+                        pontosmistura = pontosmistura+1.5
                         timer = setTimeout(() => {
-                        misturaPoints = misturaPoints - 1.5*0.8;
+                        pontosmistura = pontosmistura - 1.5*0.8;
                         }, 700);
 
-                        misturaPoints = misturaPoints+2
+                        pontosmistura = pontosmistura+2
                         timer = setTimeout(() => {
-                        misturaPoints = misturaPoints - 2*0.8;
+                        pontosmistura = pontosmistura - 2*0.8;
                         }, 1000);
 
-                        misturaPoints = misturaPoints+5
+                        pontosmistura = pontosmistura+5
                         timer = setTimeout(() => {
-                        misturaPoints = misturaPoints - 5*0.8;
+                        pontosmistura = pontosmistura - 5*0.8;
                         }, 2000);
 
-                        misturaPoints = misturaPoints+7.5
+                        pontosmistura = pontosmistura+7.5
                         timer = setTimeout(() => {
-                        misturaPoints = misturaPoints - 7.5*0.8;
+                        pontosmistura = pontosmistura - 7.5*0.8;
                         }, 3000);
 
-                        misturaPoints = misturaPoints+10
+                        pontosmistura = pontosmistura+10
                         timer = setTimeout(() => {
-                        misturaPoints = misturaPoints - 10 + 10*1.2;
+                        pontosmistura = pontosmistura - 10 + 10*1.2;
                         }, 5000);
                         
                         time = setTimeout(() => {
-                            misturaPoints = misturaPoints - 7.5
+                            pontosmistura = pontosmistura - 7.5
                         }, 10000) 
 
                        time = setTimeout(() => {
-                            misturaPoints = misturaPoints - 12.5
+                            pontosmistura = pontosmistura - 12.5
                         }, 20000)
 
                        time = setTimeout(() => {
-                            misturaPoints = misturaPoints - 35
+                            pontosmistura = pontosmistura - 35
                         }, 35000)
 
+                        element.style.backgroundColor = "purple"
 
-                        
                     
 
                     if (count === 8) {
@@ -433,7 +584,7 @@
                         const targets = document.querySelectorAll('[id^="target"]');
                         targets.forEach(t => {
                             t.dataset.target = "0";
-                            t.style.backgroundColor = "transparent";
+                            t.style.backgroundColor = "cyan";
                         });
 
                         count = 0
@@ -450,13 +601,13 @@
                             clearTimeout(timer);
                         });
 
-                        if (misturaPoints < 1000) {
+                        if (pontosmistura < 1000) {
                             good.style.display = "inline"
                             setTimeout(() => {
                             good.style.display = "none"
                             }, 3000);
 
-                        } else if (misturaPoints < 1400) {
+                        } else if (pontosmistura < 1400) {
                             great.style.display = "inline"
                             setTimeout(() => {
                             great.style.display = "none"
@@ -472,7 +623,7 @@
                         finish.play();
                         cash.play();
 
-                        scoreDisplay.textContent = "Você conseguiu " + Math.floor(misturaPoints) + " pontos!";
+                        scoreDisplay.textContent = "Você conseguiu " + Math.floor(pontosmistura) + " pontos!";
 
 
                     }
@@ -482,12 +633,9 @@
 
                     });
 
-                    main.appendChild(element);
+                    kitchen.appendChild(element);
                 }
             }
-
-            // -------------------------------------- 
-            
 
             // Detecta clique e define novo destino
             gameArea.addEventListener('click', (event) => {
@@ -506,21 +654,19 @@
 
                 if (targetX < posX) {
                     player.src = "img/Jeca-correndoL.gif"
-                    endPosition = "left"
+                    endposition = "left"
                 } else {
                     player.src = "img/Jeca-correndoR.gif"
-                    endPosition = "right"
+                    endposition = "right"
                 }
             });
 
-
             function visivel() {
-
                 if (kitchenopen === false) {
-
-                container.style.display = "none";
-                gameArea.style.display = "none";
-
+                setTimeout(() => {
+                    container.style.display = "none";
+                    gameArea.style.display = "none";
+                }, 2000); // igual ao tempo da animação
                 kitchen.style.display = "flex";     // aparece
 
                 requestAnimationFrame(() => {
@@ -528,25 +674,25 @@
                 });
 
                 kitchenopen = true
-
-                } else if (kitchenopen === true) {
-
+                } 
+                else if (kitchenopen === true) {
+                container.style.display = "flex";
+                gameArea.style.display = "flex";
                 kitchen.classList.remove("animar"); // some suavemente
                 setTimeout(() => {
                     kitchen.style.display = "none"; // depois de sumir
-                    container.style.display = "inline";
-                    gameArea.style.display = "inline";
                 }, 2000); // igual ao tempo da animação
 
                 kitchenopen = false
-            }
+                }
             }
 
             botaocozinha.addEventListener('click', visivel);
 
+
             update(); // inicia loop de animação
+            misturar(); // inicia o negocio de mistura
             clientes3(); //cria os clientes e a lógica dos 3 clientes
-            misturar();
     
         </script>
 </body>

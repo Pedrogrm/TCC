@@ -30,12 +30,25 @@
         <img id="mesa1" src="img-cenario/Mesa.png">
         <img id="mesa2" src="img-cenario/Mesa.png">
         <img id="mesa3" src="img-cenario/Mesa.png">
-        <img id="espatula" style="position: absolute; z-index: 9999999999999999;" src="img/espatula.png" draggable="true">
+        <img id="espatula" src="img/espatula.png" draggable="true">
         <img id="QUADRADO" draggable="true">
         <div id="parede"></div>
         <div id="parede2"></div>
         <div id="chao"></div>
+        <div id="barra">
+        <img id="barraimg" src="img/barra2.png">
+        </div>
 
+        <img id="good" src="img/good.png">
+        <img id="great" src="img/great.png">
+        <img id="awesome" src="img/awesome.png">
+        <div id="score-display">Misture</div>
+
+        <!-- game area -->
+        <div id="game-area">
+            <img src="img/Jeca-paradoR.gif" id="player" class="player" alt="Player">
+            <img src="img-cenario/cozinha.png" alt="cozinha" class="fundo">
+        </div>
               
     </main>
 
@@ -44,8 +57,7 @@
             const gameArea = document.getElementById('game-area');
             const player = document.getElementById('player');
             const espatula = document.getElementById('espatula');
-            const barra = document.getElementById('barracheia');
-            const parede2 = document.getElementById('parede2');
+            const barra = document.getElementById('barraimg');
 
 
             const background = new Audio('audio/popstar.m4a')
@@ -92,9 +104,8 @@
             let targetY = posY;
             const speed = 6; // velocidade do movimento
 
-            background.play()
             background.volume = 0.2
-
+            background.play()
 
             // Atualiza posição do personagem a cada frame
             function update() {
@@ -152,12 +163,13 @@
                     {top: "200px", left: "500px"},
                     {top: "400px", left: "500px"},
                     {top: "300px", left: "400px"},
+
                 ]
 
                 for (let i = 0; i <= 7; i++) {
                     const element = document.createElement("div");
                     element.id = "target" + i;
-                    element.style.zIndex = 99999;
+                    element.style.zIndex = 999;
                     element.dataset.target = 0;
                     element.style.width = "200px";
                     element.style.height = "200px";
@@ -173,13 +185,10 @@
 
                     
                     if (element.dataset.target === "0") {
-                        task4.pause();
-                        task4.currentTime = 1;
-                        task4.play();
-                        task4.currentTime = 0.7;
-                        
+                        finish3.play();
                         element.dataset.target = "1";
                         count = count + 1;
+                        element.style.backgroundColor = "cyan";
 
                         variavel = variavel + 6 + 2/3
                         barra.style.marginLeft = variavel + "px"
@@ -216,22 +225,8 @@
 
                         points = points+10
                         timer = setTimeout(() => {
-                        points = points - 10 + 10*1.2;
+                        points = points - 10*0.8;
                         }, 5000);
-                        
-                        time = setTimeout(() => {
-                            points = points - 7.5
-                        }, 10000) 
-
-                       time = setTimeout(() => {
-                            points = points - 12.5
-                        }, 20000)
-
-                       time = setTimeout(() => {
-                            points = points - 35
-                        }, 35000)
-
-
                         
                     
 

@@ -4,13 +4,16 @@
   cursor: url(img/dedao.png), default;
 }
 
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
 body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
-
   background-color: #f3d86a;
-
   width: 100vw;
   height: 100vh;
 }
@@ -20,20 +23,17 @@ main {
   justify-content: center;
 }
 
-/* =========================================================================================================================================================================================================================================================================================================================================================================HEADER */
+/* HEADER */
 
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* background-color: rgba(243, 216, 106, 0.85); */
   background-color: #f3d86a;
   padding: 5px 20px;
-  /* box-shadow: 0 3px 6px rgba(0,0,0,0.1); */
   margin-bottom: 15px;
 }
 
-/* Logo (ícone + nome) */
 header .log {
   display: flex;
   align-items: center;
@@ -51,7 +51,6 @@ header .log h1 {
   margin: 0;
 }
 
-/* Navegação */
 nav {
   display: flex;
   gap: 20px;
@@ -76,17 +75,15 @@ nav button:active {
   transform: scale(0.97);
 }
 
-/*====================================================================================================================================================================================================================================================================================================================================================================CLIENTES*/
+/* CLIENTES */
 
 .cliente {
   width: 13%;
-
   position: absolute;
   top: 100px;
 }  
-  
 
-/*====================================================================================================================================================================================================================================================================================================================================================================GAME AREA*/
+/* GAME AREA */
 
 #QUADRADO{
   width: 50px;
@@ -101,9 +98,8 @@ nav button:active {
   max-height: 70%;
   background: black;
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
   margin: 0 auto;
-  position: relative; /* necessário para o player absoluto */
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -112,7 +108,6 @@ nav button:active {
 
 .fundo {
   max-width: 70%;
-  
 }
 
 #game-area img {
@@ -121,46 +116,33 @@ nav button:active {
   border-radius: 10px;
 }
 
+/* CENÁRIO */
 
-/* ===================================================================================================================================================================================================================================================================================================================================================CENÁRIO E COLISÃO */
 #janela {
   position: absolute;
   z-index: 1;
-
   height: 23%;
-  
   left: 250px;
   top: 100px;
 }
-
 
 #mesa1, #mesa2, #mesa3, #parede, #parede2, #chao {
   background-size: cover;
   position: absolute;
 }
 
-#espatula {
-  width: 200px;
-  height: 200px;
-  -webkit-user-drag: auto ;
-}
-
 #mesa1 {
   height: 20%;
   left: 430px;
   top: 230px;
-  z-index: 2
-}
-
-#parede:hover {
-  cursor: url(img/Jeca-correndoL\ copy.gif), default;
+  z-index: 2;
 }
 
 #mesa2 {
   height: 27%;
   left: 370px;
   top: 400px;
-  z-index: 3
+  z-index: 3;
 }
 
 #mesa3 {
@@ -170,44 +152,58 @@ nav button:active {
   z-index: 3;
 }
 
-#parede {
-  /* background-color: blue; */
-  height: 33vh;
-  width: 65vw;
-  z-index: 999;
-}
-
-#parede2 {
-  /* background-color: purple; */
-  height: 43vh;
-  width: 35vw;
-  left: 48vw;
-  z-index: 999;
-}
-
-#chao {
-  /* background-color: green; */
-  height: 10vh;
-  width: 65vw;
-  top: 42vw;
-  z-index: 999;
-}
+/* Cozinha */
 
 #cozinha {
   display: none;
+  width: 80%; 
+  max-height: 70%;
+  border-radius: 10px;
+  margin: 0 auto;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  top: 100px;
+  z-index: 999999;
+  border-radius: 20px;
+
+  transform: scale(0.1); 
+  transition: transform 2s ease;
 }
 
-#barra {
+#cozinha.animar {
+  transform: scale(1);
+}
+
+#cozinha .fundo {
+  max-width: 100%;
+  max-height: 580px;
+  border-radius: 10px;
+}
+
+
+
+#espatula {
+  position: absolute;
+  z-index: 99999999999999999;
+  width: 200px;
+  height: 200px;
+  -webkit-user-drag: auto;
+}
+
+#barravazia {
   position: absolute;
   height: 60px;
-  width: 800px;
+  width: 800px; 
   z-index: 3;
   overflow: hidden;
   margin-top: 50px;
-  background-color: cyan;
+  background-color: lightgoldenrodyellow;
 }
 
-#barraimg {
+#barracheia {
+  background-color: green;
   position: absolute;
   height: 60px;
   width: 800px;
@@ -222,7 +218,6 @@ nav button:active {
   display: none;
   z-index: 9999999999;
 }
-/*==================================================================================================================================================================================================================================================================================================================================================================JOGADOR*/
 
 .player {
   width: 13%;
@@ -235,4 +230,3 @@ nav button:active {
   transition: transform 0.1s linear;
   z-index: 2;
 }
-

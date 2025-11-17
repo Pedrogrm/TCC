@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jeca Maracatu</title>
+  <link rel="icon" href="img/jeca-logo.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="game">
+    <header>
+      <div class="log">
+        <h2>🐊</h2>
+        <h1>JecaMaracatu</h1>
+      </div>
+      <nav>
+        <button>⚙️</button>
+        <button>🛒</button>
+        <button>📒</button>
+        <button>👤</button>
+      </nav>
+    </header>
+  </div>
+
+  <main>
+    <audio controls id="myAudio">
+      <source src="audio/clock.mp3" type="audio/mp3">
+      Your browser does not support the audio element.
+    </audio>
+
+    <br>
+
+    <label for="pitchSlider">Adjust Pitch:</label>
+    <input type="range" id="pitchSlider" min="0.5" max="2" step="0.05" value="1">
+
+    <br>
+
+    <input type="checkbox" id="preservePitchCheckbox" checked>
+    <label for="preservePitchCheckbox">Preserve Pitch (when changing playback rate)</label>
+  </main>
+
+  <script>
+    const audio = document.getElementById('myAudio');
+    const pitchSlider = document.getElementById('pitchSlider');
+    const preservePitchCheckbox = document.getElementById('preservePitchCheckbox');
+
+    // Controla velocidade (e pitch, se não preservado)
+    pitchSlider.addEventListener('input', (event) => {
+      audio.playbackRate = event.target.value;
+    });
+
+    // Alterna preservação de pitch
+    preservePitchCheckbox.addEventListener('change', (event) => {
+      const preserve = event.target.checked;
+      audio.preservesPitch = preserve;
+      audio.mozPreservesPitch = preserve;
+      audio.webkitPreservesPitch = preserve;
+    });
+  </script>
+</body>
+</html>

@@ -30,12 +30,19 @@
         <img id="mesa1" src="img-cenario/Mesa.png">
         <img id="mesa2" src="img-cenario/Mesa.png">
         <img id="mesa3" src="img-cenario/Mesa.png">
-        <img id="espatula" style="position: absolute; z-index: 9999999999999999;" src="img/espatula.png" draggable="true">
+        <img id="espatula" src="img/espatula.png" draggable="true">
         <img id="QUADRADO" draggable="true">
         <div id="parede"></div>
         <div id="parede2"></div>
         <div id="chao"></div>
-
+        <div id="barra">
+        <img id="barraimg" src="img/barra2.png">
+        </div>
+        <!-- game area -->
+        <div id="game-area">
+            <img src="img/Jeca-paradoR.gif" id="player" class="player" alt="Player">
+            <img src="img-cenario/fundo.png" alt="fundo" class="fundo">
+        </div>
               
     </main>
 
@@ -44,29 +51,7 @@
             const gameArea = document.getElementById('game-area');
             const player = document.getElementById('player');
             const espatula = document.getElementById('espatula');
-            const barra = document.getElementById('barracheia');
-            const parede2 = document.getElementById('parede2');
-
-
-            const background = new Audio('audio/popstar.m4a')
-
-            const start = new Audio('audio/started.m4a');
-            const finish = new Audio('audio/completed.m4a')
-            const finish2 = new Audio('audio/completed2.mp3');
-            const finish3 = new Audio('audio/focus.m4a');
-            const finish4 = new Audio('audio/flower.m4a');
-
-            const task1 = new Audio('audio/step1.m4a');
-            const task2 = new Audio('audio/step2.m4a');
-            const task3 = new Audio('audio/step3.m4a');
-            const task4 = new Audio('audio/step4.m4a');
-
-            const cash = new Audio('audio/money.m4a');
-
-            const scoreDisplay = document.getElementById('score-display');
-            const good = document.getElementById('good');
-            const great = document.getElementById('great');
-            const awesome = document.getElementById('awesome');
+            const barra = document.getElementById('barraimg');
 
             let endposition
             let move = false 
@@ -78,8 +63,7 @@
 
             let loop = 0;
             let count = 0;
-            let points = 0;
-            let variavel = -800;
+            let variavel = -500;
             
             
             
@@ -91,10 +75,6 @@
             let targetX = posX;
             let targetY = posY;
             const speed = 6; // velocidade do movimento
-
-            background.play()
-            background.volume = 0.2
-
 
             // Atualiza posição do personagem a cada frame
             function update() {
@@ -141,112 +121,85 @@
                 e.dataTransfer.setData('espat', 'espatula'); // marca o item
             });
 
-            function misturar() {
-
-                topeleft = [
-                    {top: "500px", left: "600px"},
-                    {top: "200px", left: "700px"},
-                    {top: "100px", left: "600px"},
-                    {top: "400px", left: "700px"},
-                    {top: "300px", left: "800px"},
-                    {top: "200px", left: "500px"},
-                    {top: "400px", left: "500px"},
-                    {top: "300px", left: "400px"},
-                ]
-
-                for (let i = 0; i <= 7; i++) {
+            function createTargets() {
+                for (let i = 1; i <= 8; i++) {
                     const element = document.createElement("div");
                     element.id = "target" + i;
-                    element.style.zIndex = 99999;
+                    element.style.zIndex = 99999999999;
                     element.dataset.target = 0;
                     element.style.width = "200px";
                     element.style.height = "200px";
                     element.style.position = "absolute";
-                    element.style.left = `${topeleft[i].left}`;
-                    element.style.top = `${topeleft[i].top}`;
+                    element.style.left = i*50  + 100 + "px";
+                    element.style.top  = "80px";
+                    element.style.backgroundColor = "red";
+
+
+                    if (i === 1) {
+                        element.style.left = "600px"
+                        element.style.top = "500px"
+                    }
+                    
+                    if (i === 2) {
+                        element.style.left = "700px"
+                        element.style.top = "200px"
+                    }
+                    if (i === 3) {
+                        element.style.left = "600px"
+                        element.style.top = "100px"
+                    }
+                    if (i === 4) {
+                        element.style.left = "700px"
+                        element.style.top = "400px"
+                    }
+                    if (i === 5) {
+                        element.style.left = "800px"
+                        element.style.top = "300px"
+                    }
+                    if (i === 6) {
+                        element.style.left = "500px"
+                        element.style.top = "200px"
+                    }
+                    if (i === 7) {
+                        element.style.left = "500px"
+                        element.style.top = "400px"
+                    }
+                    if (i === 8) {
+                        element.style.left = "400px"
+                        element.style.top = "300px"
+                    }
+
 
                     element.addEventListener('dragover', e => {
                     e.preventDefault();
 
                     const data = e.dataTransfer.getData('espat');
-
-
-                    
-                    if (element.dataset.target === "0") {
-                        task4.pause();
-                        task4.currentTime = 1;
-                        task4.play();
-                        task4.currentTime = 0.7;
                         
+                    if (element.dataset.target === "0") {
+
                         element.dataset.target = "1";
                         count = count + 1;
+                        element.style.backgroundColor = "cyan";
 
-                        variavel = variavel + 6 + 2/3
+                        variavel = variavel + 5
                         barra.style.marginLeft = variavel + "px"
-
-                        points = points+0.5
-                        timer = setTimeout(() => {
-                        points = points - 0.5*0.8;
-                        }, 300);
-
-                        points = points+1
-                        timer = setTimeout(() => {
-                        points = points - 1*0.8;
-                        }, 500);
-
-                        points = points+1.5
-                        timer = setTimeout(() => {
-                        points = points - 1.5*0.8;
-                        }, 700);
-
-                        points = points+2
-                        timer = setTimeout(() => {
-                        points = points - 2*0.8;
-                        }, 1000);
-
-                        points = points+5
-                        timer = setTimeout(() => {
-                        points = points - 5*0.8;
-                        }, 2000);
-
-                        points = points+7.5
-                        timer = setTimeout(() => {
-                        points = points - 7.5*0.8;
-                        }, 3000);
-
-                        points = points+10
-                        timer = setTimeout(() => {
-                        points = points - 10 + 10*1.2;
-                        }, 5000);
                         
-                        time = setTimeout(() => {
-                            points = points - 7.5
-                        }, 10000) 
-
-                       time = setTimeout(() => {
-                            points = points - 12.5
-                        }, 20000)
-
-                       time = setTimeout(() => {
-                            points = points - 35
-                        }, 35000)
-
-
-                        
-                    
 
                     if (count === 8) {
                         loop = loop + 1;
 
+
+                        Math.ceil(Math.random() * (3 - 1 + 1)) + 1;
+
+                        
                         // seleciona todos os alvos
                         const targets = document.querySelectorAll('[id^="target"]');
                         targets.forEach(t => {
                             t.dataset.target = "0";
-                            t.style.backgroundColor = "transparent";
+                            t.style.backgroundColor = "red";
                         });
 
-                        count = 0
-
+                        count = 0;
                     }
 
                     if (loop === 15) {
@@ -255,34 +208,7 @@
                         targets.forEach(t => {
                             t.dataset.target = "1";
                             t.style.backgroundColor = "yellow";
-                            // cancela o timeout
-                            clearTimeout(timer);
                         });
-
-                        if (points < 1000) {
-                            good.style.display = "inline"
-                            setTimeout(() => {
-                            good.style.display = "none"
-                            }, 3000);
-
-                        } else if (points < 1400) {
-                            great.style.display = "inline"
-                            setTimeout(() => {
-                            great.style.display = "none"
-                            }, 3000);
-
-                        } else {
-                            awesome.style.display = "inline"
-                            setTimeout(() => {
-                            awesome.style.display = "none"
-                            }, 3000);
-                        }
-
-                        finish.play();
-                        cash.play();
-
-                        scoreDisplay.textContent = "Você conseguiu " + Math.floor(points) + " pontos!";
-
 
                     }
 
@@ -325,7 +251,8 @@
 
             
             update(); // inicia loop de animação
-            misturar()
+            createTargets();
+    
         </script>
 </body>
 </html>
