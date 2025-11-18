@@ -31,8 +31,6 @@ main {
   justify-content: space-between;
   align-items: center; */
   /* background-color: rgba(243, 216, 106, 0.85); */
-  /* background-color: #f3d86a;
-  padding: 5px 20px; */
   /* box-shadow: 0 3px 6px rgba(0,0,0,0.1); */
   /* margin-bottom: 15px; */
 /* } */
@@ -86,7 +84,7 @@ header {
   align-items: center;
   background-color: #F6910D;
   padding: 0px 0px;
-  margin-bottom: 10px;
+  margin-bottom: -10px;
 }
 
 /* Logo (ícone + nome) */
@@ -118,14 +116,13 @@ nav {
 }
 
 nav button {
-  padding: 10px 10px;
+  padding: 8px 12px;
   border-radius: 10px;
   border: none;
   background: #feac40; /* #feac40  #ffac40a9 */
   cursor: pointer;
   /* font-size: 25px; */
   margin: 0px 0px 0px 0px;
-
   transition: all 0.2s ease;
 }
 
@@ -144,42 +141,6 @@ nav button:active {
   transform: scale(0.97);
 }
 
-/* ================== DISPLAY DE DINHEIRO ================== */
-.dinheiro-display {
-  margin: 0px 20px 0px 0px;
-  display: flex;         /* Coloca o ícone 💰 e o número lado a lado */
-  align-items: center;   /* Alinha eles verticalmente ao centro */
-  gap: 2px;              /* Adiciona um espacinho entre eles */
-
-  /* Abaixo, um estilo extra para ficar mais bonito */
-  background-color: #ffb657; /* #feac40 semi-transparente */
-  padding: 0px 10px;     /* Espaçamento interno */
-  border-radius: 10px;   /* Deixa bem arredondado (pílula) */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
-  font-size: 1.3em;      /* Tamanho da fonte */
-  font-weight: bold;     /* Deixa o número em negrito */
-}
-
-.dinheiro-display img {
-  height: 35px;
-  width: auto;
-}
-/* Ajusta o tamanho do emoji de dinheiro */
-/* .dinheiro-display span:first-child {
-  height: 20px ;
-  width: auto;
-} */
-.dinheiro-display .ponto {
-  color: #1b511e;
-  font-family: tilt neon;
-  padding: 0px;
-  margin: 0px;
-}
-/* Opcional: Se o número tiver um ID, podemos ser específicos */
-#dinheiro-quantidade {
-  font-family: Tilt Neon;
-  color: #1b511e; /* Cor escura para o número */
-}
 
 /*====================================================================================================================================================================================================================================================================================================================================================================CLIENTES*/
 
@@ -384,10 +345,11 @@ nav button:active {
   transform: rotate(15deg);
 }
 
+#panela-fundo { z-index: 4 }
+#panela-area { z-index: 99999 }
 
-#panela-fundo {
+#panela-fundo, #panela-area {
   position: absolute;
-  z-index: 4;
   overflow: hidden;
   top: 70px;
   width: 400px;
@@ -435,149 +397,3 @@ nav button:active {
   z-index: 2;
 }
 
-/* ================== Perfil ==================  */
-
-.nomedousuario {
-  text-transform:  capitalize;
-}
-
-.btn{
-  margin-top: 5px;
-  font-size: medium;
-  padding: 10px 20px;
-  border-radius: 8px;
-  border: 0;
-  background-color: #ffac40;
-  color: #333;
-  cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
-}
-
-.btn:hover {
-  background-color: #f6910d;
-  color: #5c4400;
-}
-
-/* ================== LOJA ================== */
-
-.powerup {
-  border-radius: 15px;
-  background-color: #ffe89d;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  margin: 5px;
-  padding: 10px;
-}
-
-.powerup h4 {
-  padding: 0 15px;
-  margin: 0;
-}
-
-.powerup button {
-  padding: 5px 10px;
-  border-radius: 8px;
-  border: 0;
-  background-color: #ffac40;
-  color: #333;
-  cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
-}
-
-.powerup button:hover {
-  background-color: #f6910d;
-  color: #5c4400;
-}
-
-/* ================== ESTILOS DOS MODALS ================== */
-
-/* Estilo do modal (overlay) */
-.modal {
-  display: none; /* Oculta o modal por padrão */
-  position: fixed;
-  z-index: 9999; /* Fica na frente de TUDO */
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.4);
-  /* Adicionado para centralizar */
-  justify-content: center;
-  align-items: center;
-}
-
-/* Conteúdo do modal */
-.modal-content {
-  background-color: #fffc9e;
-  border-radius: 15px;
-  /* margin: 15% auto; (Removido, pois o display:flex no .modal já centraliza) */
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
-  animation: fadeInScale 0.3s ease;
-  max-width: 600px;
-  box-sizing: border-box;
-  position: relative; /* Para o botão fechar funcionar */
-}
-
-@keyframes fadeInScale {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@media (max-width: 600px) {
-  .modal-content {
-    width: 95%;
-    padding: 15px;
-  }
-}
-
-/* Botão de fechar */
-.fechar {
-  color: #333;
-  position: absolute; /* Posição absoluta relativa ao .modal-content */
-  top: 10px;
-  right: 20px;
-  font-size: 28px;
-  font-weight: bold;
-  transition: color 0.3s ease, transform 0.2s ease;
-}
-
-.fechar:hover,
-.fechar:focus {
-  color: #920000;
-  transform: scale(1.2);
-  cursor: pointer;
-}
-
-/* Botoes da configuração */
-.config-opcoes {
-  display: flex;
-  gap: 15px;
-  margin-top: 20px;
-}
-
-.config-opcoes button {
-  flex-direction: row;
-  padding: 12px 20px;
-  font-size: 14px;
-  border-radius: 8px;
-  border: none;
-  background-color: #ffac40;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.config-opcoes button:hover {
-  background-color: #f6910d;
-  transform: scale(1.03);
-}

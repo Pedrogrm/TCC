@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="style copy.css">
         <title>Jeca Maracatu</title>
 
         <link rel="icon" href="img/jeca-logo.png">
@@ -12,21 +12,15 @@
         <div id="game">
             <header>
                 <div class="log">
-                    <img src="img/icon.png" alt=""> 
-                    
+                <h2 id="placeholderbotaocozinha">🐊</h2>
+                <h1>JecaMaracatu</h1>
                 </div>
-                <nav>
-                    <button id="btnAbrirConfig"><img src="img/iconeEng2.png" alt=""></button>
-                    <button id="btnAbrirLoja"><img src="img/icon.png" alt=""></button>
-                    <button id="btnAbrirReceitas"><img src="img/iconeRec.png" alt=""></button>
-                    <button id="btnAbrirPerfil"><img src="img/iconeJeca.png" alt=""></button>
-                </nav>
-
-                <div class="dinheiro-display">
-                    <span><img src="img/saco.png" alt=""></span>
-                    <span class="ponto">:</span>
-                    <span id="dinheiro-quantidade">25</span>
-                </div>
+            <nav>
+            <button>⚙️</button>
+            <button>🛒</button>
+            <button>📒</button>
+            <button>👤</button>
+            </nav>
             </header>
         </div>
 
@@ -75,6 +69,7 @@
 
                 <img id="panela" src="img-cozinha/PANELLALAAAA.png">
                 <div id="panela-fundo"></div>
+                <div id="panela-area"></div>
 
                 <img id="good" src="img/good.png">
                 <img id="great" src="img/great.png">
@@ -138,6 +133,7 @@
                 
                 // Mistura
                 const panelafundo = document.getElementById('panela-fundo');
+                const panelaArea = document.getElementById('panela-area');
                 const barra = document.getElementById('barracheia');
                 const manteiga = document.getElementById('manteiga');
                 const manteigaColher = document.getElementById('manteigaColher');
@@ -264,11 +260,11 @@
                     mouseY = event.clientY;
                     
                     if (manteigaSelecionado === true) {
-                        manteigaColher.style.display = "flex"
+                        manteigaColher.style.display = "inline"
                         manteigaColher.style.top = (mouseY - manteigaColher.height) + "px";
                         manteigaColher.style.left = (mouseX - manteigaColher.width) - 40 + "px";
                     } else if (chocolateSelecionado === true) {
-                        chocolateColher.style.display = "flex"
+                        chocolateColher.style.display = "inline"
                         chocolateColher.style.top = (mouseY - chocolateColher.height) + "px";
                         chocolateColher.style.left = (mouseX - chocolateColher.width) - 40 + "px";
                     } else if (leiteconSelecionado === true) {
@@ -579,7 +575,11 @@
                 });
 
                 manteigaColher.addEventListener('click', (event) => {
-                    manteigaSelecionado = false
+                    if (manteigaSelecionado === false) {
+                        manteigaSelecionado = true
+                    } else {
+                        manteigaSelecionado = false
+                    }
                 });
 
                 chocolate.addEventListener('click', (event) => {
@@ -591,8 +591,12 @@
                     }
                 });
 
-                chocolate.addEventListener('click', (event) => {
-                    chocolateSelec = false
+                chocolateColher.addEventListener('click', (event) => {
+                    if (chocolateSelecionado === false) {
+                        chocolateSelecionado = true
+                    } else {
+                        chocolateSelecionado = false
+                    }
                 });
                 
                 leitecon.addEventListener('click', (event) => {
@@ -766,6 +770,12 @@
                         panelafundo.appendChild(element);
                     }
                 }
+
+                panelaArea.addEventListener('click', (event) => {
+                    if (manteigaSelecionado === true) {
+                        
+                    }
+                });
 
                 // Detecta clique e define novo destino
                 gameArea.addEventListener('click', (event) => {
