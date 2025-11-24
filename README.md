@@ -94,3 +94,7 @@ Desenho dos personagens
 desenhos dos elementos da cozinha e ingredientes
 Junção do jogo com o PHP
 Programação dos clientes e das mecânicas da cozinha
+
+### Dia 11
+Junção de todos os arquivos e arrumando o que precisa
+Preparação dos slides e documentação

@@ -1,0 +1,636 @@
+/* Reset e estilos base responsivos */
+* {
+    -webkit-user-drag: none;
+    user-select: none;
+    cursor: none;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: sans-serif;
+    background: url('img-cenario/fundi.jpg') center/cover no-repeat;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header responsivo */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #F6910D;
+    padding: clamp(0.3rem, 2vw, 0.8rem) clamp(0.5rem, 3vw, 2rem);
+    flex-shrink: 0;
+    min-height: 60px;
+}
+
+header .log {
+    display: flex;
+    align-items: center;
+    gap: clamp(0.5rem, 2vw, 1rem);
+}
+
+header .log h1 {
+    font-size: clamp(1rem, 4vw, 1.8rem);
+    margin: 0;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+header .log h2 {
+    font-size: clamp(1.2rem, 5vw, 2rem);
+    margin: 0;
+}
+
+nav {
+    display: flex;
+    gap: clamp(0.3rem, 1.5vw, 1rem);
+}
+
+nav button {
+    padding: clamp(0.4rem, 2vw, 0.8rem) clamp(0.6rem, 2.5vw, 1.2rem);
+    border-radius: 12px;
+    border: none;
+    background: #feac40;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: clamp(1rem, 4vw, 1.5rem);
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+nav button:hover {
+    background-color: #f6910d;
+    transform: scale(1.10);
+}
+
+nav button:active {
+    transform: scale(0.97);
+}
+
+/* Área principal responsiva */
+main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    padding: clamp(0.5rem, 2vw, 1rem);
+}
+
+/* Game area responsiva */
+#game-area {
+    width: 95%;
+    height: 95%;
+    max-width: 1400px;
+    max-height: 900px;
+    background: black;
+    border-radius: clamp(8px, 2vw, 15px);
+    box-shadow: 0 0 20px rgba(0,0,0,0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+.fundo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Player responsivo */
+.player {
+    width: clamp(40px, 8vw, 100px);
+    background-color: transparent;
+    position: absolute;
+    border-radius: 5px;
+    z-index: 2;
+    transition: transform 0.1s linear;
+}
+
+/* Container do cenário */
+#container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+/* Mesas responsivas */
+.mesa-guardar {
+    position: absolute;
+    width: fit-content;
+    height: fit-content;
+    overflow: visible;
+    transform: translateZ(0); /* Melhoria de performance */
+}
+
+#mesa1-guardar {
+    left: clamp(5%, 15vw, 20%);
+    top: clamp(15%, 20vh, 30%);
+}
+
+#mesa2-guardar {
+    left: clamp(3%, 10vw, 15%);
+    top: clamp(40%, 50vh, 60%);
+}
+
+#mesa3-guardar {
+    left: clamp(55%, 65vw, 70%);
+    top: clamp(40%, 50vh, 60%);
+}
+
+#mesa1, #mesa2, #mesa3 {
+    width: clamp(70px, 12vw, 160px);
+    z-index: 2;
+    transition: transform 0.2s ease;
+}
+
+#mesa1:hover, #mesa2:hover, #mesa3:hover {
+    transform: scale(1.05);
+}
+
+/* Elementos do cenário */
+#janela {
+    position: absolute;
+    z-index: 1;
+    width: clamp(100px, 20vw, 250px);
+    left: clamp(10%, 20vw, 25%);
+    top: clamp(5%, 10vh, 15%);
+}
+
+#parede, #parede2, #chao {
+    background-size: cover;
+    position: absolute;
+    pointer-events: none;
+}
+
+#parede {
+    height: 40%;
+    width: 65%;
+    z-index: 3;
+}
+
+#parede2 {
+    height: 50%;
+    width: 35%;
+    left: 48%;
+    z-index: 3;
+}
+
+#chao {
+    height: 15%;
+    width: 65%;
+    top: 70%;
+    z-index: 3;
+}
+
+/* Cozinha responsiva */
+#cozinha {
+    display: none;
+    width: 95%;
+    height: 95%;
+    max-width: 1200px;
+    max-height: 800px;
+    border-radius: clamp(10px, 3vw, 20px);
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    z-index: 999999;
+    transform: scale(0); 
+    transition: transform 1s ease;
+    background: rgba(0,0,0,0.1);
+}
+
+#cozinha.animar {
+    transform: scale(1);
+}
+
+#cozinha .fundo {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: inherit;
+}
+
+/* Elementos da cozinha */
+#espatula {
+    z-index: 4;
+    position: absolute;
+    left: 5%;
+    width: clamp(80px, 15vw, 220px);
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+#espatula:hover {
+    transform: rotate(-15deg) scale(1.1);
+}
+
+#panela {
+    position: absolute;
+    width: clamp(200px, 40vw, 450px);
+    height: auto;
+}
+
+#leitecon, #chocolate, #manteiga {
+    position: absolute;
+    height: clamp(60px, 12vh, 140px);
+    width: auto;
+    left: 5%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#leitecon { 
+    top: clamp(15%, 20vh, 25%); 
+}
+
+#chocolate { 
+    top: clamp(35%, 40vh, 45%); 
+}
+
+#manteiga { 
+    top: clamp(55%, 60vh, 65%); 
+}
+
+#leitecon:hover, #chocolate:hover, #manteiga:hover {
+    transform: translateY(-10px) rotate(15deg) scale(1.1);
+    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+}
+
+#manteigaColher, #chocolateColher {
+    position: absolute;
+    width: clamp(60px, 10vw, 140px);
+    height: auto;
+    display: none;
+    cursor: pointer;
+}
+
+/* Áreas interativas da panela */
+#panela-fundo, #panela-area {
+    position: absolute;
+    overflow: hidden;
+    width: clamp(200px, 35vw, 420px);
+    height: clamp(200px, 35vw, 420px);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+#panela-fundo { 
+    z-index: 4;
+    top: 10%;
+}
+
+#panela-area { 
+    z-index: 99999;
+    top: 10%;
+}
+
+/* Barra de progresso responsiva */
+#barravazia {
+    position: absolute;
+    height: clamp(25px, 4vh, 50px);
+    width: clamp(250px, 45vw, 850px);
+    z-index: 3;
+    overflow: hidden;
+    top: 85%;
+    background-color: #f5f5dc;
+    border: 2px solid #8b4513;
+    border-radius: 25px;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
+}
+
+#barracheia {
+    background: linear-gradient(90deg, #4CAF50, #8BC34A);
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 999;
+    overflow: hidden;
+    margin-left: -100%;
+    border-radius: 23px;
+    transition: margin-left 0.3s ease;
+}
+
+/* Feedback visual */
+#good, #great, #awesome {
+    position: absolute;
+    top: 5%;
+    width: clamp(120px, 25vw, 320px);
+    display: none;
+    z-index: 9999999999;
+    animation: float 2s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+/* Clientes responsivos */
+.cliente {
+    width: clamp(50px, 7vw, 90px);
+    position: absolute;
+    top: 100px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.cliente:hover {
+    transform: scale(1.1);
+}
+
+.mesa-guardar .cliente {
+    display: block;
+    width: clamp(50px, 9vw, 110px);
+    height: auto;
+}
+
+/* Cursor personalizado */
+#cursor {
+    height: clamp(30px, 7vh, 60px);
+    width: clamp(30px, 7vw, 60px);
+    position: absolute;
+    display: none;
+    pointer-events: none;
+    z-index: 999999999999;
+    filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.5));
+}
+
+/* Display de pontuação */
+#score-display {
+    position: absolute;
+    z-index: 999999999999;
+    top: 2%;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    font-size: clamp(1rem, 2.5vw, 1.8rem);
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+    background: rgba(0,0,0,0.5);
+    padding: clamp(0.3rem, 1vw, 0.8rem) clamp(0.8rem, 2vw, 1.5rem);
+    border-radius: 20px;
+    backdrop-filter: blur(5px);
+}
+
+/* ========== MEDIA QUERIES ========== */
+
+/* Tablets (768px - 1024px) */
+@media screen and (max-width: 1024px) and (min-width: 768px) {
+    #mesa1-guardar {
+        left: 12%;
+        top: 18%;
+    }
+    
+    #mesa2-guardar {
+        left: 8%;
+        top: 48%;
+    }
+    
+    #mesa3-guardar {
+        left: 58%;
+        top: 48%;
+    }
+    
+    #janela {
+        left: 15%;
+        top: 8%;
+        width: 18%;
+    }
+    
+    #cozinha {
+        max-height: 85%;
+    }
+    
+    .cliente {
+        width: clamp(45px, 6vw, 80px);
+    }
+}
+
+/* Dispositivos móveis - orientação paisagem */
+@media screen and (max-width: 767px) and (orientation: landscape) {
+    body {
+        overflow: auto;
+    }
+    
+    header {
+        padding: 0.2rem 0.4rem;
+        min-height: 50px;
+    }
+    
+    #game-area {
+        height: 88%;
+        width: 98%;
+    }
+    
+    #mesa1-guardar {
+        left: 4%;
+        top: 12%;
+    }
+    
+    #mesa2-guardar {
+        left: 2%;
+        top: 42%;
+    }
+    
+    #mesa3-guardar {
+        left: 52%;
+        top: 42%;
+    }
+    
+    #janela {
+        left: 8%;
+        top: 4%;
+        width: 14%;
+    }
+    
+    #cozinha {
+        max-height: 88%;
+        max-width: 98%;
+    }
+    
+    #leitecon, #chocolate, #manteiga {
+        height: clamp(45px, 10vh, 80px);
+        left: 3%;
+    }
+    
+    #leitecon { top: 12%; }
+    #chocolate { top: 32%; }
+    #manteiga { top: 52%; }
+    
+    #panela-fundo, #panela-area {
+        width: clamp(150px, 30vw, 300px);
+        height: clamp(150px, 30vw, 300px);
+    }
+    
+    #barravazia {
+        width: clamp(200px, 40vw, 400px);
+        height: clamp(20px, 3vh, 35px);
+    }
+    
+    /* Melhorias para toque em dispositivos móveis */
+    nav button, #leitecon, #chocolate, #manteiga, #espatula {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    .cliente {
+        min-width: 40px;
+        min-height: 40px;
+    }
+}
+
+/* Dispositivos móveis - orientação retrato */
+@media screen and (max-width: 767px) and (orientation: portrait) {
+    body::before {
+        content: "🎮 Gire seu dispositivo para a orientação horizontal para uma melhor experiência de jogo!";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #F6910D, #feac40);
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 2rem;
+        font-size: clamp(1.2rem, 5vw, 1.8rem);
+        font-weight: bold;
+        z-index: 999999999;
+        line-height: 1.5;
+    }
+    
+    #game-area, #cozinha, header {
+        display: none !important;
+    }
+}
+
+/* Monitores grandes (acima de 1600px) */
+@media screen and (min-width: 1600px) {
+    #game-area {
+        max-width: 1600px;
+        max-height: 1000px;
+    }
+    
+    #cozinha {
+        max-width: 1400px;
+        max-height: 900px;
+    }
+    
+    #mesa1, #mesa2, #mesa3 {
+        width: 180px;
+    }
+    
+    .cliente {
+        width: 100px;
+    }
+}
+
+/* Monitores muito grandes (acima de 2000px) */
+@media screen and (min-width: 2000px) {
+    #game-area {
+        max-width: 1800px;
+        max-height: 1100px;
+    }
+    
+    #cozinha {
+        max-width: 1600px;
+        max-height: 1000px;
+    }
+    
+    header .log h1 {
+        font-size: 2.2rem;
+    }
+    
+    nav button {
+        font-size: 1.8rem;
+        padding: 1rem 1.5rem;
+    }
+}
+
+/* Ajustes para alturas muito pequenas */
+@media screen and (max-height: 500px) and (orientation: landscape) {
+    header {
+        min-height: 40px;
+        padding: 0.1rem 0.3rem;
+    }
+    
+    #game-area {
+        height: 85%;
+    }
+    
+    #mesa1-guardar, #mesa2-guardar, #mesa3-guardar {
+        transform: scale(0.8);
+    }
+    
+    #cozinha {
+        max-height: 82%;
+    }
+}
+
+/* Ajustes de acessibilidade para modo de alto contraste */
+@media (prefers-contrast: high) {
+    #barravazia {
+        background-color: white;
+        border: 3px solid black;
+    }
+    
+    #barracheia {
+        background: #006600;
+    }
+    
+    nav button {
+        border: 2px solid #000;
+    }
+}
+
+/* Ajustes para reduzir movimento (prefers-reduced-motion) */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    #cozinha {
+        transition: none;
+    }
+    
+    #good, #great, #awesome {
+        animation: none;
+    }
+}
+
+/* Melhorias de impressão */
+@media print {
+    #game-area, #cozinha {
+        display: none !important;
+    }
+    
+    body::before {
+        content: "JecaMaracatu - Este é um jogo interativo. Acesse online para jogar!";
+        display: block;
+        text-align: center;
+        padding: 2rem;
+        font-size: 1.5rem;
+        color: #000;
+    }
+}
