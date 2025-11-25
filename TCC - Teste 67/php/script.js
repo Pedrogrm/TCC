@@ -293,7 +293,9 @@ function tentarSentarCliente(mesaElemento, posDireita, posEsquerda) {
     // Ajustes finais CSS
     cliente.style.width = "90px";
     cliente.style.height = "auto";
-    cliente.style.zIndex = "2";
+    // cliente.style.zIndex = "999";   // Por algum motivo o localhost nao ta atualizando a mudaça de zIndex = 2 pra zIndex = 999 🫠
+    //// Em vez de cliente.style.zIndex = "999";
+    cliente.style.setProperty('z-index', '9999', 'important');
 
     // 4. Anima e limpa seleção
     mudarSprite(cliente);
@@ -311,6 +313,8 @@ function moverCliente(cliente, mesa, left, top) {
     const spriteID = parseInt(cliente.dataset.sprite, 10);
     if (!Number.isNaN(spriteID)) {
         cliente.src = `../img/${clientMesa[spriteID][0]}`;
+    } else {
+        console.warn("Opção inválida para sprite")
     }
 }
 

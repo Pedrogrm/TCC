@@ -59,7 +59,7 @@ nav button:active {
 
 /* -------- MAIN -------- */
 main {
-  background: url('img/pag.png');
+  background: url('../img/pag.png');
   background-size: cover;
   height: 514px;
   width: auto;

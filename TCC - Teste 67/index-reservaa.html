@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="style copy.css">
+        <link rel="stylesheet" href="style-copy.css">
         <title>Jeca Maracatu</title>
 
         <link rel="icon" href="img/jeca-logo.png">
@@ -26,7 +26,9 @@
 
         <main>
 
-            <img id="cursor" src="img/dedao.png" draggable="true">
+            <img id="cursor" src="img/Cursor.png">
+            <img id="cursor-clicado" src="img/Cursor clicado.png">
+            <img id="cursor-segurando" src="img/Cursor segurando.png">
 
             <container id="container">
             <!-- colisão -->
@@ -70,11 +72,6 @@
                 <img id="manteiga" src="img-ingrediente/Manteiga.png" draggable="true">
                 <img id="manteigaColher" src="img-ingrediente/Manteiga-colher.png" draggable="true">
 
-                <div id="manteiga" style="background-color: rgb(255, 255, 69);"></div>
-                <div id="chocolate" style="background-color: rgb(92, 27, 27);"></div>
-                <div id="chocolate" style="background-color: rgb(255, 248, 215);"></div>
-                <div id="mcmistura" style="background-color: rgb(211, 185, 114);"></div>
-
                 <div id="blocomanteiga"></div>
                 <div id="achocolatadopo"></div>
                 <div id="leiteconliquido"></div>
@@ -113,6 +110,8 @@
                 const container = document.getElementById('container');
 
                 const cursor = document.getElementById('cursor');
+                const cursorclick = document.getElementById('cursor-clicado');
+                const cursorhold = document.getElementById('cursor-segurando');
                 const botaocozinha = document.getElementById('placeholderbotaocozinha');
 
 
@@ -141,12 +140,12 @@
 
 
                 // COZINHA
-                kitchenopen = false;
+                let kitchenopen = false;
                 const kitchen = document.getElementById('cozinha');
                 
                 // Mistura
-                const panelafundo = document.getElementById('panela-fundo');
-                const panelaarea = document.getElementById('panela-area');
+                const panelaFundo = document.getElementById('panela-fundo');
+                const panelaArea = document.getElementById('panela-area');
                 const barra = document.getElementById('barracheia');
                 const manteiga = document.getElementById('manteiga');
                 const manteigaColher = document.getElementById('manteigaColher');
@@ -155,15 +154,16 @@
                 const leitecon = document.getElementById('leitecon');
 
                 let ingredienteBrigadeiro = 0;
+                let segurandoObjeto = false;
 
-                espatulaSelecionado = false;
-                manteigaSelecionado = false;
-                chocolateSelecionado = false;
-                leiteconSelecionado = false;
+                let espatulaSelecionado = false;
+                let manteigaSelecionado = false;
+                let chocolateSelecionado = false;
+                let leiteconSelecionado = false;
 
-                manteigaAdicionado = false;
-                chocolateAdicionado = false;
-                leiteconAdicionado = false;
+                let manteigaAdicionado = false;
+                let chocolateAdicionado = false;
+                let leiteconAdicionado = false;
                 
                 // Desempenho
                 const scoreDisplay = document.getElementById('score-display');
@@ -274,13 +274,39 @@
 
 
 
+                document.addEventListener("click", (event) => {
+                    if (segurandoObjeto === false) {
+                        clearTimeout(timeoutclick);
+                        cursor.style.display = "none"
+                        cursorclick.style.display = "inline"
+
+                        timeoutclick = setTimeout(() {
+                            cursor.style.display = "inline"
+                            cursorclick.style.display = "none"
+                        }, 300);
+
+                    }
+                })
                 document.addEventListener("mousemove", (event) => {
                     mouseX = event.clientX;
                     mouseY = event.clientY;
-                   
-                    cursor.style.display = "inline"
-                    cursor.style.top = (mouseY - manteigaColher.height) + "px";
-                    cursor.style.left = (mouseX - manteigaColher.width) - 40 + "px";
+
+                    if (segurandoObjeto === true) {
+                        cursorhold.style.display = "inline"
+                        cursor.style.display = "none"
+                        cursorhold.style.top = (mouseY - cursorhold.height*0.3) + "px";
+                        cursorhold.style.left = (mouseX - cursorhold.width*0.3) + "px";
+                    } else {
+                        cursor.style.display = "inline"
+                        cursorhold.style.display = "none"
+                        cursor.style.top = (mouseY - cursor.height*0.3) + "px";
+                        cursor.style.left = (mouseX - cursor.width*0.3) + "px";                        
+
+                        cursorclick.style.top = (mouseY - cursorclick.height*0.3) + "px";
+                        cursorclick.style.left = (mouseX - cursorclick.width*0.3) + "px";
+
+                    }
+
                     if (manteigaSelecionado === true) {
                         manteigaColher.style.display = "inline"
                         manteigaColher.style.top = (mouseY - manteigaColher.height) + "px";
@@ -295,6 +321,7 @@
                     } else if (espatulaSelecionado === true) {
                         espatula.style.top = (mouseY - espatula.height) + "px";
                         espatula.style.left = (mouseX - espatula.width) + "px";
+
                     }
                 });
 
@@ -582,16 +609,20 @@
                 espatula.addEventListener('click', (event) => {
                     if (espatulaSelecionado === false) {
                         espatulaSelecionado = true
+                        segurandoObjeto = true
                     } else {
                         espatulaSelecionado = false
+                        segurandoObjeto = false
                     }
                 });
 
                 manteiga.addEventListener('click', (event) => {
                     if (manteigaSelecionado === false && manteigaAdicionado === false) {
                         manteigaSelecionado = true
+                        segurandoObjeto = true
                     } else {
                         manteigaSelecionado = false
+                        segurandoObjeto = false
                         manteigaColher.style.display = "none"
                     }
                 });
@@ -599,16 +630,20 @@
                 manteigaColher.addEventListener('click', (event) => {
                     if (manteigaSelecionado === false) {
                         manteigaSelecionado = true
+                        segurandoObjeto = true
                     } else {
                         manteigaSelecionado = false
+                        segurandoObjeto = false
                     }
                 });
 
                 chocolate.addEventListener('click', (event) => {
                     if (chocolateSelecionado === false && chocolateAdicionado === false) {
                         chocolateSelecionado = true
+                        segurandoObjeto = true
                     } else {
                         chocolateSelecionado = false
+                        segurandoObjeto = false
                         chocolateColher.style.display = "none"
                     }
                 });
@@ -616,16 +651,20 @@
                 chocolateColher.addEventListener('click', (event) => {
                     if (chocolateSelecionado === false) {
                         chocolateSelecionado = true
+                        segurandoObjeto = true
                     } else {
                         chocolateSelecionado = false
+                        segurandoObjeto = false
                     }
                 });
                 
                 leitecon.addEventListener('click', (event) => {
                     if (leiteconSelecionado === false && leiteconAdicionado === false) {
                         leiteconSelecionado = true
+                        segurandoObjeto = true
                     } else {
                         leiteconSelecionado = false
+                        segurandoObjeto = false
                     }
                 });
 
@@ -791,11 +830,11 @@
 
                         });
 
-                        panelafundo.appendChild(element);
+                        panelaFundo.appendChild(element);
                     }
                 }
 
-                panelaarea.addEventListener('click', (event) => {
+                panelaArea.addEventListener('click', (event) => {
                     if (manteigaSelecionado === true) {
                     ingredienteBrigadeiro += 1
                     manteigaSelecionado = false
@@ -815,7 +854,7 @@
                     }
 
                     if (ingredienteBrigadeiro === 3) {
-                        panelaarea.style.display = "none"
+                        panelaArea.style.display = "none"
                         console.log("todos ingredientes adicionados")
                     }
                 });

@@ -135,7 +135,7 @@ nav button:active {
 }
 
 .mesa-guardar {
-    position: relative; /* <- ESSENCIAL */
+    position: relative; 
     width: fit-content;
     height: fit-content;
     overflow: visible;
@@ -144,17 +144,25 @@ nav button:active {
 #mesa1-guardar {
   left: 410px;
   top: 140px;
+
+  z-index: 2;
 }
 
 #mesa2-guardar {
   left: 370px;
   top: 330px;
+
+  z-index: 7;
 }
 
 #mesa3-guardar {
   left: 750px;
   top: 330px;
+
+  z-index: 7;
 }
+
+
 
 /*====================================================================================================================================================================================================================================================================================================================================================================GAME AREA*/
 
@@ -371,7 +379,7 @@ nav button:active {
   border-radius: 5px;
   transform: translate(-50%, -50%);
   transition: transform 0.1s linear;
-  z-index: 2;
+  z-index: 6;
 }
 
 /* ================== Perfil ==================  */
