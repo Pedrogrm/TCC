@@ -93,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
   <header>
     <div class="logo">
-      <img src="img/icon.png" alt="Logo Maracatu">
+      <img src="../img/icon.png" alt="Logo Maracatu">
     </div>
     <nav>
       <a href="index.php"><button>Login</button></a>

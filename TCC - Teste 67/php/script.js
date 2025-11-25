@@ -75,6 +75,7 @@ let chocolateSelecionado = false;
 let leiteconSelecionado = false;
 
 
+//=======================================================================================================================================================================================================================================================================================================================================================================================================================================
 // ===================================
 // 🏃 SCRIPT DE MOVIMENTO (JECA)
 // ===================================
@@ -124,7 +125,9 @@ if (gameArea) {
         }
     });
 }
+//iwa
 
+//=======================================================================================================================================================================================================================================================================================================================================================================================================================================
 // ===================================
 // ⚙️ SISTEMA DE MODAIS E LOJA
 // ===================================
@@ -170,8 +173,10 @@ const btnVelocidade = document.getElementById("btnAumentarVelocidade");
 if (btnVelocidade) {
     btnVelocidade.addEventListener("click", () => comprarPowerUp(10, () => playerSpeed += 1.5));
 }
+//gryg
 
 
+//=======================================================================================================================================================================================================================================================================================================================================================================================================================================
 // ===================================
 // 🍽️ COZINHA (INTERAÇÃO)
 // ===================================
@@ -206,6 +211,7 @@ if (leitecon) leitecon.onclick = () => leiteconSelecionado = !leiteconSelecionad
 if (espatula) espatula.onclick = () => espatulaSelecionado = !espatulaSelecionado;
 
 
+//=======================================================================================================================================================================================================================================================================================================================================================================================================================================
 // ===================================
 // 👥 SISTEMA DE CLIENTES E MESAS
 // ===================================
@@ -283,16 +289,14 @@ function tentarSentarCliente(mesaElemento, posDireita, posEsquerda) {
     if (clientesNaMesa > 0) {
         // Lado Direito
         cliente.style.transform = "scaleX(-1)";
-        moverCliente(cliente, mesaElemento, posDireita, "0px");
+        moverCliente(cliente, mesaElemento, posDireita, "10px");
     } else {
         // Lado Esquerdo
         cliente.style.transform = "scaleX(1)";
-        moverCliente(cliente, mesaElemento, posEsquerda, "0px");
+        moverCliente(cliente, mesaElemento, posEsquerda, "10px");
     }
 
-    // Ajustes finais CSS
-    cliente.style.width = "90px";
-    cliente.style.height = "auto";
+
     // cliente.style.zIndex = "999";   // Por algum motivo o localhost nao ta atualizando a mudaça de zIndex = 2 pra zIndex = 999 🫠
     //// Em vez de cliente.style.zIndex = "999";
     cliente.style.setProperty('z-index', '9999', 'important');
@@ -327,9 +331,13 @@ function mudarSprite(cliente) {
     
     cliente._spriteIntervalId = setInterval(() => {
         cliente.src = `../img/${clientMesa[spriteID][1]}`; // Pedindo
+
+        
     }, (Math.random() * 5000) + 5000);
 }
+// iwa
 
+//=======================================================================================================================================================================================================================================================================================================================================================================================================================================
 // ===================================
 // 🚀 INICIALIZAÇÃO DO JOGO
 // ===================================
@@ -339,9 +347,9 @@ window.addEventListener("load", () => {
 
     // Configura os cliques nas mesas (APENAS UMA VEZ)
     if (mesa1 && mesa2 && mesa3) {
-        mesa1.onclick = () => tentarSentarCliente(mesa1e, "120px", "-80px");
-        mesa2.onclick = () => tentarSentarCliente(mesa2e, "140px", "-90px");
-        mesa3.onclick = () => tentarSentarCliente(mesa3e, "140px", "-90px");
+        mesa1.onclick = () => tentarSentarCliente(mesa1e, "115px", "-75px");
+        mesa2.onclick = () => tentarSentarCliente(mesa2e, "150px", "-75px");
+        mesa3.onclick = () => tentarSentarCliente(mesa3e, "150px", "-75px");
         console.log("✅ Mesas Configuradas.");
     } else {
         console.error("❌ Erro: Mesas não encontradas no HTML.");

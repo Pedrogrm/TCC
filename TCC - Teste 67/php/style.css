@@ -103,11 +103,7 @@ nav button:active {
   height: 35px;
   width: auto;
 }
-/* Ajusta o tamanho do emoji de dinheiro */
-/* .dinheiro-display span:first-child {
-  height: 20px ;
-  width: auto;
-} */
+
 .dinheiro-display .ponto {
   color: #1b511e;
   font-family: tilt neon;
@@ -130,8 +126,8 @@ nav button:active {
 
 .mesa-guardar .cliente {
   display: block;
-  width: 100px;
-  height: auto;
+  width: auto;
+  height: 125px;
 }
 
 .mesa-guardar {
@@ -150,14 +146,14 @@ nav button:active {
 
 #mesa2-guardar {
   left: 370px;
-  top: 330px;
+  top: 350px;
 
   z-index: 7;
 }
 
 #mesa3-guardar {
   left: 750px;
-  top: 330px;
+  top: 350px;
 
   z-index: 7;
 }
@@ -165,14 +161,6 @@ nav button:active {
 
 
 /*====================================================================================================================================================================================================================================================================================================================================================================GAME AREA*/
-
-/* #QUADRADO{
-  width: 50px;
-  height: 50px;
-  position: absolute;
-  background-size: cover;
-  background-color: aquamarine;
-} */
 
 #game-area {
   width: 80%; 
@@ -226,8 +214,6 @@ nav button:active {
 #mesa1 {
   height: auto;
   width: 120px;
-  /* left: 430px;
-  top: 230px; */
   z-index: 2
 }
 
@@ -238,38 +224,34 @@ nav button:active {
 #mesa2 {
   height: auto;
   width: 150px;
-  /* left: 370px;
-  top: 400px; */
   z-index: 4;
 }
 
 #mesa3 {
   height: auto;
   width: 150px;
-  /* left: 750px;
-  top: 400px; */
   z-index: 4;
 }
 
 #parede {
   /* background-color: blue; */
-  height: 33vh;
-  width: 65vw;
+  height: 35vh;
+  width: 100vw;
   z-index: 999;
 }
 
 #parede2 {
   /* background-color: purple; */
-  height: 43vh;
-  width: 35vw;
-  left: 48vw;
+  height: 46vh;
+  width: 45vw;
+  left: 50vw;
   z-index: 999;
 }
 
 #chao {
   /* background-color: green; */
   height: 10vh;
-  width: 65vw;
+  width: 100vw;
   top: 42vw;
   z-index: 999;
 }
@@ -530,3 +512,5 @@ nav button:active {
   background-color: #f6910d;
   transform: scale(1.03);
 }
+
+/* gryg */

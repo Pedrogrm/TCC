@@ -98,3 +98,9 @@ Programação dos clientes e das mecânicas da cozinha
 ### Dia 11
 Junção de todos os arquivos e arrumando o que precisa
 Preparação dos slides e documentação
+
+### Dia 12
+Junção de ajustes da parte dos clientes com o PHP
+Finalização de programação da cozinha
+Apresentação da prévia para a turma
+Recepção de críticas construtivas e elogios

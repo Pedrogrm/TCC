@@ -103,53 +103,6 @@ include ("protect.php");
                 
         </main>
 
-        <!-- <div id="config" class="modal">
-        <div class="modal-content">
-            <span class="fechar">&times;</span>
-            <h2>Configurações</h2>
-            <button id="btnSom">🔊 Som: Ativado</button>
-            <button id="btnLinguagem">🌐 Linguagem: Português</button>
-        </div>
-    </div>
-
-    <div id="loja" class="modal">
-        <div class="modal-content">
-            <span class="fechar">&times;</span>
-            <h2>Loja do Jeca</h2>
-            <div class="loja-item">
-                <p>⚡ Velocidade (+Speed)</p>
-                <button id="btnAumentarVelocidade">Comprar ($10)</button>
-            </div>
-            <div class="loja-item">
-                <p>❤️ Paciência (+Vida)</p>
-                <button id="btnAumentarVida">Comprar ($15)</button>
-            </div>
-            <div class="loja-item">
-                <p>⚔️ Bônus (+Lucro)</p>
-                <button id="btnAumentarDano">Comprar ($20)</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="receitas" class="modal">
-        <div class="modal-content">
-            <span class="fechar">&times;</span>
-            <h2>Livro de Receitas</h2>
-            <p>1. Brigadeiro: Leite Condensado + Chocolate + Manteiga</p>
-            <p>2. Em breve...</p>
-        </div>
-    </div>
-
-    <div id="perfil" class="modal">
-        <div class="modal-content">
-            <span class="fechar">&times;</span>
-            <h2>Perfil do Jeca</h2>
-            <img src="img/iconeJeca.png" alt="Jeca" style="width: 50px;">
-            <p>Nível: 1</p>
-            <button id="btnJacquin">Gritar com Jacquin</button>
-        </div>
-    </div> -->
-
       <!-- Modal Receitas -->
   <div id="receitas" class="modal">
     <div class="modal-content">
@@ -216,13 +169,17 @@ include ("protect.php");
       <h2>⚙️ Configurações</h2>
       <div class="config-opcoes">
         <button id="btnSom">🔊 Som: Ativado</button>
-        <button id="btnLinguagem">🌐 Linguagem: Português</button>
+        <!-- <button id="btnLinguagem">🌐 Linguagem: Português</button> -->
         <!-- <button id="btnJacquin">👨‍🍳 Érick Jacquin</button> -->
       </div>
     </div>
   </div>
 
+  
+
     <script src="script.js"></script>
 
     </body>
     </html>
+
+    <!-- gryg -->
