@@ -513,4 +513,62 @@ nav button:active {
   transform: scale(1.03);
 }
 
+/* No seu CSS, a seção #modal-inicio está limitando o tamanho */
+/* #modal-inicio {
+    background-size: 100% 100%;
+    background-size: 1250px auto;
+    background-repeat: no-repeat; 
+    background-position: center; 
+    justify-content: center;
+    align-items: center; 
+    padding: 0px;
+    cursor: pointer;
+} */
+
+#modal-inicio {
+    /* Mantenha apenas o estilo de OVERLAY: */
+    display: flex; /* Garante a centralização */
+    position: fixed;
+    z-index: 9999; 
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4); 
+    justify-content: center;
+    align-items: center; 
+}
+
+#modal-inicio #btn-Jogar img {
+    /* Mude estes valores para diminuir a imagem: */
+    width: 300px;  /* Exemplo: Mudar de 400px (tamanho original, se for grande) para 300px */
+    height: auto;  /* Mantém a proporção correta */
+}
+
+#modal-inicio #btn-Jogar {
+  background-color: transparent;
+  border: transparent;
+  padding: 0;
+  margin-bottom: 50px;
+}
+
+.modal-contentinicio {
+   width: 1200px;
+    height: 600px;
+    max-width: 95vw;
+    background-image: url(../img-cenario/imgdeinicio.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 20px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    background-color: transparent;
+    padding: 0;
+    border: none;
+}
+
+
+
 /* gryg */

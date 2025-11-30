@@ -369,34 +369,72 @@ window.addEventListener("load", () => {
 });
 
 
-// ==============================================================================
-// 
-// 1. Pega os elementos do modal
+// ===================================
+// 🖥️ INICIALIZAÇÃO E MODAL DE INÍCIO
+// ===================================
+
 const modalInicio = document.getElementById('modal-inicio');
-const btnJogar = document.getElementById('btn-jogar');
-const btnFecharInicio = document.getElementById('fechar-inicio');
+const btnJogar = document.getElementById('btn-Jogar'); // ID do botão dentro do modal
 
-// 2. Abre o modal automaticamente quando a janela carregar
-window.onload = function() {
-    modalInicio.style.display = 'flex';
-}
-
-// 3. Função para fechar o modal (usada no botão Jogar e no X)
+// Função para fechar o modal e iniciar o jogo
 function fecharModalInicio() {
-    modalInicio.style.display = 'none';
-    
-    // DICA: Se o seu jogo tem música, inicie ela AQUI.
-    // Navegadores bloqueiam som automático, então precisa ser num clique.
-    // Exemplo: musicaFundo.play();
+    if (modalInicio) {
+        modalInicio.style.display = 'none'; // Esconde o modal
+    }
+    // Dica: Se o jogo tiver música, inicie ela aqui, após o clique do usuário!
+    // Exemplo: iniciarMusicaDoJogo();
 }
 
-// 4. Adiciona os eventos de clique
-btnJogar.onclick = fecharModalInicio;
-btnFecharInicio.onclick = fecharModalInicio;
-
-// (Opcional) Fechar se clicar fora da caixa
-window.onclick = function(event) {
-    if (event.target == modalInicio) {
-        fecharModalInicio();
+// 1. Abrir o modal automaticamente ao carregar a janela
+window.onload = function() {
+    console.log("🚀 Jogo Iniciando...");
+    
+    // Mostra o modal de início (sobrescrevendo o 'display: none' inicial)
+    if (modalInicio) {
+        modalInicio.style.display = 'flex'; 
     }
+    
+    // O restante da inicialização do jogo (movimento, clientes, etc.)
+    // será feito pelo clique no botão 'JOGAR AGORA'
+};
+
+
+// 2. Fechar o modal ao clicar no botão 'JOGAR AGORA'
+if (btnJogar) {
+    btnJogar.addEventListener('click', () => {
+        fecharModalInicio();
+        
+        // Aqui você coloca o código que estava no 'window.addEventListener("load", ...)'
+        // para garantir que o jogo só comece DEPOIS que o modal fechar!
+        iniciarLogicaDoJogo();
+    });
+}
+
+
+// Nova função para a lógica principal de inicialização
+function iniciarLogicaDoJogo() {
+    // Código copiado e movido do seu 'window.addEventListener("load", ...)'
+    
+    // Configura os cliques nas mesas (APENAS UMA VEZ)
+    if (mesa1 && mesa2 && mesa3) {
+        mesa1.onclick = () => tentarSentarCliente(mesa1e, "115px", "-75px");
+        mesa2.onclick = () => tentarSentarCliente(mesa2e, "150px", "-75px");
+        mesa3.onclick = () => tentarSentarCliente(mesa3e, "150px", "-75px");
+        console.log("✅ Mesas Configuradas.");
+    } else {
+        console.error("❌ Erro: Mesas não encontradas no HTML.");
+    }
+
+    // Limpa Placeholders dos inputs
+    document.querySelectorAll('input').forEach(input => {
+        const original = input.getAttribute('placeholder');
+        input.onfocus = () => input.setAttribute('placeholder', '');
+        input.onblur = () => input.setAttribute('placeholder', original);
+    });
+
+    // Inicia loops
+    atualizarDinheiro();
+    requestAnimationFrame(update); // Movimento Jeca
+    clientes3(); // Gera clientes
+    console.log("✅ Lógica do jogo iniciada!");
 }
