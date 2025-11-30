@@ -68,7 +68,7 @@ if (isset($_POST['email']) && isset($_POST['senha'])) {
 
             } else {
                 // E-mail não encontrado.
-                $login_error = "E-mail ou senha incorretos.";
+                $login_error = "E-mail ou senha não encontrado.";
             }
         }
         

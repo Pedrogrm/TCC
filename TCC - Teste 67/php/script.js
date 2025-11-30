@@ -367,3 +367,36 @@ window.addEventListener("load", () => {
     requestAnimationFrame(update); // Movimento Jeca
     clientes3(); // Gera clientes
 });
+
+
+// ==============================================================================
+// 
+// 1. Pega os elementos do modal
+const modalInicio = document.getElementById('modal-inicio');
+const btnJogar = document.getElementById('btn-jogar');
+const btnFecharInicio = document.getElementById('fechar-inicio');
+
+// 2. Abre o modal automaticamente quando a janela carregar
+window.onload = function() {
+    modalInicio.style.display = 'flex';
+}
+
+// 3. Função para fechar o modal (usada no botão Jogar e no X)
+function fecharModalInicio() {
+    modalInicio.style.display = 'none';
+    
+    // DICA: Se o seu jogo tem música, inicie ela AQUI.
+    // Navegadores bloqueiam som automático, então precisa ser num clique.
+    // Exemplo: musicaFundo.play();
+}
+
+// 4. Adiciona os eventos de clique
+btnJogar.onclick = fecharModalInicio;
+btnFecharInicio.onclick = fecharModalInicio;
+
+// (Opcional) Fechar se clicar fora da caixa
+window.onclick = function(event) {
+    if (event.target == modalInicio) {
+        fecharModalInicio();
+    }
+}
