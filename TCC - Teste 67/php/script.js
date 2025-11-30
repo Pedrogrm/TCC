@@ -8,11 +8,11 @@ const gameArea = document.getElementById('game-area');
 const player = document.getElementById('player');
 
 // Elementos das Mesas (Imagens e Containers)
-const mesa1 = document.getElementById('mesa1'); // A imagem da mesa (onde clica)
+const mesa1 = document.getElementById('mesa1');
 const mesa2 = document.getElementById('mesa2');
 const mesa3 = document.getElementById('mesa3');
 
-const mesa1e = document.getElementById('mesa1-guardar'); // A div (onde o cliente entra)
+const mesa1e = document.getElementById('mesa1-guardar');
 const mesa2e = document.getElementById('mesa2-guardar');
 const mesa3e = document.getElementById('mesa3-guardar');
 
@@ -75,7 +75,22 @@ let chocolateSelecionado = false;
 let leiteconSelecionado = false;
 
 
-//=======================================================================================================================================================================================================================================================================================================================================================================================================================================
+// -----------------------------------------------------
+// 🔐 VARIÁVEIS DO SISTEMA DE MODAIS E AUTENTICAÇÃO
+// -----------------------------------------------------
+const modalInicio = document.getElementById('modal-inicio');
+const btnJogar = document.getElementById('btn-Jogar'); 
+const modalLoginCadastro = document.getElementById('modal-login-cadastro');
+const authMessageArea = document.getElementById('auth-message-area');
+const fecharLoginBtn = document.getElementById('fechar-login');
+
+// Referências dos formulários e links
+const formLogin = document.getElementById('form-login');
+const formCadastro = document.getElementById('form-cadastro');
+const linkAbrirCadastro = document.getElementById('link-abrir-cadastro');
+const linkAbrirLogin = document.getElementById('link-abrir-login');
+
+
 // ===================================
 // 🏃 SCRIPT DE MOVIMENTO (JECA)
 // ===================================
@@ -125,9 +140,8 @@ if (gameArea) {
         }
     });
 }
-//iwa
 
-//=======================================================================================================================================================================================================================================================================================================================================================================================================================================
+
 // ===================================
 // ⚙️ SISTEMA DE MODAIS E LOJA
 // ===================================
@@ -146,7 +160,7 @@ function setupModal(btnId, modalId) {
     });
 }
 
-// Configura Modais
+// Configura Modais de Jogo
 setupModal("btnAbrirConfig", "config");
 setupModal("btnAbrirLoja", "loja");
 setupModal("btnAbrirReceitas", "receitas");
@@ -173,10 +187,8 @@ const btnVelocidade = document.getElementById("btnAumentarVelocidade");
 if (btnVelocidade) {
     btnVelocidade.addEventListener("click", () => comprarPowerUp(10, () => playerSpeed += 1.5));
 }
-//gryg
 
 
-//=======================================================================================================================================================================================================================================================================================================================================================================================================================================
 // ===================================
 // 🍽️ COZINHA (INTERAÇÃO)
 // ===================================
@@ -211,7 +223,6 @@ if (leitecon) leitecon.onclick = () => leiteconSelecionado = !leiteconSelecionad
 if (espatula) espatula.onclick = () => espatulaSelecionado = !espatulaSelecionado;
 
 
-//=======================================================================================================================================================================================================================================================================================================================================================================================================================================
 // ===================================
 // 👥 SISTEMA DE CLIENTES E MESAS
 // ===================================
@@ -296,9 +307,6 @@ function tentarSentarCliente(mesaElemento, posDireita, posEsquerda) {
         moverCliente(cliente, mesaElemento, posEsquerda, "10px");
     }
 
-
-    // cliente.style.zIndex = "999";   // Por algum motivo o localhost nao ta atualizando a mudaça de zIndex = 2 pra zIndex = 999 🫠
-    //// Em vez de cliente.style.zIndex = "999";
     cliente.style.setProperty('z-index', '9999', 'important');
 
     // 4. Anima e limpa seleção
@@ -331,90 +339,15 @@ function mudarSprite(cliente) {
     
     cliente._spriteIntervalId = setInterval(() => {
         cliente.src = `../img/${clientMesa[spriteID][1]}`; // Pedindo
-
-        
     }, (Math.random() * 5000) + 5000);
 }
-// iwa
-
-//=======================================================================================================================================================================================================================================================================================================================================================================================================================================
-// ===================================
-// 🚀 INICIALIZAÇÃO DO JOGO
-// ===================================
-
-window.addEventListener("load", () => {
-    console.log("🚀 Jogo Iniciando...");
-
-    // Configura os cliques nas mesas (APENAS UMA VEZ)
-    if (mesa1 && mesa2 && mesa3) {
-        mesa1.onclick = () => tentarSentarCliente(mesa1e, "115px", "-75px");
-        mesa2.onclick = () => tentarSentarCliente(mesa2e, "150px", "-75px");
-        mesa3.onclick = () => tentarSentarCliente(mesa3e, "150px", "-75px");
-        console.log("✅ Mesas Configuradas.");
-    } else {
-        console.error("❌ Erro: Mesas não encontradas no HTML.");
-    }
-
-    // Limpa Placeholders dos inputs
-    document.querySelectorAll('input').forEach(input => {
-        const original = input.getAttribute('placeholder');
-        input.onfocus = () => input.setAttribute('placeholder', '');
-        input.onblur = () => input.setAttribute('placeholder', original);
-    });
-
-    // Inicia loops
-    atualizarDinheiro();
-    requestAnimationFrame(update); // Movimento Jeca
-    clientes3(); // Gera clientes
-});
 
 
 // ===================================
-// 🖥️ INICIALIZAÇÃO E MODAL DE INÍCIO
+// 🚀 LÓGICA DE INICIALIZAÇÃO DO JOGO
 // ===================================
 
-const modalInicio = document.getElementById('modal-inicio');
-const btnJogar = document.getElementById('btn-Jogar'); // ID do botão dentro do modal
-
-// Função para fechar o modal e iniciar o jogo
-function fecharModalInicio() {
-    if (modalInicio) {
-        modalInicio.style.display = 'none'; // Esconde o modal
-    }
-    // Dica: Se o jogo tiver música, inicie ela aqui, após o clique do usuário!
-    // Exemplo: iniciarMusicaDoJogo();
-}
-
-// 1. Abrir o modal automaticamente ao carregar a janela
-window.onload = function() {
-    console.log("🚀 Jogo Iniciando...");
-    
-    // Mostra o modal de início (sobrescrevendo o 'display: none' inicial)
-    if (modalInicio) {
-        modalInicio.style.display = 'flex'; 
-    }
-    
-    // O restante da inicialização do jogo (movimento, clientes, etc.)
-    // será feito pelo clique no botão 'JOGAR AGORA'
-};
-
-
-// 2. Fechar o modal ao clicar no botão 'JOGAR AGORA'
-if (btnJogar) {
-    btnJogar.addEventListener('click', () => {
-        fecharModalInicio();
-        
-        // Aqui você coloca o código que estava no 'window.addEventListener("load", ...)'
-        // para garantir que o jogo só comece DEPOIS que o modal fechar!
-        iniciarLogicaDoJogo();
-    });
-}
-
-
-// Nova função para a lógica principal de inicialização
 function iniciarLogicaDoJogo() {
-    // Código copiado e movido do seu 'window.addEventListener("load", ...)'
-    
     // Configura os cliques nas mesas (APENAS UMA VEZ)
     if (mesa1 && mesa2 && mesa3) {
         mesa1.onclick = () => tentarSentarCliente(mesa1e, "115px", "-75px");
@@ -438,3 +371,171 @@ function iniciarLogicaDoJogo() {
     clientes3(); // Gera clientes
     console.log("✅ Lógica do jogo iniciada!");
 }
+
+// ===================================================================
+// 🔐 LÓGICA DE MODAIS DE AUTENTICAÇÃO E FETCH (AJAX)
+// ===================================================================
+
+// 2. LÓGICA DE SEQUÊNCIA DE MODAIS (Abre modal de Login/Cadastro após o clique inicial)
+if (btnJogar) {
+    btnJogar.addEventListener('click', fecharModalInicioEAbrirLogin);
+}
+
+// Lógica para fechar o Modal de Login/Cadastro no "X"
+if (fecharLoginBtn) {
+    fecharLoginBtn.addEventListener('click', () => {
+        if (modalLoginCadastro) modalLoginCadastro.style.display = 'none';
+        // Não inicia o jogo aqui, forçando o login
+    });
+}
+
+function fecharModalInicioEAbrirLogin() {
+    if (modalInicio) {
+        modalInicio.style.display = 'none'; // Fecha o Modal de Início
+    }
+    
+    if (modalLoginCadastro) {
+        modalLoginCadastro.style.display = 'flex'; // Abre o Modal de Login/Cadastro
+    }
+}
+
+
+// 3. LÓGICA PARA ALTERNAR LOGIN/CADASTRO
+if (linkAbrirCadastro) {
+    linkAbrirCadastro.addEventListener('click', (e) => {
+        e.preventDefault();
+        formLogin.style.display = 'none';
+        formCadastro.style.display = 'block'; 
+        authMessageArea.innerHTML = ''; // Limpa mensagens
+    });
+}
+
+if (linkAbrirLogin) {
+    linkAbrirLogin.addEventListener('click', (e) => {
+        e.preventDefault();
+        formCadastro.style.display = 'none';
+        formLogin.style.display = 'block'; 
+        authMessageArea.innerHTML = ''; // Limpa mensagens
+    });
+}
+
+// 4. FUNÇÃO GLOBAL PARA MOSTRAR MENSAGENS NO MODAL
+function displayAuthMessage(message, isSuccess) {
+    authMessageArea.innerHTML = `
+        <p class="${isSuccess ? 'message-success' : 'message-error'}">
+            ${message}
+        </p>
+    `;
+}
+
+// =======================================================
+// 5. FUNÇÃO CENTRALIZADA PARA SUBMISSÃO (COM RECARREGAMENTO)
+// =======================================================
+async function submitAuthForm(event) {
+    event.preventDefault(); // Impede o envio tradicional
+    
+    const form = event.target;
+    const formData = new FormData(form);
+    const messageArea = document.getElementById('auth-message-area');
+
+    // Limpa mensagens anteriores
+    if (messageArea) messageArea.innerHTML = 'Processando...';
+    
+    try {
+        const response = await fetch(form.action, {
+            method: 'POST',
+            body: formData
+        });
+
+        // Tenta pegar o texto puro primeiro para garantir que não é erro do PHP
+        const textoResposta = await response.text();
+        
+        let result;
+        try {
+            result = JSON.parse(textoResposta);
+        } catch (e) {
+            console.error("ERRO PHP:", textoResposta);
+            if (messageArea) messageArea.innerHTML = "Erro no servidor. Veja o Console (F12).";
+            return;
+        }
+        
+        // Se a resposta for um JSON válido:
+        if (result.success) {
+            displayAuthMessage(result.message, true);
+            
+            // --- LÓGICA DE SUCESSO ---
+
+            if (form.id === 'form-login') {
+                // LOGIN: Espera 1 segundo e RECARREGA A PÁGINA
+                setTimeout(() => {
+                    const modal = document.getElementById('modal-login-cadastro');
+                    if(modal) modal.style.display = 'none';
+
+                    // AQUI ESTÁ A MÁGICA: Recarrega para o PHP mostrar o nome
+                    window.location.reload(); 
+                }, 1000); 
+
+            } else if (form.id === 'form-cadastro') {
+                // CADASTRO: Apenas troca para a tela de login
+                 setTimeout(() => {
+                    const formCadastro = document.getElementById('form-cadastro');
+                    const formLogin = document.getElementById('form-login');
+                    
+                    if(formCadastro) formCadastro.style.display = 'none';
+                    if(formLogin) formLogin.style.display = 'block';
+                    
+                    displayAuthMessage("Cadastro ok! Faça login.", true);
+                }, 2000); 
+            }
+
+        } else {
+            // Se o PHP disser que deu erro (senha errada, etc)
+            displayAuthMessage(result.message, false);
+        }
+
+    } catch (error) {
+        if (messageArea) displayAuthMessage("Erro de conexão.", false);
+        console.error('Fetch error:', error);
+    }
+}
+
+// 6. ADICIONA EVENT LISTENERS AOS FORMULÁRIOS
+if (formLogin) formLogin.addEventListener('submit', submitAuthForm);
+if (formCadastro) formCadastro.addEventListener('submit', submitAuthForm);
+
+// 7. ABERTURA DO MODAL AO CARREGAR A PÁGINA
+window.onload = function() {
+    console.log("🖥️ Página carregada. Aguardando login...");
+    
+    // Mostra o modal de início
+    if (modalInicio) {
+        modalInicio.style.display = 'flex'; 
+    }
+};
+
+// 7. ABERTURA INTELIGENTE AO CARREGAR A PÁGINA
+window.onload = function() {
+    console.log("🖥️ Página carregada.");
+
+    // Verifica a variável que criamos no PHP
+    // (Certifique-se que usuarioEstaLogado foi definido no HTML)
+    if (typeof usuarioEstaLogado !== 'undefined' && usuarioEstaLogado === true) {
+        
+        console.log("✅ Usuário já logado! Iniciando jogo direto...");
+        
+        // Garante que os modais estão fechados
+        if (modalInicio) modalInicio.style.display = 'none';
+        if (modalLoginCadastro) modalLoginCadastro.style.display = 'none';
+        
+        // Inicia o jogo imediatamente
+        iniciarLogicaDoJogo();
+
+    } else {
+        
+        console.log("🔒 Usuário não logado. Mostrando Início...");
+        // Comportamento padrão: Mostra o modal de início
+        if (modalInicio) {
+            modalInicio.style.display = 'flex'; 
+        }
+    }
+};

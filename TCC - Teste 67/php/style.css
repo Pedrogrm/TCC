@@ -569,6 +569,178 @@ nav button:active {
     border: none;
 }
 
+/* Estilos para as mensagens de feedback do AJAX */
+.message-error {
+    color: #a00; /* Vermelho escuro */
+    text-align: center; 
+    background: #ffe0e0; /* Fundo vermelho claro */
+    border: 1px solid #ff4d4d; 
+    padding: 10px; 
+    border-radius: 5px;
+    margin-bottom: 15px;
+    font-size: 0.9em;
+}
 
+.message-success {
+    color: #050; /* Verde escuro */
+    text-align: center; 
+    background: #e0ffe0; /* Fundo verde claro */
+    border: 1px solid #4dff4d; 
+    padding: 10px; 
+    border-radius: 5px;
+    margin-bottom: 15px;
+    font-size: 0.9em;
+}
 
+/* =======================================
+   ESTILOS GERAIS DO MODAL DE AUTENTICAÇÃO
+   ======================================= */
+
+#modal-login-cadastro {
+    display: none; /* Inicia oculto, controlado pelo JS */
+    position: fixed; /* Fixa na tela */
+    z-index: 10000; /* Garante que fique acima de tudo no jogo (inclusive do modal inicial, que deve ter z-index menor) */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.8); /* Fundo escuro semi-transparente */
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Centraliza verticalmente */
+}
+
+.modal-content-login {
+    background-color: #fefefe;
+    padding: 30px;
+    border: 1px solid #888;
+    width: 90%;
+    max-width: 400px; /* Tamanho razoável para formulário */
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    position: relative;
+    font-family: Arial, sans-serif; /* Use a fonte do seu jogo, se preferir */
+}
+
+/* Botão de fechar (X) */
+.modal-content-login .fechar {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    cursor: pointer;
+}
+
+.modal-content-login .fechar:hover,
+.modal-content-login .fechar:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* =======================================
+   ESTILOS DO FORMULÁRIO (LOGIN/CADASTRO)
+   ======================================= */
+
+.cadastro div:first-child { /* Título "Bem-vindo de volta" / "Crie sua conta" */
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.placeholder {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Espaço entre os inputs */
+    margin-bottom: 20px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px;
+    box-sizing: border-box;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 1em;
+    transition: border-color 0.3s;
+}
+
+.form-control:focus {
+    border-color: #4CAF50; /* Cor de foco verde (pode ser a cor tema do seu jogo) */
+    outline: none;
+}
+
+/* Botão de Submissão */
+.cadastro button[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background-color: #4CAF50; /* Verde principal */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+}
+
+.cadastro button[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+.cadastro button[type="submit"]:active {
+    transform: translateY(1px);
+}
+
+/* Links de Alternância (Criar conta/Fazer Login) */
+.link-criar-conta {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.9em;
+    color: #666;
+}
+
+.link-criar-conta a {
+    color: #4CAF50;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.link-criar-conta a:hover {
+    text-decoration: underline;
+}
+
+/* =======================================
+   ESTILOS PARA MENSAGENS (AJAX)
+   ======================================= */
+
+/* Certifique-se de que estas classes estejam definidas */
+#auth-message-area {
+    margin-bottom: 15px;
+}
+
+.message-error {
+    color: #a00;
+    text-align: center; 
+    background: #ffe0e0;
+    border: 1px solid #ff4d4d; 
+    padding: 10px; 
+    border-radius: 5px;
+    font-size: 0.9em;
+}
+
+.message-success {
+    color: #050;
+    text-align: center; 
+    background: #e0ffe0;
+    border: 1px solid #4dff4d; 
+    padding: 10px; 
+    border-radius: 5px;
+    font-size: 0.9em;
+}
 /* gryg */

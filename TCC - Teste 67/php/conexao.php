@@ -1,33 +1,40 @@
 <?php
-ini_set('display_errors', 1);
+ini_set('display_errors', 0); // Desliga a exibição de erros HTML para requisições AJAX
 error_reporting(E_ALL);
 
+// // Credenciais de Conexão Remota
 // $usuario = 'root';
-// $senha = 'senai@118';
-// $database = 'login';
-// $host = 'localhost';
+// $senha = 'Senai@118'; // Verifique se essa senha é a correta
+// $database = 'jeca';
+// $host = '10.106.12.113'; // Host remoto
 
-// $mysqli = new mysqli($host, $usuario, $senha, $database);
-
-// if ($mysqli->connect_error) {
-//     die("Falha na conexão: " . $mysqli->connect_error);
-// } else {
-//     echo "Conectado com sucesso!";
-// }
-
-
+// CONEXÃO LOCAL PARA TESTE (se o MySQL estiver rodando na sua máquina)
 $usuario = 'root';
-$senha = 'Senai@118';
+$senha = ''; // A senha que você usa para acessar o MySQL na sua máquina
 $database = 'jeca';
-$host = '10.106.12.113';
+$host = 'localhost'; // Tenta usar socket local, que é mais rápido
 
-
+// Tenta Conectar
 $mysqli = new mysqli($host, $usuario, $senha, $database);
 
+// SE A CONEXÃO FALHAR:
 if ($mysqli->connect_error) {
-    die("Erro na conexão: " . $mysqli->connect_error);
+    
+    // Identifica se estamos em um script AJAX que precisa de JSON
+    $is_ajax = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && 
+               strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
+    
+    // Se for AJAX, retorna um JSON de erro
+    if (strpos($_SERVER['SCRIPT_NAME'], 'processar_') !== false || $is_ajax) {
+        header('Content-Type: application/json');
+        echo json_encode([
+            'success' => false,
+            'message' => '❌ Erro de conexão com o banco de dados. Verifique o servidor/IP. Código: ' . $mysqli->connect_errno
+        ]);
+        die();
+    } else {
+        // Se não for AJAX (e.g., acesso direto), apenas mata o script com o erro
+        die("❌ Erro fatal na conexão com o servidor MySQL: " . $mysqli->connect_error);
+    }
 }
-
-?>
-
-<!-- gryg -->
+// Não há tag de fechamento ?>
