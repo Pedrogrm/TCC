@@ -23,7 +23,7 @@ $nomeUsuario = isset($_SESSION['nome']) ? $_SESSION['nome'] : 'Visitante';
             </div>
             <nav>
                 <button id="btnAbrirConfig"><img src="../img/iconeEng2.png" alt=""></button>
-                <button id="btnAbrirLoja"><img src="../img/iconeCar.png" alt=""></button>
+                <button id="btnAbrirReceitas"><img src="../img/iconeRec.png" alt=""></button>
                 <button id="btnAbrirPerfil"><img src="../img/iconeJeca.png" alt=""></button>
             </nav>
 
@@ -93,7 +93,7 @@ $nomeUsuario = isset($_SESSION['nome']) ? $_SESSION['nome'] : 'Visitante';
         </div>
     </div>
 
-    <div id="loja" class="modal">
+    <!-- <div id="loja" class="modal">
         <div class="modal-content">
             <span class="fechar">&times;</span>
             <h2>🛒 Loja de Power-ups</h2>
@@ -121,7 +121,7 @@ $nomeUsuario = isset($_SESSION['nome']) ? $_SESSION['nome'] : 'Visitante';
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <div id="perfil" class="modal">
         <div class="modal-content">
