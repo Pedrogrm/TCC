@@ -553,7 +553,7 @@ nav button:active {
 
 .modal-contentinicio {
    width: 1200px;
-    height: 600px;
+    height: 564px;
     max-width: 95vw;
     background-image: url(../img-cenario/imgdeinicio.png);
     background-size: cover;
@@ -567,6 +567,7 @@ nav button:active {
     background-color: transparent;
     padding: 0;
     border: none;
+    margin-top: 66px;
 }
 
 /* Estilos para as mensagens de feedback do AJAX */
@@ -596,28 +597,24 @@ nav button:active {
    ESTILOS GERAIS DO MODAL DE AUTENTICAÇÃO
    ======================================= */
 #modal-login-cadastro {
-    display: none; /* Inicia oculto */
+    display: none; 
     position: fixed;
     z-index: 10000;
-    left: 0;
+    left: 0; 
     top: 0;
     width: 100%;
-    height: 100%;
+    height: 100%; 
     overflow: hidden;
-    
-    /* --- A MÁGICA ESTÁ AQUI EMBAIXO --- */
-    /* A primeira camada é a sombra preta (0.8), a segunda é a imagem. */
     background-image: 
         linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
         url(../img-cenario/imgdeinicio.png);
-        
-    background-size: cover; /* Faz a imagem cobrir a tela sem distorcer */
+
+    background-size: 100% 100%, min(1200px, 95vw) 564px;
+    margin-top: 0px,  66px;
+    border-radius: 0, ;
     background-position: center;
     background-repeat: no-repeat;
-    /* ---------------------------------- */
-
-    /* Para centralizar a caixinha de login */
-    display: flex; /* (O JS deve alternar entre 'none' e 'flex') */
+    display: flex;
     justify-content: center;
     align-items: center;
 }
@@ -756,4 +753,248 @@ nav button:active {
     border-radius: 5px;
     font-size: 0.9em;
 }
+
+/* =========================================
+   ESTILO DO CARROSSEL
+   ========================================= */
+
+/* O Cartão Verde (Fundo) */
+.carousel-container {
+    position: relative;
+    width: 100%;
+    max-width: 450px; /* Largura do cartão */
+    margin: 20px auto;
+    
+    /* Cor de fundo verde-limão igual da imagem */
+    background-color: #C2D465; 
+    
+    /* Bordas bem arredondadas */
+    border-radius: 30px;
+    
+    /* Sombra suave */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    
+    /* Flexbox para centralizar tudo */
+    display: flex;
+    align-items: center; 
+    overflow: hidden;
+    padding: 20px 0; /* Espaço em cima e embaixo */
+    
+    /* Altura mínima para o cartão não ficar mudando de tamanho */
+    min-height: 350px; 
+}
+
+/* A trilha que corre os slides */
+.carousel-track {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    width: 100%;
+    height: 100%;
+    align-items: center; /* Alinha verticalmente no centro */
+}
+
+/* Cada página da receita */
+.carousel-slide {
+    min-width: 100%; /* Ocupa todo o espaço do cartão */
+    box-sizing: border-box; /* Garante que o padding não quebre o layout */
+    padding: 0 50px; /* Espaço nas laterais para o texto não bater nas setas */
+    
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Título da Receita (Ex: Coxinha) */
+.carousel-slide h3 {
+    color: white; /* Texto branco */
+    font-size: 28px;
+    margin-bottom: 15px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    font-family: inherit; /* Usa a fonte do seu jogo */
+}
+
+/* Imagem da Comida */
+.img-receita {
+    width: 140px; /* Tamanho da imagem */
+    height: auto;
+    margin-bottom: 15px;
+    
+    /* Se quiser a bordinha branca ou efeito de "prato", descomente abaixo: */
+    /* border-radius: 50%; */
+    /* border: 3px solid rgba(255,255,255,0.5); */
+    /* background-color: rgba(255,255,255,0.2); */
+}
+
+/* Texto da Descrição */
+.carousel-slide p {
+    color: black; /* Texto preto */
+    font-size: 15px;
+    line-height: 1.4; /* Espaçamento entre linhas */
+    font-weight: 500;
+}
+
+/* Botões (Setas < e >) */
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    
+    background: none; /* Remove o fundo bolinha cinza */
+    border: none;
+    
+    /* Cor da seta (Verde Escuro) */
+    color: #4a7c26; 
+    
+    font-size: 60px; /* Seta bem grande */
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10;
+    padding: 0 10px;
+    line-height: 1;
+    font-family: monospace; /* Garante que a seta fique com formato padrão */
+}
+
+.carousel-btn:hover {
+    color: #2e4d16; /* Fica mais escuro quando passa o mouse */
+    transform: translateY(-50%) scale(1.1); /* Dá um zoomzinho */
+}
+
+/* Posição das Setas */
+.prev { left: 0; }
+.next { right: 0; }
+
+/* =========================================
+   ESTILO DA CUTSCENE (MODO CINEMA) - VERSÃO VERDE
+   ========================================= */
+
+/* Fundo do Modal Cutscene (Mantido escuro para foco) */
+#modal-cutscene {
+    background-color: rgba(0, 0, 0, 0.95);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 20000;
+}
+
+/* A caixa da história (Agora VERDE igual ao primeiro carrossel) */
+.modal-content-cutscene {
+    /* ALTERADO: Cor de fundo verde-limão */
+    background-color: #C2D465; 
+    
+    width: 95%;
+    max-width: 1000px;
+    
+    padding: 20px;
+    border-radius: 30px; /* Arredondei mais para combinar com o primeiro */
+    text-align: center;
+
+    /* ALTERADO: Borda verde escura */
+    border: 4px solid #4a7c26; 
+    /* ALTERADO: Brilho verde atrás */
+    box-shadow: 0 0 40px rgba(74, 124, 38, 0.3); 
+
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Container do Carrossel */
+.cutscene-carousel {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.cutscene-track {
+    display: flex;
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    width: 100%;
+}
+
+/* Cada slide da Cutscene */
+.cutscene-slide {
+    min-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    /* NOVO: Texto branco para contrastar com o fundo verde */
+    color: white; 
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1); /* Sombra suave no texto */
+}
+
+/* IMAGEM DA CUTSCENE */
+.img-cutscene {
+    width: 100%;
+    height: auto;
+    /* border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2); */
+    margin-bottom: 15px; /* Adicionei um pequeno espaço abaixo da imagem */
+    max-height: 70vh;
+    object-fit: contain;
+}
+
+/* SETAS DA CUTSCENE (Agora VERDES) */
+.cutscene-carousel .carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    
+    background: none; 
+    border: none;
+    
+    /* ALTERADO: Cor Verde Escuro (Igual ao primeiro carrossel) */
+    color: #4a7c26; 
+    
+    font-size: 60px;
+    font-weight: bold;
+    font-family: monospace;
+    cursor: pointer;
+    z-index: 100;
+    padding: 0 10px;
+    line-height: 1;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.cutscene-carousel .carousel-btn:hover {
+    transform: translateY(-50%) scale(1.1); 
+    
+    /* ALTERADO: Cor Verde mais escuro no hover */
+    color: #2e4d16; 
+}
+
+/* Posição das Setas */
+.cutscene-carousel .prev { left: 0; }
+.cutscene-carousel .next { right: 0; }
+
+/* Botão FINAL (Começar Jogo) - Mantido, já era verde */
+.btn-jogar-final {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 15px 50px;
+    font-size: 22px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 15px;
+    box-shadow: 0 5px 0 #2e7d32;
+    transition: all 0.1s;
+}
+
+.btn-jogar-final:hover {
+    transform: translateY(2px);
+    box-shadow: 0 3px 0 #2e7d32;
+    background-color: #45a049;
+}
+
+.btn-jogar-final:active {
+    transform: translateY(5px);
+    box-shadow: none;
+}
+
 /* gryg */

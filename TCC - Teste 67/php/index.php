@@ -13,7 +13,7 @@ $nomeUsuario = isset($_SESSION['nome']) ? $_SESSION['nome'] : 'Visitante';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="../img/jeca-logo.png">
-    <title>Jeca Tatu</title>
+    <title>Jeca Maracatu</title>
 </head>
 <body>
     <div id="game">
@@ -85,13 +85,39 @@ $nomeUsuario = isset($_SESSION['nome']) ? $_SESSION['nome'] : 'Visitante';
             
     </main>
 
-    <div id="receitas" class="modal">
-        <div class="modal-content">
-            <span class="fechar">&times;</span>
-            <h2>📒 Receitas</h2>
-            <p>Este é o conteúdo do seu modal.</p>
+   <div id="receitas" class="modal">
+    <div class="modal-content">
+      <span class="fechar">&times;</span>
+      <div class="carousel-container">
+        
+        <div class="carousel-track">
+          
+            <div class="carousel-slide">
+                <h3>Brigadeiro</h3>
+                <img src="../img-comida/brigadeiro.png" alt="Brigadeiro" class="img-receita"> 
+                <p>Tradicional doce brasileiro criado na década de 1940 no Rio de janeiro, durante a campanha eleitoral do Brigadeiro Eduardo Gomes. Popularizado por todo o país, tornou-se presença indispensável em festas de aniversário, comemorações e eventos, sendo encontrado em praticamente qualquer celebração brasileira. Sua origem é atribuída à confeiteira Heloísa Nabuco de Oliveira. </p>
+            </div>
+
+            <div class="carousel-slide">
+                <h3>Pudim</h3>
+                <img src="../img-comida/pudim.png" alt="Pudim" class="img-receita">
+                <p>O pudim surgiu na Idade Média na Europa, com origens em preparações salgadas feitas com ovos, leite e carnes. A versão doce começou a surgir por volta do século XVII, e Portugal é frequentemente creditado por ter popularizado a receita na Europa, que chegou ao Brasil com os colonizadores. No Brasil, o pudim ganhou uma nova identidade com a popularização do leite condensado no século XIX, tornando-se uma sobremesa clássica nacional. </p>
+            </div>
+
+            <div class="carousel-slide">
+                <h3>Coxinha</h3>
+                <img src="../img-comida/Coxinhapng.png" alt="Coxinha" class="img-receita">
+                <p>A coxinha surgiu no século XIX em São Paulo, na cozinha imperial do Brasil, como uma adaptação de um prato francês que inspirou a receita de croquetes. Alguns dizem que por conta da falta do ingrediente principal, os cozinheiros desfiariam o frango, misturaram-no a uma massa e moldaram o salgado no formato de uma coxa de galinha para fritar para a Princesa Isabel comer. Já em outra versão atribui o surgimento da coxinha à industrialização de São Paulo, onde era vendida como um substituto mais acessível para as coxas de frango.</p>
+            </div>
+
         </div>
-    </div>
+
+        <button id="prevBtn" class="carousel-btn prev">❮</button>
+        <button id="nextBtn" class="carousel-btn next">❯</button>
+
+      </div>
+      </div>
+  </div>
 
     <!-- <div id="loja" class="modal">
         <div class="modal-content">
@@ -122,6 +148,89 @@ $nomeUsuario = isset($_SESSION['nome']) ? $_SESSION['nome'] : 'Visitante';
             </div>
         </div>
     </div> -->
+
+    <div id="modal-cutscene" class="modal" style="display: none;">
+    <div class="modal-content-cutscene">
+        
+        <div class="cutscene-carousel">
+            <div class="cutscene-track">
+                
+                <div class="cutscene-slide">
+                   
+                    <img src="../img-cutscene/1.jpeg" alt="Jeca Chegando" class="img-cutscene">
+                </div>
+
+                <div class="cutscene-slide">
+                    
+                    <img src="../img-cutscene/2.jpeg" alt="Jeca" class="img-cutscene">
+                </div>
+
+                <div class="cutscene-slide">
+                    <img src="../img-cutscene/3.jpeg" alt="Jeca" class="img-cutscene">
+                </div>
+
+                <div class="cutscene-slide">
+                    <img src="../img-cutscene/4.jpeg" alt="Jeca" class="img-cutscene">
+                </div>
+
+                <div class="cutscene-slide">
+                    <img src="../img-cutscene/5.jpeg" alt="Jeca" class="img-cutscene">
+                </div>
+
+                <div class="cutscene-slide">
+                    <img src="../img-cutscene/6.jpeg" alt="Jeca" class="img-cutscene">
+                </div>
+
+                <div class="cutscene-slide">
+                    <img src="../img-cutscene/7.jpeg" alt="Jeca" class="img-cutscene">
+                </div>
+
+                <div class="cutscene-slide">
+                    <img src="../img-cutscene/8.jpeg" alt="Jeca" class="img-cutscene">
+                </div>
+
+                <div class="cutscene-slide">
+                    <img src="../img-cutscene/9.jpeg" alt="Jeca" class="img-cutscene">
+                </div>
+
+                <div class="cutscene-slide">
+                    <img src="../img-cutscene/10.jpeg" alt="Jeca" class="img-cutscene">
+                </div>
+
+                <div class="cutscene-slide">
+                    <img src="../img-cutscene/11.jpeg" alt="Jeca" class="img-cutscene">
+                </div>
+
+                <div class="cutscene-slide">
+                    <img src="../img-cutscene/12.jpeg" alt="Jeca" class="img-cutscene">
+                </div>
+
+                <div class="cutscene-slide">
+                    <img src="../img-cutscene/13.jpeg" alt="Jeca" class="img-cutscene">
+                </div>
+
+                <div class="cutscene-slide">
+                    <img src="../img-cutscene/14.jpeg" alt="Jeca" class="img-cutscene">
+                </div>
+
+                <div class="cutscene-slide">
+                    <img src="../img-cutscene/15.jpeg" alt="Jeca" class="img-cutscene">
+                </div>
+
+                <div class="cutscene-slide">
+                    <img src="../img-cutscene/16.jpeg" alt="Jeca" class="img-cutscene">
+                </div>
+
+            </div>
+
+            <button id="cutPrevBtn" class="carousel-btn prev">❮</button>
+            <button id="cutNextBtn" class="carousel-btn next">❯</button>
+        </div>
+
+        <button id="btn-start-game" class="btn-jogar-final">COMEÇAR O JOGO ▶</button>
+
+    </div>
+</div>
 
     <div id="perfil" class="modal">
         <div class="modal-content">
