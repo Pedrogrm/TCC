@@ -2,17 +2,16 @@
 ini_set('display_errors', 0); // Desliga a exibição de erros HTML para requisições AJAX
 error_reporting(E_ALL);
 
-// // Credenciais de Conexão Remota
-// $usuario = 'root';
-// $senha = 'Senai@118'; // Verifique se essa senha é a correta
-// $database = 'jeca';
-// $host = '10.106.12.113'; // Host remoto
-
-// CONEXÃO LOCAL PARA TESTE (se o MySQL estiver rodando na sua máquina)
+// Credenciais de Conexão Remota
 $usuario = 'root';
-$senha = ''; // A senha que você usa para acessar o MySQL na sua máquina
+$senha = 'Senai@118'; 
 $database = 'jeca';
-$host = 'localhost'; // Tenta usar socket local, que é mais rápido
+$host = '10.106.12.113'; 
+
+// $usuario = 'root';
+// $senha = ''; 
+// $database = 'jeca';
+// $host = 'localhost'; 
 
 // Tenta Conectar
 $mysqli = new mysqli($host, $usuario, $senha, $database);

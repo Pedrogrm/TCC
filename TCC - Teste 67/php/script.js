@@ -7,7 +7,7 @@ console.log("✅ Script carregado com sucesso!");
 const gameArea = document.getElementById('game-area');
 const player = document.getElementById('player');
 
-// Elementos das Mesas (Imagens e Containers)
+// Elementos das Mesas
 const mesa1 = document.getElementById('mesa1');
 const mesa2 = document.getElementById('mesa2');
 const mesa3 = document.getElementById('mesa3');
@@ -31,16 +31,16 @@ let posY = 200;
 let targetX = posX;
 let targetY = posY;
 let endposition = "right";
-let playerSpeed = 6; // Pode ser alterado pela loja
+let playerSpeed = 6; 
 
-// Variáveis de Jogo (Dinheiro, etc)
+// Variáveis de Jogo
 let dinheiro = 25;
 let paciencia = 0;
 let bonus = 0;
 
 // Variáveis de Clientes
 let client = [];
-let clientClicado = []; // Array para segurar o cliente selecionado
+let clientClicado = []; 
 const maxClients = 3;
 let occupiedPositions = new Set();
 let num = 0;
@@ -49,13 +49,11 @@ let num = 0;
 const clientPositions = { 1: 100, 2: 50, 3: 0 };
 const zclient = { 0: 3, 50: 4, 100: 5 };
 
-// Sprites (Imagens)
 const clientImg = [
     "aly.gif", "leandro.gif", "marrye.gif", "nox.gif",
     "pariz.gif", "pinguin.gif", "gigs.gif", "coruja.gif", "forg.gif"
 ];
 
-// Estados na Mesa: [0] Sentado, [1] Pedindo, [2] Esperando
 const clientMesa = [
     ["aly-sentada.png", "aly-pedindo.png", "aly-esperando.png"], 
     ["leandro-sentado.png", "leandro-pedindo.png", "leandro-esperando.png"], 
@@ -84,7 +82,6 @@ const modalLoginCadastro = document.getElementById('modal-login-cadastro');
 const authMessageArea = document.getElementById('auth-message-area');
 const fecharLoginBtn = document.getElementById('fechar-login');
 
-// Referências dos formulários e links
 const formLogin = document.getElementById('form-login');
 const formCadastro = document.getElementById('form-cadastro');
 const linkAbrirCadastro = document.getElementById('link-abrir-cadastro');
@@ -121,7 +118,6 @@ function update() {
 
 if (gameArea) {
     gameArea.addEventListener('click', (event) => {
-        // Se clicar num cliente, não move o Jeca (para evitar bugs visuais)
         if (event.target.classList.contains('cliente')) return;
 
         move = true;
@@ -160,7 +156,7 @@ function setupModal(btnId, modalId) {
     });
 }
 
-// Configura Modais de Jogo
+// Configura Modais
 setupModal("btnAbrirConfig", "config");
 setupModal("btnAbrirLoja", "loja");
 setupModal("btnAbrirReceitas", "receitas");
@@ -182,7 +178,6 @@ function comprarPowerUp(custo, efeito) {
     }
 }
 
-// Botões da Loja
 const btnVelocidade = document.getElementById("btnAumentarVelocidade");
 if (btnVelocidade) {
     btnVelocidade.addEventListener("click", () => comprarPowerUp(10, () => playerSpeed += 1.5));
@@ -214,7 +209,6 @@ document.addEventListener("mousemove", (event) => {
     }
 });
 
-// Cliques nos ingredientes
 if (manteiga) manteiga.onclick = () => manteigaSelecionado = !manteigaSelecionado;
 if (manteigaColher) manteigaColher.onclick = () => manteigaSelecionado = false;
 if (chocolate) chocolate.onclick = () => chocolateSelecionado = !chocolateSelecionado;
@@ -243,17 +237,15 @@ function criarCliente() {
     clientDiv.style.left = `${pos}px`;
     clientDiv.style.zIndex = `${z}`;
 
-    // Define qual personagem é
     const numSprite = selecionarNum();
     clientDiv.src = `../img/${clientImg[numSprite]}`;
-    clientDiv.dataset.sprite = JSON.stringify(numSprite); // Guarda o ID
+    clientDiv.dataset.sprite = JSON.stringify(numSprite);
 
     if (gameArea) gameArea.appendChild(clientDiv);
     client.push(clientDiv);
 
-    // --- CLIQUE NO CLIENTE (Apenas seleciona) ---
     clientDiv.addEventListener('click', (e) => {
-        e.stopPropagation(); // Impede outros cliques
+        e.stopPropagation();
 
         if (clientClicado.length > 0) {
             console.log("⚠️ Você já tem um cliente selecionado!");
@@ -261,9 +253,9 @@ function criarCliente() {
         }
 
         if (!clientClicado.includes(clientDiv)) {
-            clientDiv.hidden = true; // Some da fila
+            clientDiv.hidden = true;
             occupiedPositions.delete(pos);
-            clientClicado.push(clientDiv); // Guarda na "mão"
+            clientClicado.push(clientDiv);
             console.log("✅ Cliente pego! Clique numa mesa.");
         }
     });
@@ -282,51 +274,40 @@ function clientes3() {
     }, 500);
 }
 
-// --- FUNÇÃO PARA SENTAR O CLIENTE ---
 function tentarSentarCliente(mesaElemento, posDireita, posEsquerda) {
-    // 1. Verifica se tem cliente na mão
     if (clientClicado.length === 0) return;
 
     const cliente = clientClicado[0];
     const clientesNaMesa = mesaElemento.querySelectorAll(".cliente").length;
 
-    // 2. Verifica se mesa está cheia (max 2)
     if (clientesNaMesa >= 2) {
         console.log("⛔ Mesa cheia!");
         return;
     }
 
-    // 3. Posiciona o cliente
     if (clientesNaMesa > 0) {
-        // Lado Direito
         cliente.style.transform = "scaleX(-1)";
         moverCliente(cliente, mesaElemento, posDireita, "10px");
     } else {
-        // Lado Esquerdo
         cliente.style.transform = "scaleX(1)";
         moverCliente(cliente, mesaElemento, posEsquerda, "10px");
     }
 
     cliente.style.setProperty('z-index', '9999', 'important');
-
-    // 4. Anima e limpa seleção
     mudarSprite(cliente);
     clientClicado = [];
 }
 
 function moverCliente(cliente, mesa, left, top) {
     cliente.hidden = false;
-    mesa.appendChild(cliente); // Move o elemento HTML para dentro da div da mesa
+    mesa.appendChild(cliente);
     cliente.style.position = "absolute";
     cliente.style.left = left;
     cliente.style.top = top;
 
-    // Coloca imagem de sentado
     const spriteID = parseInt(cliente.dataset.sprite, 10);
     if (!Number.isNaN(spriteID)) {
         cliente.src = `../img/${clientMesa[spriteID][0]}`;
-    } else {
-        console.warn("Opção inválida para sprite")
     }
 }
 
@@ -334,11 +315,10 @@ function mudarSprite(cliente) {
     if (!cliente) return;
     const spriteID = parseInt(cliente.dataset.sprite, 10);
 
-    // Loop de animação simples (Sentado <-> Pedindo)
     if (cliente._spriteIntervalId) clearInterval(cliente._spriteIntervalId);
     
     cliente._spriteIntervalId = setInterval(() => {
-        cliente.src = `../img/${clientMesa[spriteID][1]}`; // Pedindo
+        cliente.src = `../img/${clientMesa[spriteID][1]}`;
     }, (Math.random() * 5000) + 5000);
 }
 
@@ -348,7 +328,6 @@ function mudarSprite(cliente) {
 // ===================================
 
 function iniciarLogicaDoJogo() {
-    // Configura os cliques nas mesas (APENAS UMA VEZ)
     if (mesa1 && mesa2 && mesa3) {
         mesa1.onclick = () => tentarSentarCliente(mesa1e, "115px", "-75px");
         mesa2.onclick = () => tentarSentarCliente(mesa2e, "150px", "-75px");
@@ -358,17 +337,15 @@ function iniciarLogicaDoJogo() {
         console.error("❌ Erro: Mesas não encontradas no HTML.");
     }
 
-    // Limpa Placeholders dos inputs
     document.querySelectorAll('input').forEach(input => {
         const original = input.getAttribute('placeholder');
         input.onfocus = () => input.setAttribute('placeholder', '');
         input.onblur = () => input.setAttribute('placeholder', original);
     });
 
-    // Inicia loops
     atualizarDinheiro();
-    requestAnimationFrame(update); // Movimento Jeca
-    clientes3(); // Gera clientes
+    requestAnimationFrame(update);
+    clientes3();
     console.log("✅ Lógica do jogo iniciada!");
 }
 
@@ -376,37 +353,27 @@ function iniciarLogicaDoJogo() {
 // 🔐 LÓGICA DE MODAIS DE AUTENTICAÇÃO E FETCH (AJAX)
 // ===================================================================
 
-// 2. LÓGICA DE SEQUÊNCIA DE MODAIS (Abre modal de Login/Cadastro após o clique inicial)
 if (btnJogar) {
     btnJogar.addEventListener('click', fecharModalInicioEAbrirLogin);
 }
 
-// Lógica para fechar o Modal de Login/Cadastro no "X"
 if (fecharLoginBtn) {
     fecharLoginBtn.addEventListener('click', () => {
         if (modalLoginCadastro) modalLoginCadastro.style.display = 'none';
-        // Não inicia o jogo aqui, forçando o login
     });
 }
 
 function fecharModalInicioEAbrirLogin() {
-    if (modalInicio) {
-        modalInicio.style.display = 'none'; // Fecha o Modal de Início
-    }
-    
-    if (modalLoginCadastro) {
-        modalLoginCadastro.style.display = 'flex'; // Abre o Modal de Login/Cadastro
-    }
+    if (modalInicio) modalInicio.style.display = 'none';
+    if (modalLoginCadastro) modalLoginCadastro.style.display = 'flex';
 }
 
-
-// 3. LÓGICA PARA ALTERNAR LOGIN/CADASTRO
 if (linkAbrirCadastro) {
     linkAbrirCadastro.addEventListener('click', (e) => {
         e.preventDefault();
         formLogin.style.display = 'none';
         formCadastro.style.display = 'block'; 
-        authMessageArea.innerHTML = ''; // Limpa mensagens
+        authMessageArea.innerHTML = '';
     });
 }
 
@@ -415,11 +382,10 @@ if (linkAbrirLogin) {
         e.preventDefault();
         formCadastro.style.display = 'none';
         formLogin.style.display = 'block'; 
-        authMessageArea.innerHTML = ''; // Limpa mensagens
+        authMessageArea.innerHTML = '';
     });
 }
 
-// 4. FUNÇÃO GLOBAL PARA MOSTRAR MENSAGENS NO MODAL
 function displayAuthMessage(message, isSuccess) {
     authMessageArea.innerHTML = `
         <p class="${isSuccess ? 'message-success' : 'message-error'}">
@@ -428,17 +394,13 @@ function displayAuthMessage(message, isSuccess) {
     `;
 }
 
-// =======================================================
-// 5. FUNÇÃO CENTRALIZADA PARA SUBMISSÃO (COM RECARREGAMENTO)
-// =======================================================
 async function submitAuthForm(event) {
-    event.preventDefault(); // Impede o envio tradicional
+    event.preventDefault();
     
     const form = event.target;
     const formData = new FormData(form);
     const messageArea = document.getElementById('auth-message-area');
 
-    // Limpa mensagens anteriores
     if (messageArea) messageArea.innerHTML = 'Processando...';
     
     try {
@@ -447,7 +409,6 @@ async function submitAuthForm(event) {
             body: formData
         });
 
-        // Tenta pegar o texto puro primeiro para garantir que não é erro do PHP
         const textoResposta = await response.text();
         
         let result;
@@ -459,81 +420,175 @@ async function submitAuthForm(event) {
             return;
         }
         
-        // Se a resposta for um JSON válido:
         if (result.success) {
             displayAuthMessage(result.message, true);
             
-            // --- LÓGICA DE SUCESSO ---
-
             if (form.id === 'form-login') {
-                // LOGIN: Espera 1 segundo e RECARREGA A PÁGINA
                 setTimeout(() => {
                     const modal = document.getElementById('modal-login-cadastro');
                     if(modal) modal.style.display = 'none';
-
-                    // AQUI ESTÁ A MÁGICA: Recarrega para o PHP mostrar o nome
                     window.location.reload(); 
                 }, 1000); 
 
             } else if (form.id === 'form-cadastro') {
-                // CADASTRO: Apenas troca para a tela de login
                  setTimeout(() => {
                     const formCadastro = document.getElementById('form-cadastro');
                     const formLogin = document.getElementById('form-login');
-                    
                     if(formCadastro) formCadastro.style.display = 'none';
                     if(formLogin) formLogin.style.display = 'block';
-                    
                     displayAuthMessage("Cadastro ok! Faça login.", true);
                 }, 2000); 
             }
-
         } else {
-            // Se o PHP disser que deu erro (senha errada, etc)
             displayAuthMessage(result.message, false);
         }
-
     } catch (error) {
         if (messageArea) displayAuthMessage("Erro de conexão.", false);
         console.error('Fetch error:', error);
     }
 }
 
-// 6. ADICIONA EVENT LISTENERS AOS FORMULÁRIOS
 if (formLogin) formLogin.addEventListener('submit', submitAuthForm);
 if (formCadastro) formCadastro.addEventListener('submit', submitAuthForm);
 
-// 7. ABERTURA DO MODAL AO CARREGAR A PÁGINA
-window.onload = function() {
-    console.log("🖥️ Página carregada. Aguardando login...");
-    
-    // Mostra o modal de início
-    if (modalInicio) {
-        modalInicio.style.display = 'flex'; 
-    }
-};
-
-// 7. ABERTURA INTELIGENTE AO CARREGAR A PÁGINA
+// ===================================
+// 7. ABERTURA INTELIGENTE (ONLOAD UNIFICADO)
+// ===================================
 window.onload = function() {
     console.log("🖥️ Página carregada.");
 
-    // Verifica a variável que criamos no PHP
-    // (Certifique-se que usuarioEstaLogado foi definido no HTML)
     if (typeof usuarioEstaLogado !== 'undefined' && usuarioEstaLogado === true) {
-        
         console.log("✅ Usuário já logado! Iniciando jogo direto...");
-        
-        // Garante que os modais estão fechados
         if (modalInicio) modalInicio.style.display = 'none';
         if (modalLoginCadastro) modalLoginCadastro.style.display = 'none';
-        
-        // Inicia o jogo imediatamente
         iniciarLogicaDoJogo();
+    } else {
+        console.log("🔒 Usuário não logado. Mostrando Início...");
+        if (modalInicio) {
+            modalInicio.style.display = 'flex'; 
+        }
+    }
+};
+
+// ===================================
+// 📒 LÓGICA DO CARROSSEL DE RECEITAS
+// ===================================
+// IMPORTANTE: Essas classes precisam estar no seu HTML para funcionar!
+const track = document.querySelector('.carousel-track');
+const slides = Array.from(document.querySelectorAll('.carousel-slide'));
+const nextButton = document.getElementById('nextBtn');
+const prevButton = document.getElementById('prevBtn');
+
+// Debug: Ver quantos slides foram encontrados
+console.log("Slides encontrados:", slides.length);
+
+let currentSlideIndex = 0;
+
+function updateCarousel() {
+    // Calcula quantos % deve mover para a esquerda
+    const amountToMove = -100 * currentSlideIndex; 
+    if(track) {
+        track.style.transform = `translateX(${amountToMove}%)`;
+    }
+}
+
+if (nextButton) {
+    nextButton.addEventListener('click', () => {
+        console.log("Botão Próximo clicado. Índice atual:", currentSlideIndex);
+        if (currentSlideIndex === slides.length - 1) {
+            currentSlideIndex = 0; // Volta pro início
+        } else {
+            currentSlideIndex++; // Vai pro próximo
+        }
+        updateCarousel();
+    });
+}
+
+if (prevButton) {
+    prevButton.addEventListener('click', () => {
+        console.log("Botão Anterior clicado.");
+        if (currentSlideIndex === 0) {
+            currentSlideIndex = slides.length - 1; // Vai pro fim
+        } else {
+            currentSlideIndex--; // Volta um
+        }
+        updateCarousel();
+    });
+}
+
+// ===================================
+// 🎬 LÓGICA DA CUT SCENE (INTRODUÇÃO)
+// ===================================
+const modalCutscene = document.getElementById('modal-cutscene');
+const btnStartGame = document.getElementById('btn-start-game');
+
+// Elementos do Carrossel da Cutscene
+const cutTrack = document.querySelector('.cutscene-track');
+const cutSlides = Array.from(document.querySelectorAll('.cutscene-slide'));
+const cutNextBtn = document.getElementById('cutNextBtn');
+const cutPrevBtn = document.getElementById('cutPrevBtn');
+
+let cutIndex = 0;
+
+function updateCutscene() {
+    const moveAmount = -100 * cutIndex;
+    if(cutTrack) cutTrack.style.transform = `translateX(${moveAmount}%)`;
+}
+
+if (cutNextBtn) {
+    cutNextBtn.addEventListener('click', () => {
+        if (cutIndex === cutSlides.length - 1) cutIndex = 0;
+        else cutIndex++;
+        updateCutscene();
+    });
+}
+
+if (cutPrevBtn) {
+    cutPrevBtn.addEventListener('click', () => {
+        if (cutIndex === 0) cutIndex = cutSlides.length - 1;
+        else cutIndex--;
+        updateCutscene();
+    });
+}
+
+// Botão "COMEÇAR O JOGO" dentro da cutscene
+if (btnStartGame) {
+    btnStartGame.addEventListener('click', () => {
+        // Fecha a cutscene
+        if(modalCutscene) modalCutscene.style.display = 'none';
+        
+        // E FINALMENTE INICIA O JOGO
+        iniciarLogicaDoJogo();
+    });
+}
+
+
+// ===================================
+// 7. ABERTURA INTELIGENTE (MODIFICADO)
+// ===================================
+window.onload = function() {
+    console.log("🖥️ Página carregada.");
+
+    // Se o usuário está logado...
+    if (typeof usuarioEstaLogado !== 'undefined' && usuarioEstaLogado === true) {
+        
+        console.log("✅ Usuário logado! Abrindo Cut Scene...");
+        
+        // Garante que os outros modais estão fechados
+        if (modalInicio) modalInicio.style.display = 'none';
+        if (modalLoginCadastro) modalLoginCadastro.style.display = 'none';
+
+        // 🚨 AQUI É A MUDANÇA: Abre a Cut Scene em vez do jogo direto
+        if (modalCutscene) {
+            modalCutscene.style.display = 'flex'; // Abre o modal da história
+        } else {
+            // Se não tiver modal (segurança), inicia o jogo direto
+            iniciarLogicaDoJogo();
+        }
 
     } else {
-        
+        // Se NÃO está logado, mostra a tela inicial normal
         console.log("🔒 Usuário não logado. Mostrando Início...");
-        // Comportamento padrão: Mostra o modal de início
         if (modalInicio) {
             modalInicio.style.display = 'flex'; 
         }
